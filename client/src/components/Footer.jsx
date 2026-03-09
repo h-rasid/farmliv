@@ -1,0 +1,153 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
+
+const Footer = () => {
+  return <footer className="bg-[#2E7D32] text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shrink-0">
+                <span className="text-[#2E7D32] font-bold text-xl">F</span>
+              </div>
+              <span className="text-xl font-bold">Farmliv Industries</span>
+            </div>
+            <p className="text-green-100 text-sm leading-relaxed">
+              Premium B2B agricultural solutions provider, committed to delivering quality products for modern farming.
+            </p>
+            <div className="flex gap-4 pt-2">
+              {/* ⭐ UPDATED: SEO Friendly Facebook Link */}
+              <a 
+                href="https://www.facebook.com/share/1B3uGhgYQQ/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                title="Follow Farmliv Industries on Facebook"
+              >
+                <Facebook className="w-5 h-5" />
+              </a>
+
+              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Twitter">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="LinkedIn">
+                <Linkedin className="w-5 h-5" />
+              </a>
+
+              {/* ⭐ UPDATED: SEO Friendly Instagram Link */}
+              <a 
+                href="https://www.instagram.com/farmliv.industries?igsh=MXhwanhqdDh5Nm4000000" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                title="Follow Farmliv Industries on Instagram"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-2 sm:mb-4">Quick Links</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/products" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link to="/certification" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Certification
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Contact
+                </Link>
+              </li>
+              <li className="pt-2 border-t border-white/10 mt-2">
+                <Link 
+                  to="/admin/login" 
+                  onClick={() => window.scrollTo(0, 0)}
+                  className="flex items-center gap-2 text-green-200/60 hover:text-white transition-all group"
+                >
+                  <Lock size={12} className="group-hover:scale-110 transition-transform" />
+                  <span className="text-[11px] font-black uppercase tracking-widest">
+                    Staff Portal
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Products */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-2 sm:mb-4">Our Products</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/products/weed-control" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Weed Control Mat
+                </Link>
+              </li>
+              <li>
+                <Link to="/products/shade-nets" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Shade Net
+                </Link>
+              </li>
+              <li>
+                <Link to="/products/irrigation-systems" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Drip Irrigation
+                </Link>
+              </li>
+              <li>
+                <Link to="/products/crop-protection" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                  Mulch Film
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-2 sm:mb-4">Contact Us</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-80" />
+                <span className="text-green-100 text-sm sm:text-base">
+                  Farmliv Industries <br/>
+                  1st Floar Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146
+                </span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 flex-shrink-0 opacity-80" />
+                <a href="tel:+919181395595" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">+91 91813 95595</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 flex-shrink-0 opacity-80" />
+                <a href="mailto:sales@farmliv.com" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">sales@farmliv.com</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-white/20 mt-12 pt-8 text-center text-green-100 text-sm">
+          <p>&copy; {new Date().getFullYear()} Farmliv Industries. All rights reserved. | ISO 9001:2015 Certified</p>
+        </div>
+      </div>
+    </footer>;
+};
+
+export default Footer;
