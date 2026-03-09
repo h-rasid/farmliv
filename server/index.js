@@ -299,12 +299,55 @@ app.get('/api/leads', async (req, res) => {
 });
 
 app.post('/api/leads', async (req, res) => {
-  const { customer_name, phone, email, company, location, product_id, quantity, timeline, notes } = req.body;
+  const { customer_name, phone, email, company, location, product_id, quantity, notes } = req.body;
   try {
-    const query = `INSERT INTO leads (customer_name, phone, email, company, location, product_id, quantity, timeline, notes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
-    const [result] = await pool.query(query, [customer_name, phone, email, company, location, product_id, quantity, timeline, notes]);
+    // Get product name for email
+    let productName = 'Unknown Product';
+    if (product_id) {
+      const [[prod]] = await pool.query('SELECT name FROM products WHERE id = ?', [product_id]);
+      if (prod) productName = prod.name;
+    }
+
+    const query = `INSERT INTO leads (customer_name, phone, email, company, location, product_id, quantity, notes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
+    const [result] = await pool.query(query, [customer_name, phone, email, company, location, product_id, quantity, notes]);
+
+    // Send email to admin with full customer details
+    const adminMail = {
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: `🌾 New Quote Request from ${customer_name}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+          <div style="background: #2E7D32; padding: 20px; color: white;">
+            <h2 style="margin: 0;">New Quote Request — Farmliv Industries</h2>
+          </div>
+          <div style="padding: 24px;">
+            <h3 style="color: #2E7D32; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px;">Customer Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; font-weight: bold; width: 40%;">Name:</td><td style="padding: 8px;">${customer_name || 'N/A'}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Phone:</td><td style="padding: 8px;">${phone || 'N/A'}</td></tr>
+              <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email || 'N/A'}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Company:</td><td style="padding: 8px;">${company || 'Individual'}</td></tr>
+              <tr><td style="padding: 8px; font-weight: bold;">Location:</td><td style="padding: 8px;">${location || 'N/A'}</td></tr>
+            </table>
+            <h3 style="color: #2E7D32; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px; margin-top: 20px;">Order Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; font-weight: bold; width: 40%;">Product:</td><td style="padding: 8px;">${productName}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Quantity:</td><td style="padding: 8px;">${quantity || 'N/A'} Units</td></tr>
+              <tr><td style="padding: 8px; font-weight: bold;">Notes:</td><td style="padding: 8px;">${notes || 'None'}</td></tr>
+            </table>
+            <div style="margin-top: 20px; padding: 12px; background: #e8f5e9; border-radius: 6px; font-size: 13px; color: #555;">
+              View in Admin Panel: <a href="https://farmliv.in/admin" style="color: #2E7D32;">farmliv.in/admin</a>
+            </div>
+          </div>
+        </div>
+      `
+    };
+    await transporter.sendMail(adminMail).catch(e => console.log("Email skip:", e.message));
+
     return res.status(201).json({ success: true, id: result.insertId });
   } catch (err) {
+    console.error("Leads error:", err);
     return res.status(500).json({ error: "Quote request failed" });
   }
 });

@@ -169,13 +169,13 @@ const QuoteForm = () => {
       const pName = selectedProduct?.name || 'Inquiry';
 
       const payload = {
-        representative_identity: formData.fullName, 
-        enterprise_entity: formData.companyName, 
-        primary_contact_hub: formData.phone, 
-        deployment_location: formData.deliveryLocation, 
+        customer_name: formData.fullName,
+        company: formData.companyName,
+        phone: formData.phone,
+        location: formData.deliveryLocation,
         product_id: parseInt(formData.productId),
         quantity: parseInt(formData.quantity),
-        additional_protocols: formData.requirements || ''
+        notes: formData.requirements || ''
       };
 
       await API.post('/leads', payload);
