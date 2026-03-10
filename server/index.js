@@ -455,11 +455,11 @@ const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
 app.use(express.static(finalPath, { maxAge: '7d' })); 
 
-app.use('/api/{*path}', (req, res) => {
+app.use('/api/*', (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
-app.get('{*path}', (req, res) => {
+app.get('*', (req, res) => {
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
