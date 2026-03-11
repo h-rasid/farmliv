@@ -48,7 +48,7 @@ const AdminDashboard = () => {
 
     toast({ 
       title: "Lead Located", 
-      description: `Viewing synchronized data for Inquiry Node #${leadId}` 
+      description: `Viewing synchronized data for Inquiry #${leadId}` 
     });
   };
 
@@ -60,13 +60,13 @@ const AdminDashboard = () => {
   ];
 
   useEffect(() => {
-    const syncNodeData = () => {
+    const syncDashboardData = () => {
       fetchGlobalData();
       fetchLiveLeads();
       fetchStaff();
     };
-    syncNodeData();
-    const interval = setInterval(syncNodeData, 30000);
+    syncDashboardData();
+    const interval = setInterval(syncDashboardData, 30000);
     return () => clearInterval(interval);
   }, []);
 

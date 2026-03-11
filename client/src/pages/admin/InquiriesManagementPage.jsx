@@ -48,7 +48,7 @@ const InquiriesManagementPage = () => {
     try {
       const res = await axios.get(`${API_BASE}/api/staff`);
       setStaff(res.data);
-    } catch (err) { console.log("Staff node offline"); }
+    } catch (err) { console.log("Staff directory offline"); }
   };
 
   const exportToPDF = () => {
@@ -90,7 +90,7 @@ const InquiriesManagementPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Purge this inquiry node permanently?")) return;
+    if (!window.confirm("Purge this inquiry permanently?")) return;
     try {
       await axios.delete(`${API_BASE}/api/leads/${id}`);
       setLeads(prevLeads => prevLeads.filter(l => l.id !== id));
@@ -143,7 +143,7 @@ const InquiriesManagementPage = () => {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="pl-10 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-[10px] font-bold uppercase outline-none cursor-pointer"
               >
-                <option value="All">All Nodes</option>
+                <option value="All">All Sources</option>
                 <option value="New">New</option>
                 <option value="Contacted">Contacted</option>
                 <option value="In Process">In Process</option>
@@ -232,7 +232,7 @@ const InquiriesManagementPage = () => {
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
               <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl relative overflow-hidden">
                 <div className="p-6 bg-slate-50 border-b flex justify-between items-center text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                  Lead Synchronized Node <button onClick={() => setSelectedLead(null)} className="p-1 hover:bg-slate-200 rounded-full transition-all"><X size={20}/></button>
+                  Lead Synchronized <button onClick={() => setSelectedLead(null)} className="p-1 hover:bg-slate-200 rounded-full transition-all"><X size={20}/></button>
                 </div>
                 
                 <div className="p-10 space-y-8">

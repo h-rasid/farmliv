@@ -69,7 +69,7 @@ const ProductDetailPage = () => {
         }
 
       } catch (error) {
-        console.error("Node Fetch Error:", error.message);
+        console.error("Fetch Error:", error.message);
         setProduct(null);
       } finally {
         setLoading(false);
@@ -91,7 +91,7 @@ const ProductDetailPage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6 text-center">
       <div className="bg-red-50 p-10 rounded-[3rem] border border-red-100 mb-8 max-w-md">
         <X className="w-16 h-16 text-red-500 mx-auto mb-6" />
-        <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Node Offline</h2>
+        <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Product Offline</h2>
         <p className="text-sm text-gray-500 mt-4 leading-relaxed font-medium">
           Product Asset <span className="text-red-600 font-bold">#{productId}</span> could not be synchronized.
         </p>

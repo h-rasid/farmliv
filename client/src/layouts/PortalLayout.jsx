@@ -23,7 +23,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     { name: 'Inquiry Hub', icon: MessageSquare, path: '/admin/quick-enquiries' }, 
     { name: 'Reports & Analytics', icon: BarChart3, path: '/admin/reports' },
     { name: 'Staff Directory', icon: Users, path: '/admin/staff' },
-    { name: 'Node Settings', icon: Settings, path: '/admin/settings' }
+    { name: 'Portal Settings', icon: Settings, path: '/admin/settings' }
   ] : [
     { name: 'Sales Pipeline', icon: LayoutDashboard, path: '/salesman-portal' },
     { name: 'My Performance', icon: Settings, path: '/salesman/profile' }
@@ -52,7 +52,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
               <span className="text-3xl font-black italic tracking-tighter text-gray-900 uppercase group-hover:text-farmliv-green transition-colors">
                 Farmliv <span className="text-farmliv-green">Pro</span>
               </span>
-              <span className="text-[8px] font-black text-gray-300 uppercase tracking-[0.6em] mt-1 ml-1">Enterprise Node</span>
+              <span className="text-[8px] font-black text-gray-300 uppercase tracking-[0.6em] mt-1 ml-1">Enterprise Portal</span>
             </Link>
           </div>
 

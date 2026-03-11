@@ -28,7 +28,7 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
       const response = await API.post('/quick-enquiries', {
         representative_identity: formData.fullName,
         primary_contact_hub: formData.mobile,
-        email_node: formData.email,
+        email: formData.email,
         enterprise_entity: formData.companyName,
         deployment_location: formData.location,
         additional_protocols: formData.message
@@ -73,7 +73,7 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
 
           <div className="p-8 lg:p-10 text-center">
             <h2 className="text-2xl font-black text-[#2E7D32] uppercase tracking-tighter mb-1 italic">Quick Enquiry</h2>
-            <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-8">Direct Industrial Support Node</p>
+            <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-8">Direct Industrial Support</p>
 
             <AnimatePresence mode="wait">
               {status.success ? (

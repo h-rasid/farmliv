@@ -219,7 +219,7 @@ app.post('/api/categories', async (req, res) => {
     const [result] = await pool.query('INSERT INTO categories (name) VALUES (?)', [name]);
     res.status(201).json({ id: result.insertId, name });
   } catch (err) {
-    res.status(500).json({ error: "Failed to add category node" });
+    res.status(500).json({ error: "Failed to add category" });
   }
 });
 
@@ -244,7 +244,7 @@ app.get('/api/products/:id', async (req, res) => {
     product.images = product.images ? (typeof product.images === 'string' ? JSON.parse(product.images) : product.images) : [];
     return res.json(product);
   } catch (err) {
-    return res.status(500).json({ error: "Node synchronization failed" });
+    return res.status(500).json({ error: "Synchronization failed" });
   }
 });
 
@@ -258,7 +258,7 @@ app.get('/api/products/related/:category', async (req, res) => {
     );
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Related nodes retrieval failed" });
+    return res.status(500).json({ error: "Related items retrieval failed" });
   }
 });
 
@@ -418,7 +418,7 @@ app.delete('/api/quick-enquiries/:id', async (req, res) => {
     await pool.query('DELETE FROM quick_enquiries WHERE id = ?', [req.params.id]);
     return res.json({ success: true, message: "Enquiry purged successfully" });
   } catch (err) {
-    return res.status(500).json({ error: "Failed to delete enquiry node" });
+    return res.status(500).json({ error: "Failed to delete enquiry" });
   }
 });
 

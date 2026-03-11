@@ -69,14 +69,14 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
             </div>
             <div className="space-y-1">
               <h2 className="text-4xl font-black uppercase italic tracking-tighter">Final <span className="text-farmliv-green">Checkout</span></h2>
-              <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.4em]">Transaction Node #{leadData?.id}</p>
+              <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.4em]">Transaction #{leadData?.id}</p>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="p-12 space-y-10 bg-[#FAFAFA]">
           
-          {/* Customer Intelligence Node */}
+          {/* Customer Intelligence Section */}
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
                <div className="flex items-center gap-3 mb-2">
@@ -88,7 +88,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
             <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
                <div className="flex items-center gap-3 mb-2">
                   <Smartphone size={14} className="text-farmliv-green" />
-                  <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Product Node</p>
+                  <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Product Details</p>
                </div>
                <p className="font-black text-gray-900 uppercase italic">{leadData?.product_name}</p>
             </div>
@@ -136,7 +136,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
                     : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'
                 }`}
               >
-                <CreditCard size={18} /> Digital Node
+                <CreditCard size={18} /> Digital Payment
               </button>
             </div>
           </div>

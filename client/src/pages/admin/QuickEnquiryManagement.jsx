@@ -36,13 +36,13 @@ const QuickEnquiryManagement = () => {
   const handleAssign = async (id, staffId) => {
     try {
       await API.put(`/quick-enquiries/${id}/assign`, { staff_id: staffId });
-      toast({ title: "Sales Node Assigned" });
+      toast({ title: "Inquiry Assigned" });
       fetchData();
     } catch (err) { toast({ variant: "destructive", title: "Assignment Failed" }); }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Purge this enquiry node?")) return;
+    if (!window.confirm("Purge this enquiry?")) return;
     try {
       await API.delete(`/quick-enquiries/${id}`);
       setEnquiries(enquiries.filter(e => e.id !== id));

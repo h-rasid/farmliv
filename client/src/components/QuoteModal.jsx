@@ -41,7 +41,7 @@ const QuoteModal = ({ isOpen, onClose, productName = '', productId = null }) => 
         requirements: `Company: ${formData.companyName} | Location: ${formData.deliveryLocation} | Notes: ${formData.additionalNotes}`
       };
 
-      // ⭐ CONNECTIVITY: Port 5000 Node Server
+      // ⭐ CONNECTIVITY: Port 5000 Backend Server
       await API.post('/leads', payload);
       
       toast({
@@ -63,7 +63,7 @@ const QuoteModal = ({ isOpen, onClose, productName = '', productId = null }) => 
       toast({
         variant: "destructive",
         title: "Submission Failed",
-        description: "Check if your Node.js server (Port 5000) is running.",
+        description: "Check if your Backend server (Port 5000) is running.",
       });
     } finally {
       setIsSubmitting(false);

@@ -32,7 +32,7 @@ const ReportsAnalytics = () => {
       const res = await API.get('/admin/stats');
       setStats(res.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Analytics Node Offline" });
+      toast({ variant: "destructive", title: "Analytics Data Offline" });
       setStats({
         revenue: 1250000,
         conversions: 65,
@@ -49,7 +49,7 @@ const ReportsAnalytics = () => {
       const res = await API.get('/admin/reports/staff-performance');
       setPerformanceData(res.data);
     } catch (err) {
-      console.error("Performance node sync failed");
+      console.error("Performance sync failed");
     }
   };
 
@@ -76,7 +76,7 @@ const ReportsAnalytics = () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    toast({ title: "CSV Node Exported", description: "Report saved to local storage." });
+    toast({ title: "CSV Data Exported", description: "Report saved to local storage." });
   };
 
   const reportCards = [
@@ -94,7 +94,7 @@ const ReportsAnalytics = () => {
         <header className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
           <div>
             <h1 className="text-3xl font-semibold tracking-tight">Enterprise Analytics</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">B2B Performance & Intelligence Node</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">B2B Performance & Intelligence</p>
           </div>
           <button 
             onClick={() => exportToCSV(performanceData.length > 0 ? performanceData : [stats], 'Farmliv_Global_Report')}
@@ -104,7 +104,7 @@ const ReportsAnalytics = () => {
           </button>
         </header>
 
-        {/* Quick Stats Node */}
+        {/* Quick Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Monthly Revenue</p>
@@ -120,7 +120,7 @@ const ReportsAnalytics = () => {
           </div>
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Active Dealers</p>
-            <h2 className="text-2xl font-semibold text-slate-900 tracking-tighter">{stats?.activeDealers} Nodes</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 tracking-tighter">{stats?.activeDealers} Active Dealers</h2>
             <p className="text-[10px] text-slate-400 font-medium mt-2">Verified enterprise partners</p>
           </div>
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
@@ -153,11 +153,11 @@ const ReportsAnalytics = () => {
           ))}
         </div>
 
-        {/* ⭐ Visual Chart Node Section */}
+        {/* ⭐ Visual Chart Section */}
         <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm mt-8">
           <div className="mb-10">
             <h3 className="text-lg font-semibold uppercase tracking-tight">Executive Performance Intelligence</h3>
-            <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Analyzing lead acquisition versus conversion efficiency per node</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Analyzing lead acquisition versus conversion efficiency per territory</p>
           </div>
           
           <div className="h-[450px] w-full">

@@ -14,7 +14,7 @@ const RequestQuotePage = () => {
   return (
     <>
       <Helmet>
-        <title>Request Quote | Farmliv Industries Enterprise Node</title>
+        <title>Request Quote | Farmliv Industries Enterprise</title>
         <meta name="description" content="Request a detailed quote for bulk agricultural products. Competitive pricing, fast turnaround, and custom solutions available." />
       </Helmet>
 
@@ -38,14 +38,14 @@ const RequestQuotePage = () => {
               </div>
 
               <p className="text-sm sm:text-lg text-gray-500 leading-relaxed font-medium max-w-2xl mx-auto italic">
-                Initialize a custom procurement node. Our trade specialists will analyze your requirements and provide a strategic valuation within 24 hours.
+                Initialize a custom procurement request. Our trade specialists will analyze your requirements and provide a strategic valuation within 24 hours.
               </p>
             </div>
 
             {/* --- Form Deployment Zone --- */}
             <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-[3rem] shadow-2xl border border-gray-50 p-2 sm:p-4 relative overflow-hidden">
-                  {/* Subtle Background Node Decor */}
+                  {/* Subtle Background Decor */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full -mr-16 -mt-16 opacity-50 blur-2xl" />
                   
                   {/* ⭐ QuoteForm is responsible for handling 500 error & backend sync */}
@@ -53,12 +53,12 @@ const RequestQuotePage = () => {
                 </div>
             </div>
 
-            {/* --- Enterprise Trust Nodes --- */}
+            {/* --- Enterprise Trust Indicators --- */}
             <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">
                   <ShieldCheck className="w-6 h-6 text-[#2E7D32] mb-4 group-hover:scale-110 transition-transform" />
                   <p className="font-black text-gray-900 uppercase text-xs tracking-widest">ISO 9001:2026</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Asset Node</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Asset</p>
                 </div>
                 
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">

@@ -72,7 +72,7 @@ const SalesDashboard = () => {
             </h1>
             <div className="flex items-center gap-3">
                <div className="w-2 h-2 rounded-full bg-farmliv-green animate-pulse" />
-               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.5em]">Executive Performance Node</p>
+               <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.5em]">Executive Performance</p>
             </div>
           </div>
           <div className="bg-white px-10 py-6 rounded-portal-btn shadow-2xl border border-gray-50 flex items-center gap-6">
