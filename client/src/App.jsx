@@ -9,12 +9,13 @@ import { API_BASE, API_URL } from '@/utils/config';
 // ⭐ Existing Components
 import FloatingContactButtons from './components/FloatingContactButtons';
 import QuickEnquiryTab from './components/QuickEnquiryTab';
+import HomePage from './pages/HomePage';
 
 // ⭐ Modal for Popup behavior
 import QuickEnquiryModal from './components/QuickEnquiryModal';
 
 // --- Lazy Load Public Pages ---
-const HomePage = React.lazy(() => import('./pages/HomePage'));
+// HomePage is now statically imported for better performance
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
 const ProductsPage = React.lazy(() => import('./pages/ProductsPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
