@@ -448,18 +448,36 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-// --- 4. FRONTEND HOSTING LOGIC ---
+// --- 4. SEO & ROBOTS PROTOCOLS ---
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send('User-agent: *\nAllow: /\n\nSitemap: https://farmliv.in/sitemap.xml');
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://farmliv.in/</loc><priority>1.0</priority></url>
+  <url><loc>https://farmliv.in/about</loc><priority>0.8</priority></url>
+  <url><loc>https://farmliv.in/products</loc><priority>0.9</priority></url>
+  <url><loc>https://farmliv.in/certification</loc><priority>0.7</priority></url>
+  <url><loc>https://farmliv.in/contact</loc><priority>0.7</priority></url>
+</urlset>`);
+});
+
+// --- 5. FRONTEND HOSTING LOGIC ---
 const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
 const altFrontendPath = path.resolve(__dirname, 'dist'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
 app.use(express.static(finalPath, { maxAge: '7d' })); 
 
-app.use('/api/*', (req, res) => {
+app.use(/^\/api\/.*/, (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
