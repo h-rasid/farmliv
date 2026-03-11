@@ -75,45 +75,45 @@ const AnimatedRoutes = ({ onOpenModal }) => {
   return (
     <>
       <AnimatePresence mode="wait">
-        <Suspense fallback={<LoadingFallback />}>
           <Routes location={location} key={location.pathname}>
-            {/* PUBLIC ROUTES */}
+            {/* PUBLIC ROUTES - HomePage is static and loads instantly */}
             <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:categoryId" element={<ProductsPage />} />
-            <Route path="/product/:productId" element={<ProductDetailPage />} />
-            <Route path="/certification" element={<CertificationPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/request-quote" element={<RequestQuotePage />} />
+            
+            {/* Lazy Loaded Public Pages with individual Suspense */}
+            <Route path="/about" element={<Suspense fallback={<LoadingFallback />}><AboutPage /></Suspense>} />
+            <Route path="/products" element={<Suspense fallback={<LoadingFallback />}><ProductsPage /></Suspense>} />
+            <Route path="/products/:categoryId" element={<Suspense fallback={<LoadingFallback />}><ProductsPage /></Suspense>} />
+            <Route path="/product/:productId" element={<Suspense fallback={<LoadingFallback />}><ProductDetailPage /></Suspense>} />
+            <Route path="/certification" element={<Suspense fallback={<LoadingFallback />}><CertificationPage /></Suspense>} />
+            <Route path="/contact" element={<Suspense fallback={<LoadingFallback />}><ContactPage /></Suspense>} />
+            <Route path="/request-quote" element={<Suspense fallback={<LoadingFallback />}><RequestQuotePage /></Suspense>} />
 
             {/* AUTHENTICATION */}
-            <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/admin/login" element={<Suspense fallback={<LoadingFallback />}><LoginPage /></Suspense>} />
 
             {/* ADMIN PROTECTED ROUTES */}
-            <Route path="/admin-portal" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/products" element={<ProtectedRoute allowedRole="admin"><ProductManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/categories" element={<ProtectedRoute allowedRole="admin"><CategoryManagement /></ProtectedRoute>} />
-            <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><InquiriesManagementPage /></ProtectedRoute>} />
+            <Route path="/admin-portal" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><AdminDashboard /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/products" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><ProductManagementPage /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/categories" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><CategoryManagement /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><InquiriesManagementPage /></Suspense></ProtectedRoute>} />
             
             <Route 
                 path="/admin/quick-enquiries" 
-                element={<ProtectedRoute allowedRole="admin"><QuickEnquiryManagement /></ProtectedRoute>} 
+                element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><QuickEnquiryManagement /></Suspense></ProtectedRoute>} 
             />
 
-            <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-            <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><AdminSalesPerformance /></ProtectedRoute>} />
-            <Route path="/admin/staff" element={<ProtectedRoute allowedRole="admin"><StaffManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/settings" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
+            <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><ReportsAnalytics /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><AdminSalesPerformance /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/staff" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><StaffManagementPage /></Suspense></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute allowedRole="admin"><Suspense fallback={<LoadingFallback />}><AdminSettings /></Suspense></ProtectedRoute>} />
 
             {/* SALESMAN PROTECTED ROUTES */}
-            <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />
-            <Route path="/salesman/profile" element={<ProtectedRoute allowedRole="salesman"><ProfileSettings /></ProtectedRoute>} />
+            <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><Suspense fallback={<LoadingFallback />}><SalesDashboard /></Suspense></ProtectedRoute>} />
+            <Route path="/salesman/profile" element={<ProtectedRoute allowedRole="salesman"><Suspense fallback={<LoadingFallback />}><ProfileSettings /></Suspense></ProtectedRoute>} />
 
             {/* CATCH-ALL REDIRECT */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Suspense>
       </AnimatePresence>
 
       {!isStaffArea && (

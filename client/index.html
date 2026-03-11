@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
- <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
+  
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://res.cloudinary.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Preload critical Poppins font -->
+  <link rel="preload" as="font" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDz8Z1xlFd2JQEk.woff2" type="font/woff2" crossorigin />
+
+  <!-- ⭐ CRITICAL: LCP Image Preload with Responsive Handling -->
+  <link 
+    rel="preload" 
+    as="image" 
+    href="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto,w_1200/v1771483790/Shadenet8_tl6o5n.webp"
+    imagesrcset="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto,w_600/v1771483790/Shadenet8_tl6o5n.webp 600w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto,w_1200/v1771483790/Shadenet8_tl6o5n.webp 1200w"
+    imagesizes="(max-width: 640px) 100vw, 1200px"
+    fetchpriority="high"
+  />
+
  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
  <link
  href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"

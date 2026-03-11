@@ -4,18 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LazyImage from '@/components/ui/LazyImage';
 import { getOptimizedCloudinaryUrl } from '@/utils/imageUtils';
 
-// Preload first slide instantly to improve LCP
-const firstSlideUrl = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet8_tl6o5n.webp';
-const optimizedFirstSlide = getOptimizedCloudinaryUrl(firstSlideUrl, 1200);
-
-if (typeof window !== 'undefined') {
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = 'image';
-  link.href = optimizedFirstSlide;
-  document.head.appendChild(link);
-}
-
+// Preload and constant static slide data
 const slides = [
   {
     id: 1,
