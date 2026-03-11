@@ -41,22 +41,6 @@ const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard'
 const ProfileSettings = React.lazy(() => import('./pages/salesman/ProfileSettings'));
 
 
-// --- 🛡️ Global Loading Page Component ---
-const GlobalLoadingPage = () => (
-  <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center">
-    <motion.div
-      animate={{ 
-        scale: [1, 1.1, 1],
-        rotate: [0, 180, 360] 
-      }}
-      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-      className="w-16 h-16 border-4 border-[#2E7D32] border-t-transparent rounded-full"
-    />
-    <p className="text-[#2E7D32] font-bold text-sm mt-6 uppercase tracking-[0.3em] animate-pulse">
-      Loading Page
-    </p>
-  </div>
-);
 
 // --- 🛡️ Protected Route Component ---
 const ProtectedRoute = ({ children, allowedRole }) => {
@@ -142,7 +126,6 @@ const AnimatedRoutes = ({ onOpenModal }) => {
 };
 
 function App() {
-  const [initialLoading, setInitialLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -165,10 +148,6 @@ function App() {
         }
       } catch (error) {
         console.error("❌ Database Connection Sync Failed:", error.message);
-      } finally {
-        setTimeout(() => {
-          setInitialLoading(false);
-        }, 300);
       }
     };
 
@@ -178,18 +157,12 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      {initialLoading ? (
-        <GlobalLoadingPage />
-      ) : (
-        <>
-          <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
-          <QuickEnquiryModal 
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
-          />
-          <Toaster />
-        </>
-      )}
+      <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
+      <QuickEnquiryModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
+      <Toaster />
     </Router>
   );
 }
