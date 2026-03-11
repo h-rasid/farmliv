@@ -39,12 +39,76 @@
   <style>
     /* Critical CSS to prevent white screen and layout shift */
     :root { --primary: #2E7D32; }
-    body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; background: #fff; }
+    body { 
+      margin: 0; 
+      font-family: 'Poppins', system-ui, sans-serif; 
+      background: #fff; 
+      overflow-x: hidden;
+    }
     #root { min-height: 100vh; }
-    /* Pre-style Header area */
-    header { height: 80px; background: rgba(255,255,255,0.8); }
-    /* Pre-style Hero area to match background */
-    .hero-placeholder { height: 85vh; background: #000; }
+    
+    /* Instant Loading Styles */
+    .initial-loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      z-index: 9999;
+      transition: opacity 0.4s ease-out;
+    }
+    
+    .spinner-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    
+    .spinner {
+      width: 100%;
+      height: 100%;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    .spinner-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+    
+    .brand-name {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    
+    .loading-text {
+      color: #9ca3af;
+      font-size: 11px;
+      font-weight: 500;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
   </style>
 
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -69,9 +133,15 @@
   </head>
   <body>
   <div id="root">
-    <!-- Static Skeleton for faster FCP -->
-    <header></header>
-    <div class="hero-placeholder"></div>
+    <!-- Instant Branding for Zero-Load UX -->
+    <div class="initial-loader" id="pre-loader">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <div class="spinner-dot"></div>
+      </div>
+      <div class="brand-name">Farmliv</div>
+      <div class="loading-text">Loading page</div>
+    </div>
   </div>
 
   <script type="module" src="/src/main.jsx"></script>
