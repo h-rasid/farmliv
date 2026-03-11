@@ -75,14 +75,14 @@ const AboutPage = () => {
                 duration: 0.6
               }}>
                   <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
-                  <p className="text-lg text-gray-700 mb-4 leading-relaxed">Welcome to Farmliv Industries, where we are redefining the landscape of modern farming through high-performance agricultural solutions. Our journey began with a singular focus: to bridge the gap between traditional farming practices and the demands of modern global agriculture.</p>
+                  <p className="text-lg text-gray-700 mb-4 leading-relaxed">Welcome to Farmliv Industries, where we are redefining the landscape of modern farming through high performance agricultural solutions. Our journey began with a singular focus: to bridge the gap between traditional farming practices and the demands of modern global agriculture.</p>
                   <p className="text-lg text-gray-700 mb-4 leading-relaxed">
                     The Seed of Innovation
                     <br />Rooted in Darrang, Assam, Farmliv Industries was founded on the principles of sustainability, durability, and efficiency. We recognized that for farmers to thrive in today’s competitive market, they need tools that protect their crops, manage resources like water effectively, and optimize yields. This realization led us to develop our premium range of products, from Weed Control Mats to Greenhouse Materials and Mulch & Films.
                   </p>
                   <p className="text-lg text-gray-700 leading-relaxed">
                     Engineered for Excellence
-                    <br />Our story is one of relentless engineering. Every product in the Farmliv catalog is a Certified Asset Node, meaning it has undergone rigorous quality checks to meet global standards like ISO 14001:2015, ISO 22000:2018, ISO 45001:2018, ISO 50001:2018. We don’t just sell products; we provide engineered solutions. Whether it's high GSM weed mats for effective soil suppression or durable shade nets for climate control, our technology is built to last.
+                    <br />Our story is one of relentless engineering. Every product in the Farmliv catalog is a Certified Products, meaning it has undergone rigorous quality checks to meet global standards like ISO 14001:2015, ISO 22000:2018, ISO 45001:2018, ISO 50001:2018. We don’t just sell products; we provide engineered solutions. Whether it's high GSM weed mats for effective soil suppression or durable shade nets for climate control, our technology is built to last.
                   </p>
                 </motion.div>
 
