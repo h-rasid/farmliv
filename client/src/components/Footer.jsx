@@ -14,7 +14,7 @@ const Footer = () => {
               </div>
               <span className="text-xl font-bold">Farmliv Industries</span>
             </div>
-            <p className="text-green-100 text-sm leading-relaxed">
+            <p className="text-zinc-100/90 text-sm leading-relaxed">
               Premium B2B agricultural solutions provider, committed to delivering quality products for modern farming.
             </p>
             <div className="flex gap-4 pt-2">
@@ -54,27 +54,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/about" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Products
                 </Link>
               </li>
               <li>
-                <Link to="/certification" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/certification" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Certification
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/contact" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Contact
                 </Link>
               </li>
@@ -82,10 +82,10 @@ const Footer = () => {
                 <Link 
                   to="/admin/login" 
                   onClick={() => window.scrollTo(0, 0)}
-                  className="flex items-center gap-2 text-green-200/60 hover:text-white transition-all group"
+                  className="flex items-center gap-2 text-white hover:text-white transition-all group"
                 >
-                  <Lock size={12} className="group-hover:scale-110 transition-transform" />
-                  <span className="text-[11px] font-black uppercase tracking-widest">
+                  <Lock size={12} className="group-hover:scale-110 transition-transform opacity-90" />
+                  <span className="text-[12px] font-black uppercase tracking-widest text-white">
                     Staff Portal
                   </span>
                 </Link>
@@ -98,22 +98,22 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Our Products</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/products/weed-control" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/weed-control" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Weed Control Mat
                 </Link>
               </li>
               <li>
-                <Link to="/products/shade-nets" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/shade-nets" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Shade Net
                 </Link>
               </li>
               <li>
-                <Link to="/products/irrigation-systems" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/irrigation-systems" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Drip Irrigation
                 </Link>
               </li>
               <li>
-                <Link to="/products/crop-protection" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/crop-protection" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">
                   Mulch Film
                 </Link>
               </li>
@@ -125,25 +125,25 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-80" />
-                <span className="text-green-100 text-sm sm:text-base">
+                <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-90" />
+                <span className="text-zinc-50 text-sm sm:text-base">
                   Farmliv Industries <br/>
                   1st Floar Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 flex-shrink-0 opacity-80" />
-                <a href="tel:+919181395595" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">+91 91813 95595</a>
+                <Phone className="w-5 h-5 flex-shrink-0 opacity-90" />
+                <a href="tel:+919181395595" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">+91 91813 95595</a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 flex-shrink-0 opacity-80" />
-                <a href="mailto:sales@farmliv.com" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">sales@farmliv.com</a>
+                <Mail className="w-5 h-5 flex-shrink-0 opacity-90" />
+                <a href="mailto:sales@farmliv.com" className="text-zinc-50 hover:text-white transition-colors py-1 block text-sm sm:text-base">sales@farmliv.com</a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/20 mt-12 pt-8 text-center text-green-100 text-sm">
+        <div className="border-t border-white/20 mt-12 pt-8 text-center text-zinc-100/80 text-sm">
           <p>&copy; {new Date().getFullYear()} Farmliv Industries. All rights reserved. | ISO 9001:2015 Certified</p>
         </div>
       </div>
