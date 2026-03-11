@@ -1,9 +1,8 @@
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect, memo } from 'react';
 import { Route, Routes, BrowserRouter as Router, useLocation, Navigate } from 'react-router-dom';
-import { Toaster } from './components/ui/toaster';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingFallback from './components/ui/LoadingFallback';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { API_BASE, API_URL } from '@/utils/config';
 
 // ⭐ Existing Components
@@ -11,11 +10,7 @@ import FloatingContactButtons from './components/FloatingContactButtons';
 import QuickEnquiryTab from './components/QuickEnquiryTab';
 import HomePage from './pages/HomePage';
 
-// ⭐ Modal for Popup behavior
-import QuickEnquiryModal from './components/QuickEnquiryModal';
-
 // --- Lazy Load Public Pages ---
-// HomePage is now statically imported for better performance
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
 const ProductsPage = React.lazy(() => import('./pages/ProductsPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
@@ -33,15 +28,15 @@ const InquiriesManagementPage = React.lazy(() => import('./pages/admin/Inquiries
 const AdminSalesPerformance = React.lazy(() => import('./pages/admin/AdminSalesPerformance'));
 const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const ReportsAnalytics = React.lazy(() => import('./pages/admin/ReportsAnalytics')); 
-
-// ⭐ NEW: Lazy Load Quick Enquiry Hub (Popup Data)
 const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnquiryManagement'));
 
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
 const ProfileSettings = React.lazy(() => import('./pages/salesman/ProfileSettings'));
 
-
+// --- Modal and secondary components ---
+const QuickEnquiryModal = React.lazy(() => import('./components/QuickEnquiryModal'));
+const Toaster = React.lazy(() => import('./components/ui/toaster').then(module => ({ default: module.Toaster })));
 
 // --- 🛡️ Protected Route Component ---
 const ProtectedRoute = ({ children, allowedRole }) => {
@@ -65,8 +60,8 @@ const ProtectedRoute = ({ children, allowedRole }) => {
   return children;
 };
 
-// ⭐ Updated: Trigger popup from any route/tab
-const AnimatedRoutes = ({ onOpenModal }) => {
+// ⭐ Optimized: No mode="wait" to prevent exit-delay on initial load/transitions
+const AnimatedRoutes = memo(({ onOpenModal }) => {
   const location = useLocation();
   const isStaffArea = location.pathname.startsWith('/admin') || 
                       location.pathname.startsWith('/salesman') || 
@@ -74,7 +69,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
   
   return (
     <>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
           <Routes location={location} key={location.pathname}>
             {/* PUBLIC ROUTES - HomePage is static and loads instantly */}
             <Route path="/" element={<HomePage />} />
@@ -124,7 +119,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
       )}
     </>
   );
-};
+});
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -159,11 +154,13 @@ function App() {
     <Router>
       <ScrollToTop />
       <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
-      <QuickEnquiryModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
-      <Toaster />
+      <Suspense fallback={null}>
+        <QuickEnquiryModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+        <Toaster />
+      </Suspense>
     </Router>
   );
 }

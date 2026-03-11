@@ -22,33 +22,58 @@
   />
 
  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
- <link
- href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
- rel="stylesheet"
- />
- <link rel="icon" type="image/x-icon" href="/favicon.ico" />
- <link
- rel="icon"
- type="image/png"
- href="https://res.cloudinary.com/dik8mlsie/image/upload/v1772023954/FARMLIV_-_1_-_Edited_vs802q.png"
- />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <meta
- name="description"
- content="Farmliv Industries Private Limited - Premium Agricultural Solutions"
- />
- <title>Farmliv Industries</title>
+<!-- Optimized Google Fonts: Non-blocking load -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </noscript>
 
- <base href="/" />
+  <style>
+    /* Critical CSS to prevent white screen and layout shift */
+    :root { --primary: #2E7D32; }
+    body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; background: #fff; }
+    #root { min-height: 100vh; }
+    /* Pre-style Header area */
+    header { height: 80px; background: rgba(255,255,255,0.8); }
+    /* Pre-style Hero area to match background */
+    .hero-placeholder { height: 85vh; background: #000; }
+  </style>
 
- <!-- Added: helps avoid caching issues after redeploys -->
- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
- <meta http-equiv="Pragma" content="no-cache" />
- <meta http-equiv="Expires" content="0" />
- </head>
- <body>
- <div id="root"></div>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link
+  rel="icon"
+  type="image/png"
+  href="https://res.cloudinary.com/dik8mlsie/image/upload/v1772023954/FARMLIV_-_1_-_Edited_vs802q.png"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+  name="description"
+  content="Farmliv Industries Private Limited - Premium Agricultural Solutions"
+  />
+  <title>Farmliv Industries</title>
 
- <script type="module" src="/src/main.jsx"></script>
- </body>
+  <base href="/" />
+
+  <!-- Added: helps avoid caching issues after redeploys -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  </head>
+  <body>
+  <div id="root">
+    <!-- Static Skeleton for faster FCP -->
+    <header></header>
+    <div class="hero-placeholder"></div>
+  </div>
+
+  <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import HeroCarousel from '@/components/HeroCarousel';
 import AboutSection from '@/components/AboutSection';
 import FeaturedCategories from '@/components/FeaturedCategories';
-import QuoteModal from '@/components/QuoteModal';
+const QuoteModal = React.lazy(() => import('@/components/QuoteModal'));
 
 const HomePage = () => {
   const location = useLocation();
@@ -37,10 +37,12 @@ const HomePage = () => {
 
         <Footer />
 
-        <QuoteModal 
-          isOpen={isQuoteModalOpen} 
-          onClose={() => setIsQuoteModalOpen(false)} 
-        />
+        <Suspense fallback={null}>
+          <QuoteModal 
+            isOpen={isQuoteModalOpen} 
+            onClose={() => setIsQuoteModalOpen(false)} 
+          />
+        </Suspense>
       </div>
     </>
   );
