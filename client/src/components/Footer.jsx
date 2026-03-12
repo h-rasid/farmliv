@@ -144,7 +144,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/20 mt-12 pt-8 text-center text-zinc-100/80 text-sm">
-          <p>&copy; {new Date().getFullYear()} Farmliv Industries. All rights reserved. | ISO 9001:2015 Certified</p>
+          <p>&copy; {new Date().getFullYear()} Farmliv Industries. All rights reserved. | ISO 9001:2015 Certified | <span className="opacity-50">v1.0.1</span></p>
         </div>
       </div>
     </footer>;
