@@ -127,14 +127,14 @@ app.get('/api/status', (req, res) => res.json({
   sync: true, 
   provider: "Hostinger/farmliv.in",
   server: "server2205",
-  version: "1.0.2-path-v102",
+  version: "1.0.3-path-v103",
   time: new Date().toISOString()
 }));
 
 app.get('/api/debug-assets', (req, res) => {
   try {
-    const frontendPath = path.resolve(__dirname, '..', 'client', 'dist_v102');
-    const altFrontendPath = path.resolve(__dirname, 'dist_v102'); 
+    const frontendPath = path.resolve(__dirname, '..', 'client', 'client_v103');
+    const altFrontendPath = path.resolve(__dirname, 'client_v103'); 
     const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
     
     const files = fs.existsSync(finalPath) ? fs.readdirSync(finalPath) : [];
@@ -521,8 +521,8 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 // --- 5. FRONTEND HOSTING LOGIC ---
-const frontendPath = path.resolve(__dirname, '..', 'client', 'dist_v102');
-const altFrontendPath = path.resolve(__dirname, 'dist_v102'); 
+const frontendPath = path.resolve(__dirname, '..', 'client', 'client_v103');
+const altFrontendPath = path.resolve(__dirname, 'client_v103'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
 // ⭐ Optimized: Disable aggressive maxAge to prevent stale assets

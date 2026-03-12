@@ -31,6 +31,6 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: 'dist_v102',
+    outDir: 'client_v103',
   }
 })
