@@ -125,6 +125,17 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    // ⭐ Global Listener: Force refresh on Chunk Load Errors (Caching issues)
+    const handleChunkError = (e) => {
+      const errorText = e.message || "";
+      if (errorText.includes("Loading chunk") || errorText.includes("Loading CSS chunk")) {
+        console.warn("🔄 Bundle version mismatch detected. Refreshing...");
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('error', handleChunkError, true);
+    
     const initializeApp = async () => {
       console.log(`Checking Connection to: ${API_URL}`);
       try {
@@ -148,6 +159,7 @@ function App() {
     };
 
     initializeApp();
+    return () => window.removeEventListener('error', handleChunkError, true);
   }, []);
 
   return (

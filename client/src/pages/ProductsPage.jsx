@@ -5,24 +5,22 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Package, Tag, ArrowRight, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import LazyImage from '@/components/ui/LazyImage';
+import { productCategories } from '@/data/products';
 
 const ProductsPage = () => {
+  const { categoryId } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        console.log(`Fetching products from: ${API_BASE}/api/products`);
         const response = await API.get('/products');
-        
-        // Backend se aane wale data ko handle karna (Array ensure karna)
         setProducts(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Data fetch error:", error);
@@ -31,12 +29,16 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-  }, [API_BASE]); // Added API_BASE as dependency
+  }, []);
 
-  const filteredProducts = products.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.category && p.category.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const currentCategory = categoryId ? productCategories.find(c => c.id === categoryId) : null;
+
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (p.category && p.category.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = categoryId ? p.category === categoryId : true;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -52,13 +54,17 @@ const ProductsPage = () => {
           
           <header className="mb-10 sm:mb-12">
             <nav className="text-[11px] sm:text-xs text-gray-400 mb-3 sm:mb-4 uppercase tracking-wider">
-              <Link to="/" className="hover:text-[#2E7D32] transition-colors">Home</Link> / <span className="text-[#2E7D32] font-semibold">Products</span>
+              <Link to="/" className="hover:text-[#2E7D32] transition-colors">Home</Link> / 
+              <Link to="/products" className={`mx-2 ${!categoryId ? 'text-[#2E7D32] font-semibold' : 'hover:text-[#2E7D32]'}`}>Products</Link>
+              {categoryId && (
+                <> / <span className="text-[#2E7D32] font-semibold">{currentCategory?.name || categoryId}</span></>
+              )}
             </nav>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1A1A1A] mb-3 sm:mb-4 font-['Playfair_Display'] leading-tight">
-              Our Products
+              {currentCategory ? currentCategory.name : 'Our Products'}
             </h1>
             <p className="text-sm sm:text-base text-gray-500 max-w-xl leading-relaxed">
-              Premium agricultural solutions engineered for modern farming efficiency and sustainable growth.
+              {currentCategory ? currentCategory.description : 'Premium agricultural solutions engineered for modern farming efficiency and sustainable growth.'}
             </p>
           </header>
 

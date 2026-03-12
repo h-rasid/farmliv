@@ -26,11 +26,15 @@ const LazyImage = ({ src, alt, className, priority = false }) => {
   }, []);
 
   const handleError = useCallback(() => {
+    console.warn("🖼️ Image load failed, using fallback:", src);
     setError(true);
-  }, []);
+  }, [src]);
 
   useEffect(() => {
-    if (priority) return;
+    if (priority) {
+      setIsInView(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
