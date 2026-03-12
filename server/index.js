@@ -495,15 +495,33 @@ const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
 const altFrontendPath = path.resolve(__dirname, 'dist'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
-app.use(express.static(finalPath, { maxAge: '7d' })); 
+// ⭐ Optimized: Disable aggressive maxAge to prevent stale assets
+app.use(express.static(finalPath, { 
+    maxAge: '1h', // Lowered from 7d to 1h
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, path) => {
+        // Force revalidation for the entry index.html if it's served via static (unlikely but safe)
+        if (path.endsWith('index.html')) {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+        }
+    }
+})); 
 
 app.use(/^\/api\/.*/, (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
+// ⭐ Critical: Disable Caching for SPA entry point
 app.get(/.*/, (req, res) => {
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
+    // Prevent browser from caching index.html so it always gets new JS/CSS hashes
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(indexPath);
   } else {
     res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
