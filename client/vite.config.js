@@ -31,7 +31,6 @@ export default defineConfig({
     }
   },
   build: {
-    // Build folder ka naam 'dist' hi rehne dein kyunki Hostinger ise asani se pehchanta hai
-    outDir: 'dist',
+    outDir: 'dist_v102',
   }
 })

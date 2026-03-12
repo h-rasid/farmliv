@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Force correct MIME types for JS modules
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+</IfModule>
+
+# Disable caching for index.html to ensure users always get the latest bundle references
+<FilesMatch "index\.html">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </IfModule>
+</FilesMatch>

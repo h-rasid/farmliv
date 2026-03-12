@@ -491,8 +491,8 @@ app.get('/sitemap.xml', (req, res) => {
 });
 
 // --- 5. FRONTEND HOSTING LOGIC ---
-const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
-const altFrontendPath = path.resolve(__dirname, 'dist'); 
+const frontendPath = path.resolve(__dirname, '..', 'client', 'dist_v102');
+const altFrontendPath = path.resolve(__dirname, 'dist_v102'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
 // ⭐ Optimized: Disable aggressive maxAge to prevent stale assets
