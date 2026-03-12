@@ -79,9 +79,18 @@ const transporter = nodemailer.createTransport({
         const connection = await pool.getConnection();
         console.log('✅ MySQL Connected Successfully to server2205!');
         console.log(`📡 Host: ${process.env.DB_HOST || 'localhost'} | DB: ${process.env.DB_NAME || 'u868538679_farmliv_data'}`);
+        
+        // Check if settings table exists
+        const [tables] = await connection.query("SHOW TABLES LIKE 'settings'");
+        if (tables.length === 0) {
+            console.error('❌ CRITICAL: "settings" table is MISSING from database!');
+        } else {
+            console.log('✅ "settings" table exists.');
+        }
+        
         connection.release();
     } catch (err) {
-        console.error('❌ MySQL Connection Error Detail:', err.message);
+        console.error('❌ MySQL Connection Error Detail:', err.code, err.message);
         console.log('💡 TIP: 1. Ensure DB user is added to the DB in Hostinger Panel.');
         console.log('💡 TIP: 2. Ensure "localhost" is used for host if running on the same server.');
     }
@@ -121,11 +130,26 @@ app.get('/api/status', (req, res) => res.json({
 }));
 
 app.get('/api/settings', async (req, res) => {
+  // Default fallback data to prevent crash
+  const fallbackSettings = {
+    whatsapp: "917002477367",
+    gstNumber: "N/A",
+    isMaintenance: 0,
+    facebook: "#",
+    instagram: "#"
+  };
+
   try {
     const [rows] = await pool.query('SELECT * FROM settings LIMIT 1');
-    return res.json(rows[0] || {});
+    if (rows.length === 0) {
+      console.warn('⚠️ No settings found in database. Using fallback.');
+      return res.json(fallbackSettings);
+    }
+    return res.json(rows[0]);
   } catch (err) {
-    return res.status(500).json({ error: "Settings fetch failed" });
+    console.error('❌ API Settings Error:', err.message);
+    // Return fallback instead of 500 to keep the site functional
+    return res.json(fallbackSettings);
   }
 });
 
