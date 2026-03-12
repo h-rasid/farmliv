@@ -126,8 +126,37 @@ app.get('/api/status', (req, res) => res.json({
   sync: true, 
   provider: "Hostinger/farmliv.in",
   server: "server2205",
+  version: "1.0.2-path-v102",
   time: new Date().toISOString()
 }));
+
+app.get('/api/debug-assets', (req, res) => {
+  try {
+    const frontendPath = path.resolve(__dirname, '..', 'client', 'dist_v102');
+    const altFrontendPath = path.resolve(__dirname, 'dist_v102'); 
+    const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
+    
+    const files = fs.existsSync(finalPath) ? fs.readdirSync(finalPath) : [];
+    const assetsPath = path.join(finalPath, 'assets');
+    const assetFiles = fs.existsSync(assetsPath) ? fs.readdirSync(assetsPath) : [];
+    
+    let indexContent = "";
+    const indexPath = path.join(finalPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      indexContent = fs.readFileSync(indexPath, 'utf8').substring(0, 500); // First 500 chars
+    }
+
+    res.json({
+      activePath: finalPath,
+      exists: fs.existsSync(finalPath),
+      files,
+      assetFiles,
+      indexSnippet: indexContent
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get('/api/settings', async (req, res) => {
   // Default fallback data to prevent crash
