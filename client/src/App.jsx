@@ -135,6 +135,7 @@ function App() {
     };
 
     window.addEventListener('error', handleChunkError, true);
+    console.log("🚀 Farmliv App v1.0.1 (Build: 2026-03-13 01:21)");
     
     const initializeApp = async () => {
       console.log(`Checking Connection to: ${API_URL}`);
