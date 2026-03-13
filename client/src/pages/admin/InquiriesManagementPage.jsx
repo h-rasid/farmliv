@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, User, Package, MoreVertical, Loader2, MessageCircle, 
   Eye, X, UserPlus, StickyNote, CheckCircle2, Clock, Send,
-  Trash2, FileDown, Filter, Building2, MapPin, Mail 
+  Trash2, FileDown, Filter, Building2, MapPin, Mail, Phone 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import jsPDF from 'jspdf';
