@@ -41,6 +41,19 @@ const LazyImage = ({ src, alt, className, priority = false }) => {
     return () => observer.disconnect();
   }, [priority]);
 
+  // ⭐ Helper to inject Cloudinary optimization parameters
+  const getOptimizedUrl = (url) => {
+    if (!url || typeof url !== 'string') return url;
+    if (url.includes('cloudinary.com') && url.includes('/upload/')) {
+      // Avoid double injection
+      if (url.includes('f_auto') || url.includes('q_auto')) return url;
+      return url.replace('/upload/', '/upload/f_auto,q_auto/');
+    }
+    return url;
+  };
+
+  const optimizedSrc = getOptimizedUrl(src);
+
   return (
     <div 
       ref={imgRef} 
@@ -66,8 +79,8 @@ const LazyImage = ({ src, alt, className, priority = false }) => {
       
       {isInView && (
         <img
-          key={src}
-          src={src}
+          key={optimizedSrc}
+          src={optimizedSrc}
           alt={alt}
           /* ⭐ 'eager' priority images ke liye, 'lazy' baaki ke liye */
           loading={priority ? 'eager' : 'lazy'}
