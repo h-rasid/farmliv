@@ -147,28 +147,38 @@ function App() {
 
   useEffect(() => {
     const initializeApp = async () => {
-      console.log(`Checking Connection to: ${API_URL}`);
+      console.log(`v1.0.4-prod - Checking Connection to: ${API_URL}`);
+      
+      // Create a promise that rejects after a timeout
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Connection timeout')), 4000)
+      );
+
       try {
-        const response = await fetch(`${API_URL}/settings`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        
-        const settings = await response.json();
-        console.log("✅ Database Settings Connected");
-        
-        if (settings && settings.favicon) {
-          const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
-          link.rel = 'icon';
-          link.href = settings.favicon.startsWith('http') 
-            ? settings.favicon 
-            : `${API_BASE}${settings.favicon}`;
-          document.getElementsByTagName('head')[0].appendChild(link);
+        // Race the fetch against the timeout
+        const response = await Promise.race([
+          fetch(`${API_URL}/settings`),
+          timeoutPromise
+        ]);
+
+        if (response && response.ok) {
+          const settings = await response.json();
+          console.log("✅ Database Settings Connected");
+          
+          if (settings && settings.favicon) {
+            const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+            link.rel = 'icon';
+            link.href = settings.favicon.startsWith('http') 
+              ? settings.favicon 
+              : `${API_BASE}${settings.favicon}`;
+            document.getElementsByTagName('head')[0].appendChild(link);
+          }
         }
       } catch (error) {
-        console.error("❌ Database Connection Sync Failed:", error.message);
+        console.warn("⚠️ Database Connection Sync Delayed or Failed:", error.message);
       } finally {
-        setTimeout(() => {
-          setInitialLoading(false);
-        }, 300);
+        // Force loader to disappear regardless of background success
+        setInitialLoading(false);
       }
     };
 
