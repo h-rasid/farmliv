@@ -119,6 +119,8 @@ app.get('/api/status', (req, res) => res.json({
   provider: "Hostinger/farmliv.in",
   server: "server2205",
   time: new Date().toISOString()
+}));
+
 app.get('/api/debug-db', async (req, res) => {
   try {
     const [rows] = await pool.query('SHOW TABLES');
