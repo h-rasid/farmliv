@@ -51,7 +51,7 @@ const InquiriesManagementPage = () => {
 
   const exportToPDF = () => {
     const doc = new jsPDF();
-    doc.text("Farmliv Pro - Lead Inquiry Report", 14, 15);
+    doc.text("Farmliv - Lead Inquiry Report", 14, 15);
     const tableData = filteredLeads.map(l => [
       l.id, l.customer_name, l.company || 'N/A', l.phone, l.location || 'N/A', l.status
     ]);
@@ -67,7 +67,7 @@ const InquiriesManagementPage = () => {
   const handleWhatsApp = (phone, name) => {
     const cleanPhone = phone.replace(/\D/g, '');
     const finalPhone = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
-    const message = `Namaste ${name}, Farmliv Pro se hum aapki inquiry ke silsile mein sampark kar rahe hain.`;
+    const message = `Namaste ${name}, Farmliv se hum aapki inquiry ke silsile mein sampark kar rahe hain.`;
     window.open(`https://wa.me/${finalPhone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 

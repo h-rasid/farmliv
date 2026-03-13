@@ -138,7 +138,7 @@ const QuoteForm = () => {
     doc.setFontSize(8);
     doc.setTextColor(150);
     doc.setFont("helvetica", "italic");
-    doc.text("This document acknowledges your quote request in the Farmliv Enterprise Node. A formal commercial proposal will be sent within 24 hours.", 105, finalY, { align: 'center', maxWidth: 160 });
+    doc.text("This document acknowledges your quote request in the Farmliv Admin Portal. A formal commercial proposal will be sent within 24 hours.", 105, finalY, { align: 'center', maxWidth: 160 });
 
     doc.save(`Farmliv_Quote_${data.fullName.replace(/\s+/g, '_')}.pdf`);
   };

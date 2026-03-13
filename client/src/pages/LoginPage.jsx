@@ -68,9 +68,9 @@ const LoginPage = () => {
         
         {/* Elite Branding */}
         <div className="text-center mb-10 relative z-10">
-          <div className="text-3xl font-black text-[#2E7D32] tracking-tighter mb-2 italic uppercase">FARMLIV <span className="text-gray-900">PRO</span></div>
+          <div className="text-3xl font-black text-[#2E7D32] tracking-tighter mb-2 italic uppercase">FARMLIV</div>
           <div className="flex items-center justify-center gap-2 text-gray-400 text-[9px] font-black uppercase tracking-[0.3em]">
-            <ShieldCheck className="w-3 h-3 text-[#2E7D32]" /> Secure Enterprise Node
+            <ShieldCheck className="w-3 h-3 text-[#2E7D32]" /> Secure Admin Portal
           </div>
         </div>
 

@@ -62,7 +62,7 @@ const QuickEnquiryManagement = () => {
       <div className="max-w-[1450px] mx-auto p-10 space-y-8 font-sans">
         <header className="border-b border-gray-100 pb-8">
           <h1 className="text-3xl font-black italic uppercase tracking-tighter text-gray-900">Inquiry Hub</h1>
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1">Industrial Popup Leads Synchronization</p>
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1">Admin Portal Sync</p>
         </header>
 
         {loading ? (

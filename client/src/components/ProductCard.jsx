@@ -71,7 +71,7 @@ const ProductCard = ({ product }) => {
           </h3>
           
           <p className="text-gray-500 text-sm mb-6 line-clamp-2 leading-relaxed flex-grow">
-            {product?.description || 'Premium agricultural solution provided by Farmliv Industries.'}
+            {product?.description || 'Premium agricultural solution provided by Farmliv.'}
           </p>
           
           <div className="space-y-4 mt-auto">

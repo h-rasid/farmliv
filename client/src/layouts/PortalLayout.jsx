@@ -50,9 +50,9 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           <div className="mb-16">
             <Link to={dashboardPath} className="flex flex-col group">
               <span className="text-3xl font-black italic tracking-tighter text-gray-900 uppercase group-hover:text-farmliv-green transition-colors">
-                Farmliv <span className="text-farmliv-green">Pro</span>
+                Farmliv
               </span>
-              <span className="text-[8px] font-black text-gray-300 uppercase tracking-[0.6em] mt-1 ml-1">Enterprise Node</span>
+              <span className="text-[8px] font-black text-gray-300 uppercase tracking-[0.6em] mt-1 ml-1">Admin Portal</span>
             </Link>
           </div>
 
