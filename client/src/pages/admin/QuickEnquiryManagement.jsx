@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 import PortalLayout from '../../layouts/PortalLayout';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, Building2, Trash2, 
-  MessageSquare, Loader2, UserPlus 
+  MessageSquare, Loader2, UserPlus, X 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
