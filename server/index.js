@@ -608,6 +608,15 @@ app.get('/api/quick-enquiries', async (req, res) => {
   }
 });
 
+app.get('/api/quick-enquiries/salesman/:id', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM quick_enquiries WHERE assigned_to = ? ORDER BY created_at DESC', [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Salesman enquiries retrieval failed" });
+  }
+});
+
 app.post('/api/quick-enquiries', async (req, res) => {
   const { representative_identity, primary_contact_hub, email_node, enterprise_entity, deployment_location, additional_protocols } = req.body;
   try {

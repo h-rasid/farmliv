@@ -37,6 +37,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     return [
       { id: 'dashboard', name: 'Field Hub', icon: LayoutDashboard, path: '/salesman-portal' },
       { id: 'leads', name: 'My Leads', icon: Target, path: '/salesman/leads' },
+      { id: 'enquiries', name: 'Quick Enquiries', icon: Zap, path: '/salesman/enquiries' },
       { id: 'customers', name: 'My Network', icon: Users, path: '/salesman/customers' },
       { id: 'new-order', name: 'New Transaction', icon: ShoppingCart, path: '/salesman/new-order' },
       { id: 'payments', name: 'Collection Hub', icon: CreditCard, path: '/salesman/payments' },

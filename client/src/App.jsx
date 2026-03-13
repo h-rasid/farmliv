@@ -42,6 +42,7 @@ const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnqui
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
 const SalesLeadsPage = React.lazy(() => import('./pages/salesman/SalesLeadsPage'));
+const SalesEnquiriesPage = React.lazy(() => import('./pages/salesman/SalesEnquiriesPage'));
 const SalesCustomersPage = React.lazy(() => import('./pages/salesman/SalesCustomersPage'));
 const ProductCatalog = React.lazy(() => import('./pages/salesman/ProductCatalog'));
 const SalesOrderCreation = React.lazy(() => import('./pages/salesman/SalesOrderCreation'));
@@ -147,6 +148,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             {/* SALESMAN PROTECTED ROUTES */}
             <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />
             <Route path="/salesman/leads" element={<ProtectedRoute allowedRole="salesman"><SalesLeadsPage /></ProtectedRoute>} />
+            <Route path="/salesman/enquiries" element={<ProtectedRoute allowedRole="salesman"><SalesEnquiriesPage /></ProtectedRoute>} />
             <Route path="/salesman/customers" element={<ProtectedRoute allowedRole="salesman"><SalesCustomersPage /></ProtectedRoute>} />
             <Route path="/salesman/catalog" element={<ProtectedRoute allowedRole="salesman"><ProductCatalog /></ProtectedRoute>} />
             <Route path="/salesman/new-order" element={<ProtectedRoute allowedRole="salesman"><SalesOrderCreation /></ProtectedRoute>} />

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   ShoppingBag, IndianRupee, Users, Target, 
   TrendingUp, Activity, PlusCircle, CheckCircle2,
-  ChevronRight, Calendar, Star, Zap
+  ChevronRight, Calendar, Star, Zap as ZapIcon, Zap
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -124,6 +124,16 @@ const SalesDashboard = () => {
         <section className="space-y-4">
           <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Quick Commands</h3>
           <div className="grid grid-cols-1 gap-2">
+             <button 
+                onClick={() => navigate('/salesman/enquiries')}
+                className="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl group active:bg-slate-50 transition-all"
+             >
+                <div className="flex items-center gap-4">
+                   <div className="p-2 bg-amber-50 text-amber-600 rounded-xl"><Zap size={18}/></div>
+                   <span className="text-xs font-black uppercase tracking-widest text-slate-900">B2B Quick Enquiries</span>
+                </div>
+                <ChevronRight size={16} className="text-slate-300 group-hover:text-amber-500" />
+             </button>
              <button 
                 onClick={() => navigate('/salesman/new-order')}
                 className="flex items-center justify-between p-5 bg-white border border-slate-100 rounded-3xl group active:bg-slate-50 transition-all"
