@@ -492,12 +492,12 @@ app.use(express.static(finalPath, {
   }
 })); 
 
-app.use('/api/*', (req, res) => {
+app.use('/api/{*path}', (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
 // React app catch-all route
-app.get('*', (req, res) => {
+app.get('{*path}', (req, res) => {
   // If request contains a dot (like .js, .css, .png) but isn't HTML, return 404
   if (req.path.includes('.') && 
       !req.path.endsWith('.html') && 
