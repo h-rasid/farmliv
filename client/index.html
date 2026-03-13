@@ -26,6 +26,18 @@
  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
  <meta http-equiv="Pragma" content="no-cache" />
  <meta http-equiv="Expires" content="0" />
+
+ <!-- Self-healing script for cached index.html stuck with old bundle references -->
+ <script>
+   window.addEventListener('error', function(e) {
+     if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK' || (e.message && e.message.includes('module script'))) {
+       if (window.location.search.indexOf('clear_cache=') === -1) {
+         console.warn('Farmliv: Failed to load critical assets. Caching issue detected! Forcing hard reload...');
+         window.location.replace(window.location.pathname + '?clear_cache=' + new Date().getTime());
+       }
+     }
+   }, true);
+ </script>
  </head>
  <body>
  <div id="root"></div>
