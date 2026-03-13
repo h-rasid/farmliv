@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   ShoppingBag, IndianRupee, Users, Target, 
   TrendingUp, Activity, PlusCircle, CheckCircle2,
-  ChevronRight, Calendar, Star, Zap as ZapIcon, Zap
+  ChevronRight, Calendar, Star, Zap
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
