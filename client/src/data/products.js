@@ -10,9 +10,10 @@ export const productCategories = [
     id: 'weed-control',
     name: 'Weed Control',
     icon: Sprout,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771484140/weed_mat1_xc5uls.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773240650/weedmat1_meffjq.webp',
     description: 'High-quality weed mats for effective suppression and soil health.'
   },
+  /* 
   {
     id: 'shade-protection',
     name: 'Shade & Protection',
@@ -20,53 +21,54 @@ export const productCategories = [
     image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299621/ShadeandProtection_htkgxy.png',
     description: 'Durable shade nets for crop protection and climate control.'
   },
+  */
   {
     id: 'mulch-films',
     name: 'Mulch & Films',
     icon: Scroll,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299363/mulchandFilm_yefobo.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237863/mulchandFilm_kqnw5o.webp',
     description: 'Agricultural films for moisture retention and weed prevention.'
   },
   {
     id: 'greenhouse-materials',
     name: 'Greenhouse Materials',
     icon: Home,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299362/Greenhouse_euxlv4.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237866/Greenhouse_vslztl.webp',
     description: 'Poly films and covers for greenhouse construction.'
   },
   {
     id: 'water-management',
     name: 'Water Management',
     icon: CloudRain,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299352/watermanagement_nu7lep.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/watermanagement_vug6eb.webp',
     description: 'Pond liners and waterproofing solutions for agriculture.'
   },
   {
     id: 'harvesting-storage',
     name: 'Harvesting & Storage',
     icon: Box,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299353/harvesting_mgc5fn.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237871/harvesting_c7ptuh.webp',
     description: 'Plastic crates and containers for produce handling.'
   },
   {
     id: 'packaging',
     name: 'Packaging Solutions',
     icon: ShoppingBag,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299359/packaging_dmpnc2.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/packaging_qehuu0.webp',
     description: 'Leno bags, Jumbo bags, and Membrane bags for transport.'
   },
   {
     id: 'protective-covers',
     name: 'Protective Covers',
     icon: Layers,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299362/Protectivecovers_jygspo.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/Protectivecovers_nim7h7.webp',
     description: 'Heavy-duty tarpaulins for all-weather protection.'
   },
   {
     id: 'irrigation-systems',
     name: 'Irrigation Systems',
     icon: Droplets,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1772299359/irrigation_ai4juh.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237863/irrigation_z934rg.webp',
     description: 'Efficient drip irrigation pipes and fittings.'
   }
 ];
