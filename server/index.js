@@ -922,9 +922,7 @@ app.use(express.static(finalPath, {
   }
 })); 
 
-app.use('/api/{*path}', (req, res) => {
-  res.status(404).json({ error: "API route not found" });
-});
+
 
 // React app catch-all route
 app.get('{*path}', (req, res) => {
@@ -1135,6 +1133,11 @@ app.put('/api/tasks/:id/status', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: "Task update refusal" });
   }
+});
+
+// API 404 Catch-all (Must be after all API routes)
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: "API route not found" });
 });
 
 const PORT = process.env.PORT || 5000;
