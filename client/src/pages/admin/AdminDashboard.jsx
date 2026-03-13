@@ -8,7 +8,7 @@ import {
   Truck, AlertCircle, TrendingUp, History, 
   Plus, Trash2, Globe, Activity, Layers, BarChart3,
   Bell, X, MessageSquare, Phone, Building2, MapPin, Mail, ExternalLink,
-  ChevronUp, ChevronDown, Monitor, Smartphone
+  ChevronUp, ChevronDown, Monitor, Smartphone, Package, Users, ShoppingCart, CheckCircle2, ChevronRight
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -52,129 +52,84 @@ const AdminDashboard = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, colorClass, trend = "" }) => (
-    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-lg">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-3 rounded-2xl ${colorClass}`}><Icon size={20} /></div>
-        {trend && <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg">+{trend}%</span>}
+    <motion.div 
+      whileHover={{ y: -5, scale: 1.02 }} 
+      className="bg-white rounded-[2rem] p-5 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-xl group overflow-hidden relative"
+    >
+      <div className="flex justify-between items-start mb-6 relative z-10">
+        <div className={`p-4 rounded-2xl ${colorClass} group-hover:scale-110 transition-transform`}>
+          <Icon size={18} />
+        </div>
+        {trend && (
+           <div className="flex flex-col items-end">
+               <span className="text-[9px] font-black text-[#2E7D32] bg-green-50 px-2 py-1 rounded-lg">+{trend}%</span>
+               <div className="w-12 h-1 bg-green-100 rounded-full mt-2 overflow-hidden">
+                  <div className="h-full bg-[#2E7D32] rounded-full" style={{ width: `${trend}%` }} />
+               </div>
+           </div>
+        )}
       </div>
-      <div>
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{title}</p>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tighter leading-none">
+      <div className="relative z-10">
+        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{title}</p>
+        <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none mb-1">
           {title.includes('Revenue') && '₹'}{typeof value === 'number' ? value.toLocaleString() : value}
           {title.includes('Rate') && '%'}
         </h2>
       </div>
+      
+      {/* Decorative Burst */}
+      <div className={`absolute -bottom-6 -right-6 w-20 h-20 rounded-full blur-3xl opacity-20 ${colorClass.split(' ')[0]}`} />
     </motion.div>
   );
 
   return (
     <PortalLayout role="admin">
-      <div className="max-w-[1450px] mx-auto p-6 md:p-10 space-y-8 font-sans text-slate-900 min-h-screen flex flex-col">
+      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-slate-100">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 italic">Farmliv Console</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">B2B Agri Management Active</p>
-          </div>
-
-          <div className="flex items-center gap-4 ml-auto">
-            <nav className="flex bg-slate-50 p-1 rounded-xl border border-slate-100">
-              {['overview', 'products', 'leads'].map((id) => (
-                <button key={id} onClick={() => setActiveTab(id)} 
-                  className={`px-5 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === id ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
-                  {id}
-                </button>
-              ))}
-            </nav>
-
-            <div className="relative">
-              <button 
-                onClick={() => setShowNotifPanel(!showNotifPanel)}
-                className={`p-2.5 rounded-xl transition-all border shadow-sm relative group ${notifications.length > 0 ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-slate-50 border-slate-100 text-slate-400'}`}
-              >
-                <Bell size={20} className={notifications.length > 0 ? 'animate-bounce' : ''} />
-                {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white">
-                    {notifications.length}
-                  </span>
-                )}
-              </button>
-
-              <AnimatePresence>
-                {showNotifPanel && (
-                  <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute right-0 mt-4 w-80 bg-white shadow-2xl rounded-[2rem] border border-slate-100 overflow-hidden z-50">
-                    <div className="p-5 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                      <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-900">Intelligence Alerts</h4>
-                      <button onClick={() => setShowNotifPanel(false)} className="text-slate-400 hover:text-slate-900"><X size={16}/></button>
-                    </div>
-                    <div className="max-h-[400px] overflow-y-auto">
-                      {notifications.length > 0 ? (
-                        notifications.map((n) => (
-                          <div 
-                            key={n.id} 
-                            onClick={() => handleNotifClick(n.id)}
-                            className="p-5 border-b border-slate-50 hover:bg-emerald-50 transition-colors cursor-pointer group relative overflow-hidden"
-                          >
-                            <div className="flex gap-4">
-                               <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg h-fit"><MessageSquare size={14}/></div>
-                               <div>
-                                  <p className="text-xs font-bold text-slate-900 mb-1 group-hover:text-emerald-700">{n.title}</p>
-                                  <p className="text-[10px] text-slate-500 leading-relaxed mb-2">{n.desc}</p>
-                                  <span className="text-[9px] font-black text-emerald-500 uppercase tracking-tighter">{n.time}</span>
-                               </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="p-10 text-center">
-                            <Activity size={30} className="mx-auto text-slate-200 mb-2" />
-                            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No Unread Alerts</p>
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            {/* ⭐ Header logout button has been removed */}
-          </div>
-        </header>
-
+        {/* HIGH DENSITY 8-POINT MATRIX */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-4">
+          <StatCard title="Total Products" value={stats.totalProducts} icon={Package} colorClass="bg-blue-50 text-blue-600" />
+          <StatCard title="Total Categories" value={stats.totalCategories} icon={Layers} colorClass="bg-indigo-50 text-indigo-600" />
+          <StatCard title="Total Inquiries" value={stats.totalInquiries} icon={MessageSquare} colorClass="bg-purple-50 text-purple-600" />
+          <StatCard title="Total Customers" value={stats.totalCustomers} icon={Users} colorClass="bg-orange-50 text-orange-600" />
+          
+          <StatCard title="Total Orders" value={stats.totalOrders} icon={ShoppingBag} colorClass="bg-green-50 text-[#2E7D32]" />
+          <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-[#2E7D32]" trend="24" />
+          <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" trend="15" />
+          <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" trend="8.5" />
+        </div>
+              
+        {/* OVERVIEW CONTENT GRID */}
         <AnimatePresence mode="wait">
           {activeTab === 'overview' && (
-            <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8 flex-1">
-              {/* 8-STAT ENTERPRISE MATRIX */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Total Products" value={stats.totalProducts} icon={Package} colorClass="bg-blue-50 text-blue-600" trend="12" />
-                <StatCard title="Total Categories" value={stats.totalCategories} icon={Layers} colorClass="bg-indigo-50 text-indigo-600" />
-                <StatCard title="Total Inquiries" value={stats.totalInquiries} icon={MessageSquare} colorClass="bg-purple-50 text-purple-600" trend="8" />
-                <StatCard title="Total Customers" value={stats.totalCustomers} icon={Users} colorClass="bg-orange-50 text-orange-600" trend="15" />
-                
-                <StatCard title="Total Orders" value={stats.totalOrders} icon={ShoppingBag} colorClass="bg-emerald-50 text-emerald-600" />
-                <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-green-600" trend="24" />
-                <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" />
-                <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" />
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* 1. WEEKLY REVENUE CHART */}
-                <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[450px] flex flex-col">
+            <motion.div 
+              key="overview"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              className="space-y-8"
+            >
+              {/* VITAL PERFORMANCE FLOWS */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* 1. WEEKLY SALES FLOW */}
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[400px] flex flex-col">
+                  {/* ... same as before, just fixed nesting ... */}
                   <div className="flex justify-between items-center mb-8">
                     <div>
-                      <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Weekly Revenue Flow</h3>
+                      <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Weekly Sales Flow</h3>
                       <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Performance Synchronization: Active</p>
                     </div>
                     <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Real-time Feed</span>
+                      <TrendingUp size={14} className="text-emerald-500" />
+                      <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">1us Lag</span>
                     </div>
                   </div>
-                  <div className="flex-1 w-full min-h-[350px]">
+                  <div className="flex-1 w-full min-h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart data={chartData.weeklySales}>
                         <defs>
-                          <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.15}/>
+                          <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
                             <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                           </linearGradient>
                         </defs>
@@ -184,56 +139,145 @@ const AdminDashboard = () => {
                         <Tooltip 
                           contentStyle={{borderRadius: '20px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', fontSize: '10px', fontWeight: 900}} 
                         />
-                        <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={4} fillOpacity={1} fill="url(#colorRev)" />
+                        <Area type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={4} fillOpacity={1} fill="url(#colorSales)" />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
 
-                {/* 2. TOP SELLING PRODUCTS & ACTIVITY */}
-                <div className="space-y-8 flex flex-col">
-                  {/* Market Dominance Card */}
-                  <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50 font-black uppercase tracking-widest text-[10px] text-slate-800 italic">
-                      <PieChart size={16} className="text-emerald-500" /> Market Dominance
-                    </div>
-                    <div className="space-y-6">
-                      {chartData.topProducts?.map((prod, idx) => (
-                        <div key={idx} className="flex justify-between items-center group">
-                          <div className="flex flex-col overflow-hidden">
-                            <span className="text-[10px] font-black text-slate-900 uppercase tracking-tight truncate w-32 group-hover:text-emerald-600 transition-colors">{prod.name}</span>
-                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{prod.sales_count} Sales</span>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-[11px] font-black text-slate-900">₹{prod.total_revenue?.toLocaleString()}</span>
-                          </div>
-                        </div>
-                      ))}
-                      {(!chartData.topProducts || chartData.topProducts.length === 0) && (
-                        <p className="text-[9px] text-slate-400 text-center py-10 uppercase tracking-widest">Awaiting Transaction Data</p>
-                      )}
+                {/* 2. MONTHLY REVENUE BAR CHART */}
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[400px] flex flex-col">
+                  <div className="flex justify-between items-center mb-8">
+                    <div>
+                      <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Monthly Revenue</h3>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Fiscal Node Aggregation</p>
                     </div>
                   </div>
+                  <div className="flex-1 w-full min-h-[300px] flex items-end gap-2 px-4">
+                     {[45, 30, 60, 40, 80, 55, 90, 70, 100, 85, 95].map((val, i) => (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
+                           <div className="w-full bg-slate-50 rounded-full relative overflow-hidden" style={{ height: `${val}%` }}>
+                              <motion.div 
+                                initial={{ height: 0 }}
+                                animate={{ height: '100%' }}
+                                className={`w-full absolute bottom-0 transition-colors ${i === 8 ? 'bg-[#3B82F6]' : 'bg-[#10B981]'}`}
+                              />
+                           </div>
+                           <span className="text-[8px] font-black text-slate-300 uppercase">{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'][i]}</span>
+                        </div>
+                     ))}
+                  </div>
+                </div>
+              </div>
 
-                  {/* Enhanced Activity Feed */}
-                  <div className="bg-[#1A1A1A] text-white p-8 rounded-[2.5rem] shadow-2xl flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5 font-black uppercase tracking-widest text-[10px] italic">
-                      <Activity size={16} className="text-emerald-400" /> Enterprise Logs
-                    </div>
-                    <div className="space-y-6 overflow-y-auto max-h-[220px] pr-2 custom-scrollbar">
-                      {activities.map((act, idx) => (
-                        <div key={idx} className="flex items-start gap-4 group">
-                          <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/20 transition-all">
-                            <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                          </div>
-                          <div className="flex flex-col">
-                            <p className="text-[11px] font-bold text-white leading-tight mb-1">{act.action}</p>
-                            <p className="text-[8px] text-white/40 uppercase font-black tracking-widest italic">{act.user} • {act.time}</p>
-                          </div>
+              {/* SECONDARY ANALYTICS MATRIX */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
+                   <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50 font-black uppercase tracking-widest text-[10px] text-slate-800 italic">
+                      <Target size={16} className="text-[#2E7D32]" /> Inquiry Funnel
+                   </div>
+                   <div className="space-y-2">
+                      {[
+                        { label: 'New Leads', count: 320, color: 'bg-[#134E4A]', w: 'w-full' },
+                        { label: 'Contacted', count: 180, color: 'bg-[#3B82F6]', w: 'w-4/5' },
+                        { label: 'Negotiation', count: 95, color: 'bg-[#818CF8]', w: 'w-3/5' },
+                        { label: 'Converted', count: 50, color: 'bg-[#F59E0B]', w: 'w-2/5' }
+                      ].map((step, i) => (
+                        <div key={i} className="flex items-center gap-4 group">
+                           <div className={`${step.w} h-12 ${step.color} rounded-xl flex items-center justify-between px-6 text-white transition-all group-hover:scale-[1.02] shadow-sm`}>
+                              <span className="text-[10px] font-black uppercase italic tracking-widest">{step.label}</span>
+                              <span className="text-xs font-black">{step.count}</span>
+                           </div>
                         </div>
                       ))}
-                    </div>
-                  </div>
+                   </div>
+                </div>
+
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+                   <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-50">
+                      <span className="font-black uppercase tracking-widest text-[10px] text-slate-800 italic flex items-center gap-3">
+                         <ShoppingBag size={16} className="text-emerald-500" /> Top Selling Products
+                      </span>
+                   </div>
+                   <div className="space-y-6">
+                      {[
+                        { name: 'Hybrid Seeds', icon: '🌱' },
+                        { name: 'Organic Fertilizer', icon: '📦' },
+                        { name: 'Drip Irrigation Kits', icon: '🚜' },
+                        { name: 'Tractor Parts', icon: '⚙️' }
+                      ].map((item, i) => (
+                        <div key={i} className="flex justify-between items-center group cursor-pointer">
+                           <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 bg-slate-50 rounded-2xl flex items-center justify-center text-lg">{item.icon}</div>
+                              <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2E7D32] transition-colors">{item.name}</span>
+                           </div>
+                           <ChevronRight size={14} className="text-slate-200 group-hover:text-[#2E7D32] transition-all group-hover:translate-x-1" />
+                        </div>
+                      ))}
+                   </div>
+                </div>
+
+                <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
+                   <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-50">
+                      <span className="font-black uppercase tracking-widest text-[10px] text-slate-800 italic flex items-center gap-3">
+                         <Activity size={16} className="text-emerald-500" /> Recent Activity
+                      </span>
+                   </div>
+                   <div className="space-y-4">
+                       {[
+                        { type: 'order', text: 'Order #1540 Completed', time: '2m ago', icon: History, color: 'text-[#2E7D32]', bg: 'bg-green-50' },
+                        { type: 'lead', text: 'New Customer Added', time: '15m ago', icon: Target, color: 'text-blue-500', bg: 'bg-blue-50' },
+                        { type: 'stock', text: 'Low Stock Alert', time: '1h ago', icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50' },
+                        { type: 'payment', text: 'Payment Received', time: '3h ago', icon: IndianRupee, color: 'text-[#2E7D32]', bg: 'bg-green-50' }
+                      ].map((act, i) => (
+                        <div key={i} className="flex items-start gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
+                           <div className={`p-2 rounded-xl ${act.bg} ${act.color}`}><act.icon size={14} /></div>
+                           <div className="flex flex-col">
+                              <span className="text-[10px] font-bold text-slate-900">{act.text}</span>
+                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{act.time}</span>
+                           </div>
+                        </div>
+                      ))}
+                   </div>
+                </div>
+              </div>
+
+              {/* LATEST TRANSACTIONS */}
+              <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div className="p-8 border-b border-slate-50 flex justify-between items-center">
+                   <h3 className="font-black uppercase tracking-widest text-[10px] text-slate-800 italic flex items-center gap-3">
+                      <ShoppingBag size={16} className="text-emerald-500" /> Latest Orders
+                   </h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="bg-slate-50/50 text-[9px] font-black uppercase text-slate-400 tracking-widest">
+                        <th className="px-10 py-6">Order ID</th>
+                        <th className="px-10 py-6">Customer</th>
+                        <th className="px-10 py-6">Status</th>
+                        <th className="px-10 py-6 text-right">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                      {[
+                        { id: '#10458', customer: 'Emily Clark', status: 'Pending', color: 'bg-amber-50 text-amber-600' },
+                        { id: '#10457', customer: 'Green Farms', status: 'Completed', color: 'bg-emerald-50 text-emerald-600' },
+                        { id: '#10456', customer: 'Rahul Sharma', status: 'Shipped', color: 'bg-blue-50 text-blue-600' }
+                      ].map((order, i) => (
+                        <tr key={i} className="hover:bg-slate-50/50 transition-colors group">
+                          <td className="px-10 py-6 text-[11px] font-black text-slate-900">{order.id}</td>
+                          <td className="px-10 py-6 text-[11px] font-bold text-slate-600 uppercase italic transition-colors group-hover:text-emerald-600">{order.customer}</td>
+                          <td className="px-10 py-6">
+                            <span className={`px-4 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${order.color}`}>
+                              {order.status}
+                            </span>
+                          </td>
+                          <td className="px-10 py-6 text-right text-[11px] font-black text-slate-900">₹1,250</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </motion.div>
@@ -241,8 +285,41 @@ const AdminDashboard = () => {
 
           {activeTab === 'products' && (
             <motion.div key="products" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex-1">
-              <div className="flex justify-between items-center mb-8"><h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Asset Matrix</h3><button onClick={() => navigate('/admin/products')} className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-green-900/10"><Plus size={14} /> Full Inventory</button></div>
-              <div className="overflow-x-auto"><table className="w-full text-left border-collapse"><thead><tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest"><th className="py-4 px-2">Asset Identity</th><th className="py-4 px-2">Category</th><th className="py-4 px-2">Stock Threshold</th><th className="py-4 px-2 text-right">Unit Price</th></tr></thead><tbody className="divide-y divide-slate-50">{stats.productList?.map((prod) => (<tr key={prod.id} className="group hover:bg-slate-50 transition-colors text-xs"><td className="py-4 px-2 font-bold text-slate-800 uppercase tracking-tighter">{prod.name}</td><td className="py-4 px-2 text-[10px] font-black text-slate-400 uppercase">{prod.category}</td><td className="py-4 px-2"><span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${prod.stock <= 10 ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-600'}`}>{prod.stock} Units</span></td><td className="py-4 px-2 text-right font-bold text-slate-900 tracking-tight">₹{prod.price}</td></tr>))}</tbody></table></div>
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Asset Matrix</h3>
+                <button 
+                  onClick={() => navigate('/admin/products')} 
+                  className="flex items-center gap-2 px-6 py-3 bg-[#2E7D32] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#1B5E20] transition-all shadow-xl shadow-green-900/10"
+                >
+                  <Plus size={14} /> Full Inventory
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                      <th className="py-4 px-2">Asset Identity</th>
+                      <th className="py-4 px-2">Category</th>
+                      <th className="py-4 px-2">Stock Threshold</th>
+                      <th className="py-4 px-2 text-right">Unit Price</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    {stats.productList?.map((prod) => (
+                      <tr key={prod.id} className="group hover:bg-slate-50 transition-colors text-xs">
+                        <td className="py-4 px-2 font-bold text-slate-800 uppercase tracking-tighter">{prod.name}</td>
+                        <td className="py-4 px-2 text-[10px] font-black text-slate-400 uppercase">{prod.category}</td>
+                        <td className="py-4 px-2">
+                          <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${prod.stock <= 10 ? 'bg-red-50 text-red-500' : 'bg-green-50 text-[#2E7D32]'}`}>
+                            {prod.stock} Units
+                          </span>
+                        </td>
+                        <td className="py-4 px-2 text-right font-bold text-slate-900 tracking-tight">₹{prod.price}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </motion.div>
           )}
 
@@ -250,14 +327,14 @@ const AdminDashboard = () => {
             <motion.div key="leads" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex-1">
               <div className="flex justify-between items-center mb-10">
                 <h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Live Pipeline Synchronization</h3>
-                <button onClick={() => navigate('/admin/leads')} className="text-emerald-600 font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-2 hover:translate-x-1 transition-transform">Inquiry Hub <ExternalLink size={12}/></button>
+                <button onClick={() => navigate('/admin/leads')} className="text-[#2E7D32] font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-2 hover:translate-x-1 transition-transform">Inquiry Hub <ExternalLink size={12}/></button>
               </div>
               <div className="space-y-4">
                 {liveLeads.map((lead) => (
                   <motion.div 
                     key={lead.id} 
-                    animate={highlightedLeadId === lead.id ? { scale: 1.02, borderColor: '#10b981' } : { scale: 1, borderColor: '#f1f5f9' }}
-                    className={`flex flex-col lg:flex-row justify-between items-start lg:items-center p-6 bg-white border rounded-[2.5rem] transition-all duration-500 ${highlightedLeadId === lead.id ? 'ring-2 ring-emerald-400 ring-offset-2 shadow-2xl z-10' : 'hover:shadow-lg hover:border-emerald-100'}`}
+                    animate={highlightedLeadId === lead.id ? { scale: 1.02, borderColor: '#2E7D32' } : { scale: 1, borderColor: '#f1f5f9' }}
+                    className={`flex flex-col lg:flex-row justify-between items-start lg:items-center p-6 bg-white border rounded-[2.5rem] transition-all duration-500 ${highlightedLeadId === lead.id ? 'ring-2 ring-green-600/30 ring-offset-2 shadow-2xl z-10' : 'hover:shadow-lg hover:border-green-100'}`}
                   >
                     <div className="flex items-center gap-6">
                       <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
@@ -265,7 +342,7 @@ const AdminDashboard = () => {
                       </div>
                       <div className="flex flex-col text-left">
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
-                          Lead ID #{lead.id} {highlightedLeadId === lead.id && <span className="text-emerald-600 animate-pulse">● New Acquisition</span>}
+                          Lead ID #{lead.id} {highlightedLeadId === lead.id && <span className="text-[#2E7D32] animate-pulse">● New Acquisition</span>}
                         </span>
                         <h4 className="text-sm font-bold text-slate-900 uppercase tracking-tighter">{lead.customer_name}</h4>
                         <div className="flex items-center gap-4 mt-1 text-[10px] text-slate-500 font-black uppercase tracking-widest">
@@ -277,7 +354,7 @@ const AdminDashboard = () => {
 
                     <div className="flex flex-wrap items-center gap-3 mt-6 lg:mt-0 w-full lg:w-auto">
                       <div className="flex items-center gap-2 mr-4 border-r pr-4 border-slate-100 h-10">
-                         <a href={`https://wa.me/${lead.phone ? lead.phone.replace(/\D/g, '') : ""}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-[#2E7D32] hover:text-white transition-all shadow-sm"><MessageSquare size={16} /></a>
+                         <a href={`https://wa.me/${lead.phone ? lead.phone.replace(/\D/g, '') : ""}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-green-50 text-[#2E7D32] rounded-xl hover:bg-[#2E7D32] hover:text-white transition-all shadow-sm"><MessageSquare size={16} /></a>
                          <a href={`tel:${lead.phone}`} className="p-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"><Phone size={16} /></a>
                       </div>
 
@@ -286,7 +363,7 @@ const AdminDashboard = () => {
                         {staff.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                       </select>
                       
-                      <span className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border ${lead.status === 'Pending' ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}>● {lead.status}</span>
+                       <span className={`px-5 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border ${lead.status === 'Pending' ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-green-50 text-[#2E7D32] border-green-100'}`}>● {lead.status}</span>
                       <button onClick={() => handleDeleteLead(lead.id)} className="p-3 text-rose-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"><Trash2 size={18} /></button>
                     </div>
                   </motion.div>

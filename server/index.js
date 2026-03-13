@@ -87,6 +87,16 @@ const transporter = nodemailer.createTransport({
         
         // Ensure critical tables exist
         await connection.query(`
+          CREATE TABLE IF NOT EXISTS admins (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255) UNIQUE,
+            password VARCHAR(255),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
           CREATE TABLE IF NOT EXISTS settings (
             id INT AUTO_INCREMENT PRIMARY KEY,
             gstNumber VARCHAR(255),
@@ -101,6 +111,13 @@ const transporter = nodemailer.createTransport({
             favicon TEXT
           )
         `);
+
+        // Seed default admin if empty
+        const [adminExists] = await connection.query('SELECT COUNT(*) as count FROM admins');
+        if (adminExists[0].count === 0) {
+          console.log('👤 Seeding default administrative node...');
+          await connection.query('INSERT INTO admins (name, email, password) VALUES (?, ?, ?)', ['Farmliv Admin', 'admin@farmliv.com', 'admin123']);
+        }
 
         // Create activities table
         await connection.query(`
