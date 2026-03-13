@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '@/utils/axios';
-import { Loader2, Lock, Mail, Zap, HelpCircle } from 'lucide-react';
+import { Loader2, Lock, Mail, ShieldCheck, HelpCircle, Zap } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast'; 
 
 const SalesmanLogin = () => {
@@ -25,26 +25,26 @@ const SalesmanLogin = () => {
         const userRole = (user?.role || '').toLowerCase();
 
         if (userRole !== 'salesman') {
-          setError("IDENTITY MISMATCH: THIS HUB IS FOR SALES EXECUTIVES ONLY.");
+          setError("ADMIN IDENTITY DETECTED: PLEASE USE THE ADMIN PORTAL.");
           setLoading(false);
           return;
         }
 
         if (user?.status === 'inactive') {
-          setError("ACCOUNT DEACTIVATED. CONTACT FARMLIV HQ.");
+          setError("ACCOUNT DEACTIVATED: CONTACT FARMLIV ADMIN.");
           setLoading(false);
           return;
         }
 
         localStorage.setItem('farmliv_user', JSON.stringify(user));
         navigate('/salesman-portal');
-        toast({ title: "Intelligence Synced", description: `Welcome back, ${user.name}. Pipeline active.` });
+        toast({ title: "Authorized", description: `Authorized Connection established.` });
       }
     } catch (err) {
       if (err.response?.status === 404) {
-        setError("IDENTITY NOT FOUND IN SALES FORCE");
+        setError("IDENTITY NOT FOUND");
       } else {
-        setError("AUTHENTICATION PROTOCOL FAILED");
+        setError("AUTHENTICATION FAILED");
       }
     } finally {
       setLoading(false);
@@ -52,33 +52,32 @@ const SalesmanLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-6 font-sans">
-      <div className="w-full max-w-md bg-[#1E293B] rounded-[3rem] shadow-2xl p-10 border border-slate-700/50 relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6 font-sans">
+      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-8 sm:p-12 border border-gray-50 relative overflow-hidden">
         
-        {/* Sales Branding */}
-        <div className="text-center mb-12 relative z-10">
-          <div className="w-16 h-16 bg-emerald-600/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-600/30">
-            <Zap className="text-emerald-500" size={32} />
+        {/* Sales Branding - Premium White Theme */}
+        <div className="text-center mb-10 relative z-10">
+          <div className="text-3xl font-black text-[#2E7D32] tracking-tighter mb-2 italic uppercase">FARMLIV</div>
+          <div className="flex items-center justify-center gap-2 text-gray-400 text-[9px] font-black uppercase tracking-[0.3em]">
+            <Zap className="w-3 h-3 text-[#2E7D32]" /> Secure Salesman Portal
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter mb-2 italic uppercase">Sales <span className="text-emerald-500 text-5xl">Force</span></h1>
-          <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] mt-3">Farmliv Executive Hub</p>
         </div>
 
         {error && (
-          <div className="mb-8 p-6 bg-rose-500/10 text-rose-500 text-[10px] font-black rounded-3xl text-center uppercase tracking-widest border border-rose-500/20 animate-shake">
+          <div className="mb-6 p-5 bg-red-50 text-red-600 text-[9px] font-black rounded-2xl text-center uppercase tracking-widest border border-red-100">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-8 relative z-10 transition-all">
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase ml-5 tracking-[0.2em]">Identity Mail</label>
+        <form onSubmit={handleLogin} className="space-y-6 relative z-10">
+          <div className="space-y-1">
+            <label className="text-[10px] font-black text-gray-400 uppercase ml-4 tracking-widest leading-none">Identity Mail</label>
             <div className="relative">
-              <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
               <input 
                 type="email" 
-                placeholder="executive@farmliv.com"
-                className="w-full pl-16 pr-8 py-6 bg-[#0F172A] border-2 border-slate-800 rounded-[2rem] text-sm text-white focus:border-emerald-600/50 outline-none transition-all font-bold placeholder:text-slate-700"
+                placeholder="sales@farmliv.com"
+                className="w-full pl-14 pr-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] text-sm focus:border-[#2E7D32]/20 focus:bg-white outline-none transition-all font-bold"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -86,14 +85,14 @@ const SalesmanLogin = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-500 uppercase ml-5 tracking-[0.2em]">Access Token</label>
+          <div className="space-y-1">
+            <label className="text-[10px] font-black text-gray-400 uppercase ml-4 tracking-widest leading-none">Access Token</label>
             <div className="relative">
-              <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
               <input 
                 type="password" 
                 placeholder="••••••••"
-                className="w-full pl-16 pr-8 py-6 bg-[#0F172A] border-2 border-slate-800 rounded-[2rem] text-sm text-white focus:border-emerald-600/50 outline-none transition-all font-bold placeholder:text-slate-700"
+                className="w-full pl-14 pr-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] text-sm focus:border-[#2E7D32]/20 focus:bg-white outline-none transition-all font-bold"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -103,24 +102,30 @@ const SalesmanLogin = () => {
 
           <button 
             disabled={loading}
-            className="w-full bg-emerald-600 text-white py-8 rounded-[2rem] font-black text-[12px] uppercase tracking-[0.3em] hover:bg-emerald-500 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-emerald-900/40 disabled:opacity-50 flex items-center justify-center gap-4"
+            className="w-full bg-[#1A1A1A] text-white py-6 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.4em] hover:bg-[#2E7D32] hover:-translate-y-1 active:scale-95 transition-all shadow-xl disabled:opacity-50"
           >
-            {loading ? <Loader2 className="animate-spin w-5 h-5 mx-auto" /> : 'Activate Session'}
+            {loading ? <Loader2 className="animate-spin w-5 h-5 mx-auto" /> : 'Authorize Connection'}
           </button>
 
-          <div className="text-center pt-4">
+          <div className="text-center pt-2 space-y-4">
             <a 
-              href="mailto:it-support@farmliv.com"
-              className="text-[9px] font-black text-slate-500 uppercase tracking-widest hover:text-emerald-500 transition-colors flex items-center justify-center gap-2"
+              href="mailto:it-support@farmliv.com?subject=Salesman Access Recovery"
+              className="text-[9px] font-black text-gray-300 uppercase tracking-widest hover:text-[#2E7D32] transition-colors flex items-center justify-center gap-2"
             >
-              <HelpCircle size={12} /> Contact HQ for Credentials
+              <HelpCircle size={12} /> Trouble entering the portal?
             </a>
+            <div className="pt-4 border-t border-gray-50">
+                <p className="text-[8px] font-black text-gray-300 uppercase tracking-widest mb-2">Wrong Portal?</p>
+                <button 
+                  type="button"
+                  onClick={() => navigate('/admin/login')}
+                  className="text-[9px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline"
+                >
+                  Admin Console Login
+                </button>
+            </div>
           </div>
         </form>
-
-        {/* Decor */}
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-emerald-600/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -top-24 -left-24 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />
       </div>
     </div>
   );

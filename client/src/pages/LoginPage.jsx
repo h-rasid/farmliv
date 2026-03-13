@@ -118,13 +118,23 @@ const LoginPage = () => {
             {loading ? <Loader2 className="animate-spin w-5 h-5 mx-auto" /> : 'Authorize Connection'}
           </button>
 
-          <div className="text-center pt-2">
+          <div className="text-center pt-2 space-y-4">
             <a 
               href={`mailto:${adminEmail}?subject=Account Access Recovery`}
               className="text-[9px] font-black text-gray-300 uppercase tracking-widest hover:text-[#2E7D32] transition-colors flex items-center justify-center gap-2"
             >
               <HelpCircle size={12} /> Trouble entering the portal?
             </a>
+            <div className="pt-4 border-t border-gray-50">
+                <p className="text-[8px] font-black text-gray-300 uppercase tracking-widest mb-2">Are you a Salesman?</p>
+                <button 
+                  type="button"
+                  onClick={() => navigate('/salesman/login')}
+                  className="text-[9px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline"
+                >
+                  Enter Sales Force Hub
+                </button>
+            </div>
           </div>
         </form>
       </div>

@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, Package, Users, LogOut, 
   Menu, X, Bell, User as UserIcon, Settings, Layers,
-  BarChart3, MessageSquare, FileText 
+  BarChart3, MessageSquare, FileText, History, HelpCircle
 } from 'lucide-react';
 
 const PortalLayout = ({ children, role = 'admin' }) => {
@@ -11,6 +11,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
+  const adminEmail = "admin@farmliv.com";
   const user = JSON.parse(localStorage.getItem('farmliv_user')) || { name: 'Farmliv Executive' };
 
   const dashboardPath = role === 'admin' ? '/admin-portal' : '/salesman-portal';
