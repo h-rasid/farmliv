@@ -480,13 +480,23 @@ const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
 const altFrontendPath = path.resolve(__dirname, 'dist'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
-app.use(express.static(finalPath, { maxAge: '7d' })); 
+// Serve static files with caching, EXCEPT index.html
+app.use(express.static(finalPath, { 
+  maxAge: '7d',
+  setHeaders: (res, path) => {
+    if (path.endsWith('index.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+})); 
 
-app.use('/api/{*path}', (req, res) => {
+app.use('/api/*', (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
-// Optimized for SPA: Handle static assets vs HTML fallback
+// React app catch-all route
 app.get('*', (req, res) => {
   // If request contains a dot (like .js, .css, .png) but isn't HTML, return 404
   if (req.path.includes('.') && 
@@ -497,6 +507,9 @@ app.get('*', (req, res) => {
 
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(indexPath);
   } else {
     res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
