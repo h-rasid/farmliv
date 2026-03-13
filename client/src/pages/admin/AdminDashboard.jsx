@@ -237,8 +237,8 @@ const AdminDashboard = () => {
                     <div><h3 className="text-sm font-semibold text-slate-800">Sales Performance</h3><p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Revenue Flow Analysis</p></div>
                     <TrendingUp size={20} className="text-emerald-500" />
                   </div>
-                  <div className="flex-1 w-full h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div className="flex-1 w-full min-h-[350px]">
+                    <ResponsiveContainer width="99%" height="100%">
                       <AreaChart data={salesData}>
                         <defs><linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/><stop offset="95%" stopColor="#10b981" stopOpacity={0}/></linearGradient></defs>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" /><XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8'}} dy={10} /><YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8'}} /><Tooltip contentStyle={{borderRadius: '15px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} /><Area type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorSales)" />
