@@ -1,43 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
  <head>
- <meta charset="UTF-8" />
- <link rel="icon" type="image/svg+xml" href="/vite.svg" />
- <link
- href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
- rel="stylesheet"
- />
- <link rel="icon" type="image/x-icon" href="/favicon.ico" />
- <link
- rel="icon"
- type="image/png"
- href="https://res.cloudinary.com/dik8mlsie/image/upload/v1772023954/FARMLIV_-_1_-_Edited_vs802q.png"
- />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <meta
- name="description"
- content="Farmliv Industries Private Limited - Premium Agricultural Solutions"
- />
- <title>Farmliv Industries | Modern Agricultural Solutions</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Farmliv Industries Private Limited - Premium Agricultural Solutions" />
+  <title>Farmliv Industries | Modern Agricultural Solutions</title>
 
- <base href="/" />
+  <!-- Performance: Preconnect to CDNs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
- <!-- Added: helps avoid caching issues after redeploys -->
- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
- <meta http-equiv="Pragma" content="no-cache" />
- <meta http-equiv="Expires" content="0" />
+  <!-- Non-blocking Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </noscript>
 
- <!-- Self-healing script for cached index.html stuck with old bundle references -->
- <script>
-   window.addEventListener('error', function(e) {
-     if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK' || (e.message && e.message.includes('module script'))) {
-       if (window.location.search.indexOf('clear_cache=') === -1) {
-         console.warn('Farmliv: Failed to load critical assets. Caching issue detected! Forcing hard reload...');
-         window.location.replace(window.location.pathname + '?clear_cache=' + new Date().getTime());
-       }
-     }
-   }, true);
- </script>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dik8mlsie/image/upload/v1772023954/FARMLIV_-_1_-_Edited_vs802q.png" />
+
+  <base href="/" />
+
+  <!-- Anti-cache headers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- Self-healing script for cache recovery -->
+  <script>
+    window.addEventListener('error', function(e) {
+      if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK' || (e.message && e.message.includes('module script'))) {
+        if (window.location.search.indexOf('clear_cache=') === -1) {
+          console.warn('Farmliv: Asset loading error. Forcing cache bypass...');
+          window.location.replace(window.location.pathname + '?clear_cache=' + new Date().getTime());
+        }
+      }
+    }, true);
+  </script>
    <script type="module" crossorigin src="/assets/index-DX4czt0I.js"></script>
    <link rel="stylesheet" crossorigin href="/assets/index-DtWFRikV.css">
  </head>
