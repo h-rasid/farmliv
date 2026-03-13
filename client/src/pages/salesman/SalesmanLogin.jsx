@@ -36,7 +36,7 @@ const SalesmanLogin = () => {
           return;
         }
 
-        localStorage.setItem('farmliv_user', JSON.stringify(user));
+        localStorage.setItem('farmliv_salesman', JSON.stringify(user));
         navigate('/salesman-portal');
         toast({ title: "Authorized", description: `Authorized Connection established.` });
       }

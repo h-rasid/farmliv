@@ -12,7 +12,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const adminEmail = "admin@farmliv.com";
-  const user = JSON.parse(localStorage.getItem('farmliv_user')) || { name: 'Farmliv Executive' };
+  const sessionKey = role === 'admin' ? 'farmliv_admin' : 'farmliv_salesman';
+  const user = JSON.parse(localStorage.getItem(sessionKey)) || { name: 'Farmliv Executive' };
 
   const dashboardPath = role === 'admin' ? '/admin-portal' : '/salesman-portal';
 
@@ -34,8 +35,9 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const handleLogout = (e) => {
     e.preventDefault();
     if (window.confirm("Disconnect your enterprise session?")) {
-      localStorage.removeItem('farmliv_user');
-      navigate('/admin/login');
+      localStorage.removeItem(sessionKey);
+      const loginPath = role === 'admin' ? '/admin/login' : '/salesman/login';
+      navigate(loginPath);
     }
   };
 

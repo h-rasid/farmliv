@@ -33,7 +33,7 @@ const LoginPage = () => {
         }
 
         // ⭐ LOCAL STORAGE SYNC
-        localStorage.setItem('farmliv_user', JSON.stringify(user));
+        localStorage.setItem('farmliv_admin', JSON.stringify(user));
         
         // Handling both response structures
         const userRole = (user?.role || 'admin').toLowerCase();

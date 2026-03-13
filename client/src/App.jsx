@@ -62,21 +62,26 @@ const GlobalLoadingPage = () => (
 
 // --- 🛡️ Protected Route Component ---
 const ProtectedRoute = ({ children, allowedRole }) => {
-  const user = JSON.parse(localStorage.getItem('farmliv_user'));
+  const sessionKey = allowedRole === 'admin' ? 'farmliv_admin' : 'farmliv_salesman';
+  const user = JSON.parse(localStorage.getItem(sessionKey));
+  const location = useLocation();
   
   if (!user) {
-    return <Navigate to="/admin/login" replace />;
+    // Redirect to the appropriate login hub
+    const loginPath = allowedRole === 'admin' ? '/admin/login' : '/salesman/login';
+    return <Navigate to={loginPath} state={{ from: location }} replace />;
   }
   
-  const userRole = user.role?.toLowerCase();
+  const userRole = (user.role || '').toLowerCase();
   const targetRole = allowedRole?.toLowerCase();
 
+  // Unified validation for salesman/sales_person
   if (targetRole === 'salesman') {
     if (userRole !== 'salesman' && userRole !== 'sales_person') {
-      return <Navigate to="/" replace />;
+      return <Navigate to="/salesman/login" replace />;
     }
   } else if (userRole !== targetRole) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
   
   return children;
