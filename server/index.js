@@ -74,17 +74,38 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Database Connection Test with detailed logging
+// Database Connection Test & Initialization
 (async () => {
     try {
         const connection = await pool.getConnection();
         console.log('✅ MySQL Connected Successfully to server2205!');
-        console.log(`📡 Host: ${process.env.DB_HOST || 'localhost'} | DB: ${process.env.DB_NAME || 'u868538679_farmliv_data'}`);
+        
+        // Ensure critical tables exist
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS settings (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            gstNumber VARCHAR(255),
+            whatsapp VARCHAR(255),
+            smtpHost VARCHAR(255),
+            smtpUser VARCHAR(255),
+            smtpPass VARCHAR(255),
+            facebook VARCHAR(255),
+            instagram VARCHAR(255),
+            isMaintenance TINYINT(1) DEFAULT 0,
+            logo TEXT,
+            favicon TEXT
+          )
+        `);
+
+        // Initialize default settings row if missing
+        const [rows] = await connection.query('SELECT COUNT(*) as count FROM settings');
+        if (rows[0].count === 0) {
+          await connection.query('INSERT INTO settings (gstNumber) VALUES ("")');
+        }
+
         connection.release();
     } catch (err) {
-        console.error('❌ MySQL Connection Error Detail:', err.message);
-        console.log('💡 TIP: 1. Ensure DB user is added to the DB in Hostinger Panel.');
-        console.log('💡 TIP: 2. Ensure "localhost" is used for host if running on the same server.');
+        console.error('❌ Database Initialization Error:', err.message);
     }
 })();
 
@@ -121,22 +142,12 @@ app.get('/api/status', (req, res) => res.json({
   time: new Date().toISOString()
 }));
 
-app.get('/api/debug-db', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SHOW TABLES');
-    return res.json(rows);
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-
-
 app.get('/api/settings', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM settings LIMIT 1');
     return res.json(rows[0] || {});
   } catch (err) {
-    return res.status(500).json({ error: "Settings fetch failed", message: err.message });
+    return res.status(500).json({ error: "Settings fetch failed" });
   }
 });
 
