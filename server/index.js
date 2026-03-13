@@ -112,6 +112,21 @@ const transporter = nodemailer.createTransport({
           )
         `);
 
+        // Helper to add columns safely
+        const addColumnIfMissing = async (table, column, definition) => {
+          const [cols] = await connection.query(`SHOW COLUMNS FROM ${table} LIKE ?`, [column]);
+          if (cols.length === 0) {
+            console.log(`🛠️ Self-Healing: Adding ${column} to ${table}`);
+            await connection.query(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+          }
+        };
+
+        // Self-Healing: Ensure required columns exist
+        await addColumnIfMissing('leads', 'assigned_to', 'INT DEFAULT NULL');
+        await addColumnIfMissing('leads', 'notes', 'TEXT DEFAULT NULL');
+        await addColumnIfMissing('quick_enquiries', 'assigned_to', 'INT DEFAULT NULL');
+        await addColumnIfMissing('quick_enquiries', 'notes', 'TEXT DEFAULT NULL');
+
         // Add dummy logs if empty
         const [logRows] = await connection.query('SELECT COUNT(*) as count FROM activities');
         if (logRows[0].count === 0) {
@@ -156,6 +171,14 @@ const processImage = async (file) => {
     .toFile(filepath);
     
   return `/uploads/${filename}`;
+};
+
+const logActivity = async (action, user = 'Admin') => {
+  try {
+    await pool.query('INSERT INTO activities (action, user) VALUES (?, ?)', [action, user]);
+  } catch (err) {
+    console.error("Activity logging failed:", err.message);
+  }
 };
 
 // --- 3. ROUTES (API) ---
@@ -246,6 +269,7 @@ app.post('/api/staff', async (req, res) => {
       'INSERT INTO staff (name, email, password, role, phone, status) VALUES (?, ?, ?, ?, ?, ?)',
       [name, email, password, role, phone || null, 'active']
     );
+    await logActivity(`New Staff Onboarded: ${name} (${role})`);
     return res.status(201).json({ id: result.insertId, name, email, role });
   } catch (err) {
     return res.status(500).json({ error: "Onboarding failed" });
@@ -466,21 +490,29 @@ app.put('/api/quick-enquiries/:id/assign', async (req, res) => {
   const enquiryId = req.params.id;
   try {
     await pool.query('UPDATE quick_enquiries SET assigned_to = ?, status = "In Process" WHERE id = ?', [staff_id, enquiryId]);
-    const [[enquiry]] = await pool.query('SELECT * FROM quick_enquiries WHERE id = ?', [enquiryId]);
-    const [[staff]] = await pool.query('SELECT name, email FROM staff WHERE id = ?', [staff_id]);
     
-    if (staff && staff.email) {
+    // Fetch data safely for notification
+    const [enquiries] = await pool.query('SELECT * FROM quick_enquiries WHERE id = ?', [enquiryId]);
+    const [staffList] = await pool.query('SELECT name, email FROM staff WHERE id = ?', [staff_id]);
+    
+    const enquiry = enquiries[0];
+    const staff = staffList[0];
+
+    if (staff && staff.email && enquiry) {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: staff.email,
-        subject: `New B2B Inquiry Assigned: ${enquiry.customer_name}`,
+        subject: `New B2B Inquiry Assigned: ${enquiry.customer_name || 'Prospect'}`,
         html: `<h3>Task Assignment Alert</h3><p>Namaste ${staff.name}, a new general B2B enquiry from <strong>${enquiry.company || 'Individual'}</strong> has been assigned to your profile.</p>`
       };
       await transporter.sendMail(mailOptions).catch(e => console.log("Email skip: ", e.message));
     }
+    
+    await logActivity(`Quick Enquiry ID: ${enquiryId} Assigned to Staff ID: ${staff_id}`);
     return res.json({ success: true, message: "Inquiry assigned and staff notified." });
   } catch (err) {
-    return res.status(500).json({ error: "Assignment protocol failure" });
+    console.error("Assignment Error:", err);
+    return res.status(500).json({ error: "Assignment protocol failure: " + err.message });
   }
 });
 
@@ -497,6 +529,7 @@ app.put('/api/leads/:id/status', async (req, res) => {
   const { status } = req.body;
   try {
     await pool.query('UPDATE leads SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Lead Status Updated to ${status} (ID: ${req.params.id})`);
     return res.json({ success: true });
   } catch (err) {
     return res.status(500).json({ error: "Status update failed" });
@@ -517,6 +550,7 @@ app.put('/api/leads/:id/assign', async (req, res) => {
   const { staff_id } = req.body;
   try {
     await pool.query('UPDATE leads SET assigned_to = ?, status = "In Process" WHERE id = ?', [staff_id, req.params.id]);
+    await logActivity(`Lead ID: ${req.params.id} Assigned to Staff ID: ${staff_id}`);
     return res.json({ success: true });
   } catch (err) {
     return res.status(500).json({ error: "Assignment failed" });
