@@ -12,6 +12,14 @@ import jsPDF from 'jspdf';
 import { API_BASE } from '@/utils/config';
 
 const InquiriesManagementPage = () => {
+  const { toast } = useToast();
+  const [leads, setLeads] = useState([]);
+  const [staff, setStaff] = useState([]); 
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLead, setSelectedLead] = useState(null);
+  const [noteText, setNoteText] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
 
   useEffect(() => { 
     fetchLeads();

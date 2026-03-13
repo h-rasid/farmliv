@@ -25,7 +25,6 @@ const CategoryManagement = () => {
     parent_id: null // Used for Sub-Category creation
   });
 
-  const API_BASE = 'http://localhost:5000';
 
   useEffect(() => { fetchCategories(); }, []);
 

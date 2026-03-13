@@ -3,6 +3,7 @@ import axios from 'axios';
 import PortalLayout from '../../layouts/PortalLayout';
 import { User, Phone, Save, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { API_BASE } from '@/utils/config';
 
 const ProfileSettings = () => {
   const { toast } = useToast();
@@ -15,7 +16,7 @@ const ProfileSettings = () => {
     setLoading(true);
     try {
       const cleanId = user.id.toString().split(':')[0];
-      const res = await axios.put(`http://localhost:5000/api/staff/${cleanId}/profile`, { phone });
+      const res = await axios.put(`${API_BASE}/api/staff/${cleanId}/profile`, { phone });
       
       // Update LocalStorage taaki session refreshed rahe
       const updatedUser = { ...user, phone: res.data.user.phone };

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import SaleFormModal from './SaleFormModal'; 
 import { useToast } from '@/components/ui/use-toast';
+import { API_BASE } from '@/utils/config';
 
 const SalesDashboard = () => {
   const { toast } = useToast();
@@ -26,7 +27,7 @@ const SalesDashboard = () => {
     try {
       setLoading(true);
       const cleanId = user.id.toString().split(':')[0]; 
-      const res = await axios.get(`http://localhost:5000/api/leads/salesman/${cleanId}`);
+      const res = await axios.get(`${API_BASE}/api/leads/salesman/${cleanId}`);
       
       const activeLeads = res.data
         .filter(lead => lead.status !== 'converted')
@@ -47,7 +48,7 @@ const SalesDashboard = () => {
 
     try {
       const cleanUserId = user.id.toString().split(':')[0];
-      await axios.put(`http://localhost:5000/api/leads/${leadId}`, {
+      await axios.put(`${API_BASE}/api/leads/${leadId}`, {
         assigned_to: cleanUserId,
         status: newStatus.toLowerCase().trim(),
         changed_by: cleanUserId 
