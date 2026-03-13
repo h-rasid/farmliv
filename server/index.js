@@ -486,7 +486,15 @@ app.use('/api/{*path}', (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
-app.get('{*path}', (req, res) => {
+// Optimized for SPA: Handle static assets vs HTML fallback
+app.get('*', (req, res) => {
+  // If request contains a dot (like .js, .css, .png) but isn't HTML, return 404
+  if (req.path.includes('.') && 
+      !req.path.endsWith('.html') && 
+      !req.path.startsWith('/api')) {
+    return res.status(404).send('Asset not found');
+  }
+
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
