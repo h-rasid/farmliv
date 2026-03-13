@@ -36,6 +36,7 @@ const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const ReportsAnalytics = React.lazy(() => import('./pages/admin/ReportsAnalytics')); 
 const InventoryManagementPage = React.lazy(() => import('./pages/admin/InventoryManagementPage'));
 const CRMHub = React.lazy(() => import('./pages/admin/CRMHub'));
+const QuoteEngine = React.lazy(() => import('./pages/admin/QuoteEngine'));
 
 const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnquiryManagement'));
 
@@ -134,6 +135,9 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/orders" element={<ProtectedRoute allowedRole="admin"><OrderManagementPage /></ProtectedRoute>} />
             <Route path="/admin/inventory" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
             <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
+            <Route path="/admin/quote" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
+            <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
+            <Route path="/admin/quote/history" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             
             <Route 
                 path="/admin/quick-enquiries" 
