@@ -126,7 +126,7 @@ app.get('/api/settings', async (req, res) => {
     const [rows] = await pool.query('SELECT * FROM settings LIMIT 1');
     return res.json(rows[0] || {});
   } catch (err) {
-    return res.status(500).json({ error: "Settings fetch failed" });
+    return res.status(500).json({ error: "Settings fetch failed", message: err.message });
   }
 });
 
