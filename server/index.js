@@ -609,7 +609,7 @@ app.get('/api/admin/activities', async (req, res) => {
       return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
     }
 
-    const [rows] = await pool.query('SELECT action, user, time FROM activities ORDER BY id DESC LIMIT 50');
+    const [rows] = await pool.query('SELECT action, user, `time` FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);
