@@ -6,6 +6,7 @@ import {
   Truck, User, Smartphone, IndianRupee 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { API_BASE } from '@/utils/config';
 
 const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
   const { toast } = useToast();
@@ -25,7 +26,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
       const cleanUserId = JSON.parse(localStorage.getItem('farmliv_user')).id.toString().split(':')[0];
       
       // 1. Record the Sale
-      await axios.post('http://localhost:5000/api/sales', {
+      await axios.post(`${API_BASE}/api/sales`, {
         lead_id: leadData.id,
         salesman_id: cleanUserId,
         final_price: formData.final_price,
@@ -34,7 +35,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
       });
 
       // 2. Update Lead Status to 'converted'
-      await axios.put(`http://localhost:5000/api/leads/${leadData.id}`, {
+      await axios.put(`${API_BASE}/api/leads/${leadData.id}`, {
         status: 'converted',
         changed_by: cleanUserId
       });

@@ -4,6 +4,8 @@ import PortalLayout from '../../layouts/PortalLayout';
 import { motion } from 'framer-motion';
 import { TrendingUp, DollarSign, Package, BarChart3, Download, Clock } from 'lucide-react';
 
+import { API_BASE } from '@/utils/config';
+
 const AdminSalesPerformance = () => {
   const [salesData, setSalesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,8 +15,8 @@ const AdminSalesPerformance = () => {
     const fetchPerformanceData = async () => {
       try {
         setLoading(true);
-        // Backend se data lene ke liye Port 5000 ka use
-        const res = await axios.get('http://localhost:5000/api/sales');
+        // Backend se data lene ke liye
+        const res = await axios.get(`${API_BASE}/api/sales`);
         setSalesData(res.data);
 
         const revenue = res.data.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);

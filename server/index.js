@@ -253,13 +253,20 @@ app.post('/api/categories', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM products ORDER BY id DESC');
-    const parsedRows = rows.map(p => ({
-      ...p,
-      images: p.images ? (typeof p.images === 'string' ? JSON.parse(p.images) : p.images) : []
-    }));
+    const parsedRows = rows.map(p => {
+      let images = [];
+      try {
+        if (p.images) {
+          images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+        }
+      } catch (e) {
+        console.error(`Invalid images data for product ${p.id}`);
+      }
+      return { ...p, images: Array.isArray(images) ? images : [] };
+    });
     return res.json(parsedRows);
   } catch (err) { 
-    return res.status(500).json({ error: "Inventory offline", details: err.message }); 
+    return res.status(500).json({ error: "Inventory sync failed", details: err.message }); 
   }
 });
 

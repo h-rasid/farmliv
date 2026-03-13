@@ -7,6 +7,7 @@ import {
   ChevronRight, FolderTree, Image as ImageIcon, Loader2 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { API_BASE } from '@/utils/config';
 
 const CategoryManagement = () => {
   const { toast } = useToast();

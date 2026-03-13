@@ -7,24 +7,9 @@ import {
   Plus, Edit3, Trash2, X, Video, 
   Image as ImageIcon, Loader2
 } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { API_BASE } from '@/utils/config';
 
 const ProductManagement = () => {
-  const { toast } = useToast();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProd, setEditingProd] = useState(null);
-  const [previewUrls, setPreviewUrls] = useState([]);
-
-  // ⭐ Removed price and stock from initial state
-  const [formData, setFormData] = useState({ 
-    name: '', description: '', category: '', subCategory: '', 
-    moq: '', gsm: '', durability: '', hsn: '',
-    status: 'Active', images: [], video: null 
-  });
-
-  const API_BASE = 'http://localhost:5000';
 
   useEffect(() => { fetchProducts(); }, []);
 

@@ -9,19 +9,9 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { API_BASE } from '@/utils/config';
 
 const InquiriesManagementPage = () => {
-  const { toast } = useToast();
-  const [leads, setLeads] = useState([]);
-  const [staff, setStaff] = useState([]); 
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLead, setSelectedLead] = useState(null);
-  const [noteText, setNoteText] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
-
-  const API_BASE = 'http://localhost:5000';
 
   useEffect(() => { 
     fetchLeads();
