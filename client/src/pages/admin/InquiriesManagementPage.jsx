@@ -259,6 +259,18 @@ const InquiriesManagementPage = () => {
                     </div>
                   </div>
 
+                  {/* ⭐ Added: Order Specification (Product & Quantity) */}
+                  <div className="grid grid-cols-2 gap-8 p-6 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                    <div>
+                      <p className="text-[9px] uppercase font-black text-emerald-600 tracking-widest">Asset Requested</p>
+                      <p className="text-xs font-bold text-slate-900 mt-1 uppercase">{selectedLead.product_name || 'General Inquiry'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] uppercase font-black text-emerald-600 tracking-widest">Order Volume</p>
+                      <p className="text-xs font-bold text-slate-900 mt-1 uppercase">{selectedLead.quantity || '0'} Units</p>
+                    </div>
+                  </div>
+
                   <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 space-y-4">
                     <div className="flex items-center gap-2 text-slate-400"><StickyNote size={18}/><span className="text-[10px] font-black uppercase tracking-widest">Operational Protocols</span></div>
                     <textarea 

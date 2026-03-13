@@ -397,8 +397,33 @@ app.post('/api/quick-enquiries', async (req, res) => {
     const adminMail = {
       from: process.env.EMAIL_USER,
       to: process.env.ADMIN_EMAIL, 
-      subject: `New Quick Enquiry: ${representative_identity}`,
-      html: `<h3>New Popup Enquiry Received</h3><p><strong>Name:</strong> ${representative_identity}</p><p><strong>Phone:</strong> ${primary_contact_hub}</p><p><strong>Company:</strong> ${enterprise_entity}</p><hr/><p><strong>Details:</strong> ${additional_protocols}</p>`
+      subject: `⚡ New Quick Enquiry from ${representative_identity}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+          <div style="background: #1e293b; padding: 20px; color: white;">
+            <h2 style="margin: 0;">Quick Enquiry — Farmliv Industries</h2>
+          </div>
+          <div style="padding: 24px;">
+            <h3 style="color: #2E7D32; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px;">Customer Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; font-weight: bold; width: 40%;">Name:</td><td style="padding: 8px;">${representative_identity || 'N/A'}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Phone:</td><td style="padding: 8px;">${primary_contact_hub || 'N/A'}</td></tr>
+              <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email_node || 'N/A'}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Company:</td><td style="padding: 8px;">${enterprise_entity || 'Individual'}</td></tr>
+              <tr><td style="padding: 8px; font-weight: bold;">Location:</td><td style="padding: 8px;">${deployment_location || 'N/A'}</td></tr>
+            </table>
+
+            <h3 style="color: #2E7D32; border-bottom: 2px solid #e8f5e9; padding-bottom: 8px; margin-top: 20px;">Requirement Detail</h3>
+            <div style="padding: 12px; background: #fdfdfd; border: 1px solid #eee; border-radius: 6px; font-style: italic; color: #444;">
+              "${additional_protocols || 'No details provided.'}"
+            </div>
+
+            <div style="margin-top: 20px; padding: 12px; background: #f1f5f9; border-radius: 6px; font-size: 13px; color: #555; text-align: center;">
+              View in Admin Hub: <a href="https://farmliv.in/admin" style="color: #2E7D32; font-weight: bold;">farmliv.in/admin</a>
+            </div>
+          </div>
+        </div>
+      `
     };
     await transporter.sendMail(adminMail).catch(e => console.log("Email skip: ", e.message));
 
