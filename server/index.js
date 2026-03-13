@@ -7,7 +7,8 @@ const fs = require('fs');
 const compression = require('compression'); 
 const nodemailer = require('nodemailer');
 const sharp = require('sharp'); 
-require('dotenv').config();
+// ✅ FIXED: Explicitly locate .env relative to this file (CRITICAL for Hostinger startup from root)      
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
