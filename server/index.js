@@ -603,10 +603,16 @@ app.get('/api/admin/reports/staff-performance', async (req, res) => {
 
 app.get('/api/admin/activities', async (req, res) => {
   try {
+    // Debug: check if table exists
+    const [tables] = await pool.query("SHOW TABLES LIKE 'activities'");
+    if (tables.length === 0) {
+      return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
+    }
+
     const [rows] = await pool.query('SELECT action, user, time FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
-    console.error("Activities error:", err);
+    console.error("Activities Hub Error:", err);
     return res.status(500).json({ error: "Activities node sync failure: " + err.message });
   }
 });
