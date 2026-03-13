@@ -603,10 +603,11 @@ app.get('/api/admin/reports/staff-performance', async (req, res) => {
 
 app.get('/api/admin/activities', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT action, user, DATE_FORMAT(time, "%Y-%m-%d %H:%i") as time FROM activities ORDER BY id DESC LIMIT 50');
+    const [rows] = await pool.query('SELECT action, user, time FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Activities retrieval failed" });
+    console.error("Activities error:", err);
+    return res.status(500).json({ error: "Activities node sync failure: " + err.message });
   }
 });
 
