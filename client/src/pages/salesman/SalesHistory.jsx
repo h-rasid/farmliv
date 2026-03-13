@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PortalLayout from '../../layouts/PortalLayout';
-import axios from 'axios';
+import API from '@/utils/axios';
 import { motion } from 'framer-motion';
 import { 
   Receipt, Calendar, User, IndianRupee, 
   Package, History, Search, Filter 
 } from 'lucide-react';
-import { API_BASE } from '@/utils/config';
 
 const SalesHistory = () => {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('farmliv_user'));
+  const user = JSON.parse(localStorage.getItem('farmliv_salesman'));
 
   useEffect(() => {
     if (user?.id) fetchSalesHistory();
@@ -20,7 +19,7 @@ const SalesHistory = () => {
   const fetchSalesHistory = async () => {
     try {
       const cleanId = user.id.toString().split(':')[0];
-      const res = await axios.get(`${API_BASE}/api/sales/salesman/${cleanId}`);
+      const res = await API.get(`/sales/salesman/${cleanId}`);
       setSales(res.data);
     } catch (err) {
       console.error("History Error:", err);

@@ -710,14 +710,16 @@ app.post('/api/sales', async (req, res) => {
 app.get('/api/sales/salesman/:id', async (req, res) => {
   try {
     const [rows] = await pool.query(`
-      SELECT s.*, l.customer_name, l.product_name 
+      SELECT s.*, l.customer_name, p.name as product_name 
       FROM sales s 
       JOIN leads l ON s.lead_id = l.id 
+      LEFT JOIN products p ON l.product_id = p.id
       WHERE s.salesman_id = ? 
       ORDER BY s.created_at DESC
     `, [req.params.id]);
     return res.json(rows);
   } catch (err) {
+    console.error("Sales history error:", err.message);
     return res.status(500).json({ error: "Sales history retrieval failed" });
   }
 });
