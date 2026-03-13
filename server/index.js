@@ -528,6 +528,24 @@ app.get('/api/admin/stats', async (req, res) => {
   }
 });
 
+app.get('/api/admin/reports/staff-performance', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT 
+        s.name as executive_name,
+        COUNT(l.id) as total_leads,
+        SUM(CASE WHEN l.status = 'Converted' THEN 1 ELSE 0 END) as successful_conversions
+      FROM staff s
+      LEFT JOIN leads l ON s.id = l.assigned_to
+      GROUP BY s.id, s.name
+    `);
+    return res.json(rows);
+  } catch (err) {
+    console.error("Staff performance error:", err);
+    return res.status(500).json({ error: "Staff performance data retrieval failed" });
+  }
+});
+
 app.delete('/api/products/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM products WHERE id = ?', [req.params.id]);
