@@ -4,7 +4,7 @@ import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, Building2, Trash2, 
-  MessageSquare, Loader2, UserPlus, X 
+  MessageSquare, Loader2, UserPlus, X, Eye 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 

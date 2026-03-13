@@ -472,6 +472,36 @@ app.delete('/api/leads/:id', async (req, res) => {
   }
 });
 
+app.put('/api/leads/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE leads SET status = ? WHERE id = ?', [status, req.params.id]);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Status update failed" });
+  }
+});
+
+app.put('/api/leads/:id/notes', async (req, res) => {
+  const { notes } = req.body;
+  try {
+    await pool.query('UPDATE leads SET notes = ? WHERE id = ?', [notes, req.params.id]);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Note update failed" });
+  }
+});
+
+app.put('/api/leads/:id/assign', async (req, res) => {
+  const { staff_id } = req.body;
+  try {
+    await pool.query('UPDATE leads SET assigned_to = ?, status = "In Process" WHERE id = ?', [staff_id, req.params.id]);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Assignment failed" });
+  }
+});
+
 app.delete('/api/quick-enquiries/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM quick_enquiries WHERE id = ?', [req.params.id]);
