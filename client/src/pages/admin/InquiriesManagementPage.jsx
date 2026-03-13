@@ -228,7 +228,7 @@ const InquiriesManagementPage = () => {
         <AnimatePresence>
           {selectedLead && (
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-              <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+              <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl relative overflow-y-auto max-h-[90vh]">
                 <div className="p-6 bg-slate-50 border-b flex justify-between items-center text-[10px] font-black uppercase text-slate-400 tracking-widest">
                   Lead Synchronized Node <button onClick={() => setSelectedLead(null)} className="p-1 hover:bg-slate-200 rounded-full transition-all"><X size={20}/></button>
                 </div>

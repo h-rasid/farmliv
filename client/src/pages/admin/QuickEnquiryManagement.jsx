@@ -115,7 +115,7 @@ const QuickEnquiryManagement = () => {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }} 
                 animate={{ opacity: 1, scale: 1, y: 0 }} 
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl relative overflow-hidden"
+                className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl relative overflow-y-auto max-h-[90vh]"
                 onClick={e => e.stopPropagation()}
               >
                 <div className="p-8 bg-slate-900 text-white flex justify-between items-center">

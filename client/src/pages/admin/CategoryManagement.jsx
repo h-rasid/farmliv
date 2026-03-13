@@ -141,7 +141,7 @@ const CategoryManagement = () => {
         <AnimatePresence>
           {isModalOpen && (
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={closeModal}>
-              <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative" onClick={e => e.stopPropagation()}>
+              <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative overflow-y-auto max-h-[90vh]" onClick={e => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-8 pb-4 border-b">
                   <h2 className="text-xl font-semibold">{formData.parent_id ? 'Add Sub-Category' : 'Main Category node'}</h2>
                   <button onClick={closeModal}><X size={24}/></button>
