@@ -35,7 +35,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
       });
 
       // 2. Update Lead Status to 'converted'
-      await axios.put(`${API_BASE}/api/leads/${leadData.id}`, {
+      await axios.put(`${API_BASE}/api/leads/${leadData.id}/status`, {
         status: 'converted',
         changed_by: cleanUserId
       });

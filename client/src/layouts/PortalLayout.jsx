@@ -23,9 +23,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     { name: 'Inquiry Hub', icon: MessageSquare, path: '/admin/quick-enquiries' }, 
     { name: 'Reports & Analytics', icon: BarChart3, path: '/admin/reports' },
     { name: 'Staff Directory', icon: Users, path: '/admin/staff' },
-    { name: 'Node Settings', icon: Settings, path: '/admin/settings' }
+    { name: 'Admin Settings', icon: Settings, path: '/admin/settings' }
   ] : [
     { name: 'Sales Pipeline', icon: LayoutDashboard, path: '/salesman-portal' },
+    { name: 'Sales History', icon: History, path: '/salesman/history' },
     { name: 'My Performance', icon: Settings, path: '/salesman/profile' }
   ];
 
@@ -115,6 +116,12 @@ const PortalLayout = ({ children, role = 'admin' }) => {
             >
               <Menu size={24} />
             </button>
+            <a 
+              href={`mailto:${adminEmail}?subject=Account Access Recovery`}
+              className="text-[9px] font-black text-gray-300 uppercase tracking-widest hover:text-[#2E7D32] transition-colors flex items-center justify-center gap-2"
+            >
+              <HelpCircle size={12} /> Trouble entering the portal?
+            </a>
             
             <div className="hidden lg:block">
               <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Operational Environment: <span className="text-farmliv-green">Active</span></span>

@@ -41,10 +41,10 @@ const LoginPage = () => {
         // ⭐ PATH SYNC
         if (userRole === 'admin') {
           navigate('/admin-portal');
-        } else if (userRole === 'salesman' || userRole === 'sales_person') {
-          navigate('/salesman-portal');
         } else {
-          navigate('/'); 
+          setError("ADMIN ACCESS ONLY: PLEASE USE THE SALESMAN PORTAL LOGIN.");
+          setLoading(false);
+          return;
         }
 
         toast({ title: "Authorized", description: `Authorized Connection established.` });
@@ -123,7 +123,7 @@ const LoginPage = () => {
               href={`mailto:${adminEmail}?subject=Account Access Recovery`}
               className="text-[9px] font-black text-gray-300 uppercase tracking-widest hover:text-[#2E7D32] transition-colors flex items-center justify-center gap-2"
             >
-              <HelpCircle size={12} /> Trouble entering the node?
+              <HelpCircle size={12} /> Trouble entering the portal?
             </a>
           </div>
         </form>

@@ -108,7 +108,20 @@ const transporter = nodemailer.createTransport({
             id INT AUTO_INCREMENT PRIMARY KEY,
             action VARCHAR(255),
             user VARCHAR(255),
-            time DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // Create sales table for converted transactions
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS sales (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            lead_id INT,
+            salesman_id INT,
+            final_price DECIMAL(15, 2),
+            payment_method VARCHAR(50),
+            transaction_id VARCHAR(255),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           )
         `);
 
@@ -191,6 +204,19 @@ app.get('/api/status', (req, res) => res.json({
   time: new Date().toISOString()
 }));
 
+// Emergency DB Refresh Route
+app.get('/api/admin/setup-db', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    await connection.query(`CREATE TABLE IF NOT EXISTS activities (id INT AUTO_INCREMENT PRIMARY KEY, action VARCHAR(255), user VARCHAR(255), created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
+    await connection.query(`INSERT INTO activities (action, user) VALUES ('Database Protocols Manually Refreshed', 'System')`);
+    connection.release();
+    res.json({ success: true, message: "Enterprise Database Synchronized" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/settings', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM settings LIMIT 1');
@@ -232,22 +258,40 @@ app.post('/api/settings', upload, async (req, res) => {
 app.post('/api/admin/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const [rows] = await pool.query('SELECT * FROM admins WHERE LOWER(email) = LOWER(?)', [email]);
-    if (rows.length > 0) {
-      const admin = rows[0];
+    // 1. Check Admin Table
+    const [adminRows] = await pool.query('SELECT * FROM admins WHERE LOWER(email) = LOWER(?)', [email]);
+    if (adminRows.length > 0) {
+      const admin = adminRows[0];
       if (admin.password === password) {
         return res.status(200).json({ 
           success: true, 
-          message: "Authorized Connection",
-          user: { id: admin.id, email: admin.email, role: 'admin', name: 'Farmliv Admin' },
+          message: "Authorized Admin",
+          user: { id: admin.id, email: admin.email, role: 'admin', name: admin.name || 'Farmliv Admin' },
           token: "session_" + Date.now() 
+        });
+      }
+    }
+
+    // 2. Check Staff Table (Salesman/Managers)
+    const [staffRows] = await pool.query('SELECT * FROM staff WHERE LOWER(email) = LOWER(?)', [email]);
+    if (staffRows.length > 0) {
+      const staff = staffRows[0];
+      if (staff.password === password) {
+        if (staff.status === 'inactive') {
+          return res.status(403).json({ success: false, message: "ACCOUNT DEACTIVATED" });
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Authorized Staff",
+          user: { id: staff.id, email: staff.email, role: staff.role.toLowerCase(), name: staff.name },
+          token: "staff_session_" + Date.now()
         });
       } else {
         return res.status(401).json({ success: false, message: "AUTHENTICATION FAILED" });
       }
-    } else {
-      return res.status(404).json({ success: false, message: "IDENTITY NOT FOUND" });
     }
+
+    return res.status(404).json({ success: false, message: "IDENTITY NOT FOUND" });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
@@ -273,6 +317,31 @@ app.post('/api/staff', async (req, res) => {
     return res.status(201).json({ id: result.insertId, name, email, role });
   } catch (err) {
     return res.status(500).json({ error: "Onboarding failed" });
+  }
+});
+
+app.delete('/api/staff/:id', async (req, res) => {
+  try {
+    const [result] = await pool.query('DELETE FROM staff WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Staff member identity not found" });
+    }
+    await logActivity(`Staff Member Purged (ID: ${req.params.id})`);
+    return res.json({ success: true, message: "Staff node purged from Enterprise Force" });
+  } catch (err) {
+    return res.status(500).json({ error: "Purge protocol failed" });
+  }
+});
+
+app.put('/api/staff/:id/profile', async (req, res) => {
+  const { phone } = req.body;
+  const staffId = req.params.id;
+  try {
+    await pool.query('UPDATE staff SET phone = ? WHERE id = ?', [phone, staffId]);
+    const [rows] = await pool.query('SELECT * FROM staff WHERE id = ?', [staffId]);
+    return res.json({ success: true, user: rows[0] });
+  } catch (err) {
+    return res.status(500).json({ error: "Profile update failed" });
   }
 });
 
@@ -516,6 +585,44 @@ app.put('/api/quick-enquiries/:id/assign', async (req, res) => {
   }
 });
 
+app.get('/api/leads/salesman/:id', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM leads WHERE assigned_to = ? ORDER BY updated_at DESC', [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Sales pipeline retrieval failed" });
+  }
+});
+
+app.post('/api/sales', async (req, res) => {
+  const { lead_id, salesman_id, final_price, payment_method, transaction_id } = req.body;
+  try {
+    await pool.query(
+      'INSERT INTO sales (lead_id, salesman_id, final_price, payment_method, transaction_id) VALUES (?, ?, ?, ?, ?)',
+      [lead_id, salesman_id, final_price, payment_method, transaction_id]
+    );
+    await logActivity(`Sale Recorded: Lead ID ${lead_id} converted by Salesman ID ${salesman_id}`);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Sale record failed" });
+  }
+});
+
+app.get('/api/sales/salesman/:id', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT s.*, l.customer_name, l.product_name 
+      FROM sales s 
+      JOIN leads l ON s.lead_id = l.id 
+      WHERE s.salesman_id = ? 
+      ORDER BY s.created_at DESC
+    `, [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Sales history retrieval failed" });
+  }
+});
+
 app.delete('/api/leads/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM leads WHERE id = ?', [req.params.id]);
@@ -549,7 +656,7 @@ app.put('/api/leads/:id/notes', async (req, res) => {
 app.put('/api/leads/:id/assign', async (req, res) => {
   const { staff_id } = req.body;
   try {
-    await pool.query('UPDATE leads SET assigned_to = ?, status = "In Process" WHERE id = ?', [staff_id, req.params.id]);
+    await pool.query('UPDATE leads SET assigned_to = ?, status = "assigned" WHERE id = ?', [staff_id, req.params.id]);
     await logActivity(`Lead ID: ${req.params.id} Assigned to Staff ID: ${staff_id}`);
     return res.json({ success: true });
   } catch (err) {
@@ -609,7 +716,7 @@ app.get('/api/admin/activities', async (req, res) => {
       return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
     }
 
-    const [rows] = await pool.query('SELECT action, user, `time` FROM activities ORDER BY id DESC LIMIT 50');
+    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);

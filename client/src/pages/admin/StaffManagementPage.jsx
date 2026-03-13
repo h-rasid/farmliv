@@ -51,7 +51,7 @@ const StaffManagementPage = () => {
     setIsSubmitting(true);
     try {
       await API.post('/staff', formData);
-      toast({ title: "Node Initialized", description: `${formData.name} added as ${formData.role}` });
+      toast({ title: "Staff Sync Complete", description: `${formData.name} added as ${formData.role}` });
       setFormData({ name: '', email: '', password: '', role: 'salesman', phone: '' });
       fetchStaff();
     } catch (err) { toast({ variant: "destructive", title: "Onboarding Failed" }); }
@@ -62,7 +62,7 @@ const StaffManagementPage = () => {
     if (!window.confirm(`Purge ${name} from Enterprise Force?`)) return;
     try {
       await API.delete(`/staff/${id}`);
-      toast({ title: "Node Purged" });
+      toast({ title: "Staff Purged" });
       fetchStaff();
     } catch (err) { toast({ variant: "destructive", title: "Purge Failed" }); }
   };
@@ -95,7 +95,7 @@ const StaffManagementPage = () => {
           <div className="lg:col-span-1">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="sticky top-32 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-8">
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold uppercase flex items-center gap-3"><UserPlus className="text-emerald-600" size={20}/> Onboard Node</h3>
+                <h3 className="text-lg font-semibold uppercase flex items-center gap-3"><UserPlus className="text-emerald-600" size={20}/> Onboard Staff</h3>
                 <p className="text-[10px] text-slate-400 uppercase font-medium">Initialize new enterprise credentials</p>
               </div>
 
@@ -123,7 +123,7 @@ const StaffManagementPage = () => {
               <div className="space-y-6">
                 <div className="relative group">
                   <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-                  <input type="text" placeholder="Filter node directory..." className="w-full pl-14 pr-6 py-5 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-xs font-medium outline-none" onChange={(e) => setSearchTerm(e.target.value)} />
+                  <input type="text" placeholder="Search staff directory..." className="w-full pl-14 pr-6 py-5 bg-white border border-slate-100 rounded-[2rem] shadow-sm text-xs font-medium outline-none" onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
@@ -167,7 +167,7 @@ const StaffManagementPage = () => {
                       <Fingerprint size={16} className="text-slate-200" />
                     </div>
                   )) : (
-                    <div className="py-20 text-center text-slate-300 uppercase text-[10px] font-bold tracking-[0.2em]">No activities recorded on current node</div>
+                    <div className="py-20 text-center text-slate-300 uppercase text-[10px] font-bold tracking-[0.2em]">No activities recorded in the portal</div>
                   )}
                 </div>
               </div>

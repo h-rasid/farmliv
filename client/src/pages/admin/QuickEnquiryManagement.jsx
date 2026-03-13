@@ -36,13 +36,13 @@ const QuickEnquiryManagement = () => {
   const handleAssign = async (id, staffId) => {
     try {
       await API.put(`/quick-enquiries/${id}/assign`, { staff_id: staffId });
-      toast({ title: "Sales Node Assigned" });
+      toast({ title: "Salesman Assigned" });
       fetchData();
     } catch (err) { toast({ variant: "destructive", title: "Assignment Failed" }); }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Purge this enquiry node?")) return;
+    if (!window.confirm("Purge this enquiry?")) return;
     try {
       await API.delete(`/quick-enquiries/${id}`);
       setEnquiries(enquiries.filter(e => e.id !== id));
@@ -121,7 +121,7 @@ const QuickEnquiryManagement = () => {
                 <div className="p-8 bg-slate-900 text-white flex justify-between items-center">
                   <div>
                     <h2 className="text-xl font-black uppercase tracking-tighter italic">Enquiry Dossier</h2>
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Node ID: #{selectedEnquiry.id}</p>
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Inquiry ID: #{selectedEnquiry.id}</p>
                   </div>
                   <button onClick={() => setSelectedEnquiry(null)} className="p-2 hover:bg-white/10 rounded-full transition-all"><X size={24}/></button>
                 </div>
@@ -147,7 +147,7 @@ const QuickEnquiryManagement = () => {
 
                     <div className="space-y-6">
                       <div>
-                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-[0.2em] mb-2">Enterprise Node</p>
+                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-[0.2em] mb-2">Admin Portal</p>
                         <div className="flex items-center gap-3 text-slate-600">
                           <div className="p-2 bg-slate-50 text-slate-400 rounded-lg"><Building2 size={14}/></div>
                           <p className="text-xs font-bold uppercase">{selectedEnquiry.company || 'Not Specified'}</p>
@@ -188,7 +188,7 @@ const QuickEnquiryManagement = () => {
                       onClick={() => { handleDelete(selectedEnquiry.id); }} 
                       className="flex-1 bg-rose-50 text-rose-500 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center gap-2"
                     >
-                      Purge Memory Node
+                      Purge Memory
                     </button>
                   </div>
                 </div>

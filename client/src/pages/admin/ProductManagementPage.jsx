@@ -63,7 +63,7 @@ const ProductManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Purge this asset from global node?")) return;
+    if (!window.confirm("Purge this asset permanently?")) return;
     try {
       await axios.delete(`${API_BASE}/api/products/${id}`);
       setProducts(products.filter(p => p.id !== id));
@@ -105,7 +105,7 @@ const ProductManagement = () => {
         toast({ title: "Asset Updated Successfully" });
       } else {
         await axios.post(`${API_BASE}/api/products`, data, config);
-        toast({ title: "New Asset Deployed Successfully" });
+        toast({ title: "New Asset Deployed Ready" });
       }
       closeModal();
       fetchProducts();
@@ -132,7 +132,7 @@ const ProductManagement = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-100 pb-10">
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Product Management</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Enterprise Inventory Node</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Enterprise Inventory</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 text-xs font-semibold hover:bg-emerald-700 transition-all shadow-lg active:scale-95">
             <Plus size={18} /> Add New Asset
@@ -177,7 +177,7 @@ const ProductManagement = () => {
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={closeModal}>
               <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-5xl rounded-[2.5rem] p-10 overflow-y-auto max-h-[90vh] shadow-2xl relative" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-10 pb-6 border-b">
-                  <h2 className="text-xl font-semibold text-slate-800">{editingProd ? 'Update Asset' : 'New Asset Node'}</h2>
+                  <h2 className="text-xl font-semibold text-slate-800">{editingProd ? 'Update Asset' : 'New Product Asset'}</h2>
                   <button onClick={closeModal} className="p-2 hover:bg-slate-50 rounded-full transition-all text-gray-400"><X size={24}/></button>
                 </div>
 
@@ -225,7 +225,7 @@ const ProductManagement = () => {
                       <input type="file" accept="video/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => handleFileChange(e, 'video')} />
                       <Video className="mx-auto mb-2 text-slate-200" size={32} />
                       <p className="text-[10px] font-bold uppercase text-slate-400">Upload Video</p>
-                      {formData.video && <p className="text-[10px] text-emerald-600 mt-2 font-bold uppercase">Video Node Sync</p>}
+                      {formData.video && <p className="text-[10px] text-emerald-600 mt-2 font-bold uppercase">Video Ready for Sync</p>}
                     </div>
                   </div>
 

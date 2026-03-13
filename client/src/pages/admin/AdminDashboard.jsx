@@ -48,7 +48,7 @@ const AdminDashboard = () => {
 
     toast({ 
       title: "Lead Located", 
-      description: `Viewing synchronized data for Inquiry Node #${leadId}` 
+      description: `Viewing synchronized data for Inquiry #${leadId}` 
     });
   };
 
@@ -60,13 +60,13 @@ const AdminDashboard = () => {
   ];
 
   useEffect(() => {
-    const syncNodeData = () => {
+    const syncData = () => {
       fetchGlobalData();
       fetchLiveLeads();
       fetchStaff();
     };
-    syncNodeData();
-    const interval = setInterval(syncNodeData, 30000);
+    syncData();
+    const interval = setInterval(syncData, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
         { id: 2, action: "Stock Threshold Alert", user: "Inventory", time: "2h ago" }
       ]);
     } catch (err) {
-      console.error("Node Sync Error:", err.message);
+      console.error("Sync Error:", err.message);
     }
   };
 
@@ -111,14 +111,14 @@ const AdminDashboard = () => {
       const res = await API.get('/staff');
       setStaff(res.data);
     } catch (err) {
-      console.error("Staff Node Offline");
+      console.error("Staff Connectivity Offline");
     }
   };
 
   const handleAssign = async (id, staffId) => {
     try {
       await API.put(`/leads/${id}/assign`, { staff_id: staffId });
-      toast({ title: "Salesman Assigned", description: "Notification email dispatched to staff node." });
+      toast({ title: "Salesman Assigned", description: "Notification email dispatched to staff." });
       fetchLiveLeads();
     } catch (err) {
       toast({ variant: "destructive", title: "Assignment Failed" });
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteLead = async (id) => {
-    if (!window.confirm("Purge this inquiry node permanently?")) return;
+    if (!window.confirm("Purge this inquiry permanently?")) return;
     try {
       await API.delete(`/leads/${id}`);
       toast({ title: "Lead Purged" });
@@ -154,8 +154,8 @@ const AdminDashboard = () => {
         
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-slate-100">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 italic">Enterprise Console</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">B2B Agri Node Management Active</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 italic">Farmliv Console</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">B2B Agri Management Active</p>
           </div>
 
           <div className="flex items-center gap-4 ml-auto">
@@ -263,8 +263,8 @@ const AdminDashboard = () => {
 
           {activeTab === 'products' && (
             <motion.div key="products" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex-1">
-              <div className="flex justify-between items-center mb-8"><h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Asset Matrix</h3><button onClick={() => navigate('/admin/products')} className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-green-900/10"><Plus size={14} /> Full Inventory Node</button></div>
-              <div className="overflow-x-auto"><table className="w-full text-left border-collapse"><thead><tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest"><th className="py-4 px-2">Asset Identity</th><th className="py-4 px-2">Category Node</th><th className="py-4 px-2">Stock Threshold</th><th className="py-4 px-2 text-right">Unit Price</th></tr></thead><tbody className="divide-y divide-slate-50">{stats.productList?.map((prod) => (<tr key={prod.id} className="group hover:bg-slate-50 transition-colors text-xs"><td className="py-4 px-2 font-bold text-slate-800 uppercase tracking-tighter">{prod.name}</td><td className="py-4 px-2 text-[10px] font-black text-slate-400 uppercase">{prod.category}</td><td className="py-4 px-2"><span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${prod.stock <= 10 ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-600'}`}>{prod.stock} Units</span></td><td className="py-4 px-2 text-right font-bold text-slate-900 tracking-tight">₹{prod.price}</td></tr>))}</tbody></table></div>
+              <div className="flex justify-between items-center mb-8"><h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Asset Matrix</h3><button onClick={() => navigate('/admin/products')} className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-green-900/10"><Plus size={14} /> Full Inventory</button></div>
+              <div className="overflow-x-auto"><table className="w-full text-left border-collapse"><thead><tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest"><th className="py-4 px-2">Asset Identity</th><th className="py-4 px-2">Category</th><th className="py-4 px-2">Stock Threshold</th><th className="py-4 px-2 text-right">Unit Price</th></tr></thead><tbody className="divide-y divide-slate-50">{stats.productList?.map((prod) => (<tr key={prod.id} className="group hover:bg-slate-50 transition-colors text-xs"><td className="py-4 px-2 font-bold text-slate-800 uppercase tracking-tighter">{prod.name}</td><td className="py-4 px-2 text-[10px] font-black text-slate-400 uppercase">{prod.category}</td><td className="py-4 px-2"><span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${prod.stock <= 10 ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-600'}`}>{prod.stock} Units</span></td><td className="py-4 px-2 text-right font-bold text-slate-900 tracking-tight">₹{prod.price}</td></tr>))}</tbody></table></div>
             </motion.div>
           )}
 
@@ -287,7 +287,7 @@ const AdminDashboard = () => {
                       </div>
                       <div className="flex flex-col text-left">
                         <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 flex items-center gap-2">
-                          Lead Node #{lead.id} {highlightedLeadId === lead.id && <span className="text-emerald-600 animate-pulse">● New Acquisition</span>}
+                          Lead ID #{lead.id} {highlightedLeadId === lead.id && <span className="text-emerald-600 animate-pulse">● New Acquisition</span>}
                         </span>
                         <h4 className="text-sm font-bold text-slate-900 uppercase tracking-tighter">{lead.customer_name}</h4>
                         <div className="flex items-center gap-4 mt-1 text-[10px] text-slate-500 font-black uppercase tracking-widest">
@@ -304,7 +304,7 @@ const AdminDashboard = () => {
                       </div>
 
                       <select onChange={(e) => handleAssign(lead.id, e.target.value)} className="text-[10px] font-black uppercase tracking-widest p-3 bg-slate-50 border-none rounded-xl outline-none min-w-[160px]" value={lead.assigned_to || ""}>
-                        <option value="" disabled>Assign Node</option>
+                        <option value="" disabled>Assign Salesman</option>
                         {staff.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                       </select>
                       

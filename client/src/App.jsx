@@ -38,6 +38,8 @@ const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnqui
 
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
+const SalesHistory = React.lazy(() => import('./pages/salesman/SalesHistory'));
+const SalesmanLogin = React.lazy(() => import('./pages/salesman/SalesmanLogin'));
 const ProfileSettings = React.lazy(() => import('./pages/salesman/ProfileSettings'));
 
 
@@ -104,6 +106,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
 
             {/* AUTHENTICATION */}
             <Route path="/admin/login" element={<LoginPage />} />
+            <Route path="/salesman/login" element={<SalesmanLogin />} />
 
             {/* ADMIN PROTECTED ROUTES */}
             <Route path="/admin-portal" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -123,6 +126,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
 
             {/* SALESMAN PROTECTED ROUTES */}
             <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />
+            <Route path="/salesman/history" element={<ProtectedRoute allowedRole="salesman"><SalesHistory /></ProtectedRoute>} />
             <Route path="/salesman/profile" element={<ProtectedRoute allowedRole="salesman"><ProfileSettings /></ProtectedRoute>} />
 
             {/* CATCH-ALL REDIRECT */}
