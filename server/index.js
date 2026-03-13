@@ -102,6 +102,27 @@ const transporter = nodemailer.createTransport({
           )
         `);
 
+        // Create activities table
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS activities (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            action VARCHAR(255),
+            user VARCHAR(255),
+            time DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // Add dummy logs if empty
+        const [logRows] = await connection.query('SELECT COUNT(*) as count FROM activities');
+        if (logRows[0].count === 0) {
+          await connection.query(`
+            INSERT INTO activities (action, user) VALUES 
+            ('Enterprise Node Synchronized', 'System'),
+            ('Staff Directory Initialized', 'Admin'),
+            ('Security Protocols Active', 'System')
+          `);
+        }
+
         // Initialize default settings row if missing
         const [rows] = await connection.query('SELECT COUNT(*) as count FROM settings');
         if (rows[0].count === 0) {
@@ -543,6 +564,15 @@ app.get('/api/admin/reports/staff-performance', async (req, res) => {
   } catch (err) {
     console.error("Staff performance error:", err);
     return res.status(500).json({ error: "Staff performance data retrieval failed" });
+  }
+});
+
+app.get('/api/admin/activities', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT action, user, DATE_FORMAT(time, "%Y-%m-%d %H:%i") as time FROM activities ORDER BY id DESC LIMIT 50');
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Activities retrieval failed" });
   }
 });
 
