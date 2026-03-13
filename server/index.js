@@ -53,7 +53,7 @@ app.use('/uploads', express.static(uploadDir, {
 // --- 2. DATABASE & EMAIL CONFIG ---
 // Hostinger server2205 Optimized Configuration
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',           
+  host: process.env.DB_HOST || '127.0.0.1',           
   user: process.env.DB_USER || 'u868538679_farmliv',      // ✅ FIXED: was 'u868538679_admin'
   password: process.env.DB_PASSWORD || 'Najmus@2508', 
   database: process.env.DB_NAME || 'u868538679_farmliv_data',
