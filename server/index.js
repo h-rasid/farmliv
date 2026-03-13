@@ -124,7 +124,6 @@ const transporter = nodemailer.createTransport({
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           )
         `);
-
         // Helper to add columns safely
         const addColumnIfMissing = async (table, column, definition) => {
           const [cols] = await connection.query(`SHOW COLUMNS FROM ${table} LIKE ?`, [column]);
@@ -134,9 +133,109 @@ const transporter = nodemailer.createTransport({
           }
         };
 
-        // Self-Healing: Ensure required columns exist
+        // --- ENTERPRISE SCHEMA SYNC ---
+        
+        // 1. Customers Table (Enterprise CRM)
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS customers (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255),
+            phone VARCHAR(20),
+            company VARCHAR(255),
+            address TEXT,
+            location VARCHAR(255),
+            type ENUM('Farmer', 'Dealer', 'Distributor') DEFAULT 'Farmer',
+            status ENUM('active', 'inactive') DEFAULT 'active',
+            assigned_salesman_id INT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // 2. Orders & Items
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS orders (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            customer_id INT,
+            salesman_id INT,
+            total_amount DECIMAL(15, 2),
+            status ENUM('Pending', 'Approved', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+            payment_status ENUM('Pending', 'Partial', 'Received') DEFAULT 'Pending',
+            tracking_info VARCHAR(255),
+            notes TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS order_items (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            order_id INT,
+            product_id INT,
+            quantity INT,
+            price_at_sale DECIMAL(15, 2),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // 3. Field Visits & Tasks
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS field_visits (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            salesman_id INT,
+            customer_id INT,
+            check_in DATETIME,
+            check_out DATETIME,
+            report TEXT,
+            images TEXT, -- JSON array
+            location_gps VARCHAR(255),
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS tasks (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            assigned_to INT,
+            title VARCHAR(255),
+            description TEXT,
+            due_date DATETIME,
+            status ENUM('Pending', 'Completed') DEFAULT 'Pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // 4. Financials (Targets & Payments)
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS sales_targets (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            salesman_id INT,
+            target_amount DECIMAL(15, 2),
+            month INT,
+            year INT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS payments (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            order_id INT,
+            customer_id INT,
+            salesman_id INT,
+            amount DECIMAL(15, 2),
+            method ENUM('Cash', 'UPI', 'Bank Transfer'),
+            transaction_id VARCHAR(255),
+            status ENUM('Verified', 'Pending') DEFAULT 'Pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        // Self-Healing: Ensure older leads/enquiries match new enterprise standards
         await addColumnIfMissing('leads', 'assigned_to', 'INT DEFAULT NULL');
         await addColumnIfMissing('leads', 'notes', 'TEXT DEFAULT NULL');
+        await addColumnIfMissing('leads', 'product_id', 'INT DEFAULT NULL');
+        await addColumnIfMissing('leads', 'updated_at', 'DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
         await addColumnIfMissing('quick_enquiries', 'assigned_to', 'INT DEFAULT NULL');
         await addColumnIfMissing('quick_enquiries', 'notes', 'TEXT DEFAULT NULL');
 
@@ -677,16 +776,61 @@ app.get('/api/admin/stats', async (req, res) => {
   try {
     const [[stats]] = await pool.query(`
       SELECT 
-        (SELECT COUNT(*) FROM products) as products,
-        (SELECT COUNT(*) FROM leads) as leads,
-        (SELECT COUNT(*) FROM quick_enquiries) as quick_enquiries,
-        (SELECT COALESCE(SUM(id), 0) FROM leads WHERE status = 'Converted') as revenue,
-        (SELECT COUNT(*) FROM products WHERE stock <= 10) as lowStock,
-        (SELECT COUNT(*) FROM leads WHERE status = 'Pending') as pendingOrders
+        (SELECT COUNT(*) FROM products) as totalProducts,
+        (SELECT COUNT(*) FROM categories) as totalCategories,
+        (SELECT COUNT(*) FROM leads) as totalInquiries,
+        (SELECT COUNT(*) FROM staff) as totalStaff,
+        (SELECT COALESCE(SUM(final_price), 0) FROM sales) as totalRevenue,
+        (SELECT COUNT(*) FROM sales) as totalOrders,
+        (SELECT COUNT(*) FROM products WHERE stock <= 10) as lowStockAlerts,
+        (SELECT 
+            CASE 
+              WHEN (SELECT COUNT(*) FROM leads) = 0 THEN 0 
+              ELSE ROUND(((SELECT COUNT(*) FROM sales) / (SELECT COUNT(*) FROM leads)) * 100, 1) 
+            END
+        ) as conversionRate
     `);
     return res.json(stats);
   } catch (err) {
     return res.status(500).json({ error: "Analytics Offline" });
+  }
+});
+
+// New Endpoint for Chart Visualization
+app.get('/api/admin/charts/sales-overview', async (req, res) => {
+  try {
+    // Weekly Sales (Last 7 Days)
+    const [weeklySales] = await pool.query(`
+      SELECT 
+        DATE_FORMAT(created_at, '%a') as day,
+        SUM(final_price) as revenue,
+        COUNT(*) as orders
+      FROM sales 
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+      GROUP BY day, DATE(created_at)
+      ORDER BY DATE(created_at) ASC
+    `);
+
+    // Top Selling Products
+    const [topProducts] = await pool.query(`
+      SELECT 
+        p.name,
+        COUNT(s.id) as sales_count,
+        SUM(s.final_price) as total_revenue
+      FROM sales s
+      JOIN leads l ON s.lead_id = l.id
+      JOIN products p ON l.product_id = p.id
+      GROUP BY p.id
+      ORDER BY sales_count DESC
+      LIMIT 5
+    `);
+
+    return res.json({ 
+      weeklySales,
+      topProducts
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Chart data failure" });
   }
 });
 
@@ -788,6 +932,180 @@ app.get('{*path}', (req, res) => {
     res.sendFile(indexPath);
   } else {
     res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
+  }
+});
+
+app.get('/api/customers', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM customers ORDER BY id DESC');
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Customer retrieval failed" });
+  }
+});
+
+app.post('/api/customers', async (req, res) => {
+  const { name, email, phone, company, address, location, type } = req.body;
+  try {
+    const [result] = await pool.query(
+      'INSERT INTO customers (name, email, phone, company, address, location, type) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [name, email, phone, company, address, location, type || 'Farmer']
+    );
+    await logActivity(`Network Node Synchronized: ${name} (${type})`);
+    return res.status(201).json({ id: result.insertId, name, type });
+  } catch (err) {
+    return res.status(500).json({ error: "Synchronization failed" });
+  }
+});
+
+app.put('/api/customers/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE customers SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Customer Node ${status.toUpperCase()} (ID: ${req.params.id})`);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Status update failed" });
+  }
+});
+
+app.get('/api/orders', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT o.*, c.name as customer_name, c.location, s.name as salesman_name
+      FROM orders o
+      LEFT JOIN customers c ON o.customer_id = c.id
+      LEFT JOIN staff s ON o.salesman_id = s.id
+      ORDER BY o.id DESC
+    `);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Order retrieval failed" });
+  }
+});
+
+app.put('/api/orders/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE orders SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Order Status Calibration: ${status} (ID: ${req.params.id})`);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Order status update failed" });
+  }
+});
+
+app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
+  try {
+    const salesmanId = req.params.id;
+    const [[stats]] = await pool.query(`
+      SELECT 
+        (SELECT COUNT(*) FROM orders WHERE salesman_id = ? AND DATE(created_at) = CURDATE()) as todayOrders,
+        (SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE salesman_id = ? AND DATE(created_at) = CURDATE()) as todaySales,
+        (SELECT COUNT(*) FROM customers WHERE assigned_salesman_id = ?) as totalCustomers,
+        (SELECT COUNT(*) FROM leads WHERE assigned_to = ? AND status = 'assigned') as newLeads,
+        (SELECT COUNT(*) FROM tasks WHERE assigned_to = ? AND status = 'Pending') as pendingFollowups,
+        (SELECT COALESCE(MAX(target_amount), 50000) FROM sales_targets WHERE salesman_id = ? ORDER BY id DESC LIMIT 1) as monthlyTarget
+    `, [salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId]);
+
+    // Calculate achievement %
+    const [[achievement]] = await pool.query(`
+       SELECT COALESCE(SUM(total_amount), 0) as currentSales 
+       FROM orders 
+       WHERE salesman_id = ? AND MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())
+    `, [salesmanId]);
+
+    const targetNum = parseFloat(stats.monthlyTarget) || 50000;
+    const currentNum = parseFloat(achievement.currentSales) || 0;
+    const achievementPercent = Math.min(Math.round((currentNum / targetNum) * 100), 100);
+
+    return res.json({
+      ...stats,
+      targetAchievement: achievementPercent
+    });
+  } catch (err) {
+    return res.status(500).json({ error: "Sales vitals offline" });
+  }
+});
+
+app.get('/api/salesman/:id/leads', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM leads WHERE assigned_to = ? ORDER BY id DESC', [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Lead retrieval failed" });
+  }
+});
+
+app.get('/api/salesman/:id/customers', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM customers WHERE assigned_salesman_id = ? ORDER BY id DESC', [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Customer retrieval failed" });
+  }
+});
+
+app.post('/api/field-visits', async (req, res) => {
+  const { salesman_id, customer_id, check_in, check_out, notes, location } = req.body;
+  try {
+    await pool.query(
+      'INSERT INTO field_visits (salesman_id, customer_id, check_in, check_out, notes, location) VALUES (?, ?, ?, ?, ?, ?)',
+      [salesman_id, customer_id, check_in, check_out, notes, location]
+    );
+    await logActivity(`Field Visit Synchronized: (Salesman: ${salesman_id}, Customer: ${customer_id})`);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Visit synchronization failed" });
+  }
+});
+
+app.get('/api/salesman/:id/payments', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT p.*, c.name as customer_name 
+      FROM payments p 
+      JOIN customers c ON p.customer_id = c.id 
+      WHERE p.salesman_id = ? 
+      ORDER BY p.id DESC
+    `, [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Ledger retrieval failed" });
+  }
+});
+
+app.post('/api/payments', async (req, res) => {
+  const { salesman_id, customer_id, amount, method, notes } = req.body;
+  try {
+    await pool.query(
+      'INSERT INTO payments (salesman_id, customer_id, amount, method, notes) VALUES (?, ?, ?, ?, ?)',
+      [salesman_id, customer_id, amount, method, notes]
+    );
+    await logActivity(`Payment Recorded: ₹${amount} (Salesman: ${salesman_id}, Customer: ${customer_id})`);
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Payment synchronization failed" });
+  }
+});
+
+app.get('/api/salesman/:id/tasks', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM tasks WHERE assigned_to = ? ORDER BY due_date ASC', [req.params.id]);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json({ error: "Directive retrieval failed" });
+  }
+});
+
+app.put('/api/tasks/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE tasks SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Task Intelligence Updated: ID ${req.params.id} -> ${status}`);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Task update refusal" });
   }
 });
 

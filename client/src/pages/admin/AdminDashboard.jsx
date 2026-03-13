@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Users, Package, IndianRupee, Database, 
+  IndianRupee, Database, ShoppingBag, Target, PieChart,
   Truck, AlertCircle, TrendingUp, History, 
   Plus, Trash2, Globe, Activity, Layers, BarChart3,
-  Bell, X, MessageSquare, Phone, Building2, MapPin, Mail, ExternalLink
+  Bell, X, MessageSquare, Phone, Building2, MapPin, Mail, ExternalLink,
+  ChevronUp, ChevronDown, Monitor, Smartphone
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -15,9 +16,11 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({ 
-    revenue: 0, leads: 0, lowStock: 0, products: 0, 
-    productList: [] 
+    totalProducts: 0, totalInquiries: 0, totalRevenue: 0, 
+    totalCustomers: 0, totalOrders: 0, lowStockAlerts: 0,
+    conversionRate: 0, totalCategories: 0, totalStaff: 0
   });
+  const [chartData, setChartData] = useState({ weeklySales: [], topProducts: [] });
   const [activities, setActivities] = useState([]);
   const [liveLeads, setLiveLeads] = useState([]);
   const [staff, setStaff] = useState([]); 
@@ -30,119 +33,35 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // WhatsApp Config
-  const DEFAULT_ADMIN_WHATSAPP = "919181395595"; 
-
-  const handleNotifClick = (leadId) => {
-    const readNotifs = JSON.parse(localStorage.getItem('readNotifs') || '[]');
-    if (!readNotifs.includes(leadId)) {
-      readNotifs.push(leadId);
-      localStorage.setItem('readNotifs', JSON.stringify(readNotifs));
-    }
-
-    setNotifications(prev => prev.filter(n => n.id !== leadId));
-    setShowNotifPanel(false);
-    setHighlightedLeadId(leadId);
-    setActiveTab('leads');
-    setTimeout(() => setHighlightedLeadId(null), 6000);
-
-    toast({ 
-      title: "Lead Located", 
-      description: `Viewing synchronized data for Inquiry #${leadId}` 
-    });
-  };
-
-  const salesData = [
-    { name: 'Mon', sales: 4000 }, { name: 'Tue', sales: 3000 },
-    { name: 'Wed', sales: 2000 }, { name: 'Thu', sales: 2780 },
-    { name: 'Fri', sales: 1890 }, { name: 'Sat', sales: 2390 },
-    { name: 'Sun', sales: 3490 },
-  ];
-
-  useEffect(() => {
-    const syncData = () => {
-      fetchGlobalData();
-      fetchLiveLeads();
-      fetchStaff();
-    };
-    syncData();
-    const interval = setInterval(syncData, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
   const fetchGlobalData = async () => {
     try {
-      const statsRes = await API.get('/admin/stats');
-      setStats(statsRes.data);
-      setActivities([
-        { id: 1, action: "New Lead Synchronized", user: "System", time: "Just Now" },
-        { id: 2, action: "Stock Threshold Alert", user: "Inventory", time: "2h ago" }
+      const [statsRes, chartRes] = await Promise.all([
+        API.get('/admin/stats'),
+        API.get('/admin/charts/sales-overview').catch(() => ({ data: { weeklySales: [], topProducts: [] } }))
       ]);
+      setStats(statsRes.data);
+      setChartData(chartRes.data);
+      
+      const logs = await API.get('/admin/activities');
+      setActivities(logs.data.slice(0, 5).map((l, i) => ({
+        id: i, action: l.action, user: l.user, time: new Date(l.created_at).toLocaleTimeString()
+      })));
     } catch (err) {
       console.error("Sync Error:", err.message);
     }
   };
 
-  const fetchLiveLeads = async () => {
-    try {
-      const res = await API.get('/leads');
-      setLiveLeads(res.data);
-
-      const readNotifs = JSON.parse(localStorage.getItem('readNotifs') || '[]');
-      const pendingLeads = res.data.filter(l => l.status === 'Pending' && !readNotifs.includes(l.id));
-      
-      const newNotifs = pendingLeads
-        .slice(0, 5)
-        .map(l => ({
-          id: l.id,
-          title: 'New B2B Enquiry',
-          desc: `${l.customer_name} from ${l.company || 'Individual'} has submitted an enquiry.`,
-          time: new Date(l.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }));
-      setNotifications(newNotifs);
-
-    } catch (err) {
-      console.error("Pipeline Sync Error:", err);
-    }
-  };
-
-  const fetchStaff = async () => {
-    try {
-      const res = await API.get('/staff');
-      setStaff(res.data);
-    } catch (err) {
-      console.error("Staff Connectivity Offline");
-    }
-  };
-
-  const handleAssign = async (id, staffId) => {
-    try {
-      await API.put(`/leads/${id}/assign`, { staff_id: staffId });
-      toast({ title: "Salesman Assigned", description: "Notification email dispatched to staff." });
-      fetchLiveLeads();
-    } catch (err) {
-      toast({ variant: "destructive", title: "Assignment Failed" });
-    }
-  };
-
-  const handleDeleteLead = async (id) => {
-    if (!window.confirm("Purge this inquiry permanently?")) return;
-    try {
-      await API.delete(`/leads/${id}`);
-      toast({ title: "Lead Purged" });
-      setLiveLeads(prev => prev.filter(l => l.id !== id));
-    } catch (err) {
-      toast({ variant: "destructive", title: "Delete Failed" });
-    }
-  };
-
-  const StatCard = ({ title, value, icon: Icon, colorClass }) => (
-    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-md">
-      <div className={`p-2.5 w-fit rounded-xl ${colorClass} mb-4`}><Icon size={18} /></div>
+  const StatCard = ({ title, value, icon: Icon, colorClass, trend = "" }) => (
+    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-lg">
+      <div className="flex justify-between items-start mb-4">
+        <div className={`p-3 rounded-2xl ${colorClass}`}><Icon size={20} /></div>
+        {trend && <span className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-lg">+{trend}%</span>}
+      </div>
       <div>
-        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-1">{title}</p>
-        <h2 className="text-2xl font-semibold text-slate-900 tracking-tight leading-none">
-          {title.includes('Revenue') && '₹'}{value}
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{title}</p>
+        <h2 className="text-3xl font-black text-slate-900 tracking-tighter leading-none">
+          {title.includes('Revenue') && '₹'}{typeof value === 'number' ? value.toLocaleString() : value}
+          {title.includes('Rate') && '%'}
         </h2>
       </div>
     </motion.div>
@@ -224,37 +143,96 @@ const AdminDashboard = () => {
         <AnimatePresence mode="wait">
           {activeTab === 'overview' && (
             <motion.div key="overview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8 flex-1">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard title="Total Products" value={stats.products} icon={Database} colorClass="bg-blue-50 text-blue-600" />
-                <StatCard title="Total Inquiries" value={stats.leads} icon={Users} colorClass="bg-purple-50 text-purple-600" />
-                <StatCard title="Total Revenue" value={stats.revenue} icon={IndianRupee} colorClass="bg-emerald-50 text-emerald-600" />
-                <StatCard title="Low Stock" value={stats.lowStock} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" />
+              {/* 8-STAT ENTERPRISE MATRIX */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <StatCard title="Total Products" value={stats.totalProducts} icon={Package} colorClass="bg-blue-50 text-blue-600" trend="12" />
+                <StatCard title="Total Categories" value={stats.totalCategories} icon={Layers} colorClass="bg-indigo-50 text-indigo-600" />
+                <StatCard title="Total Inquiries" value={stats.totalInquiries} icon={MessageSquare} colorClass="bg-purple-50 text-purple-600" trend="8" />
+                <StatCard title="Total Customers" value={stats.totalCustomers} icon={Users} colorClass="bg-orange-50 text-orange-600" trend="15" />
+                
+                <StatCard title="Total Orders" value={stats.totalOrders} icon={ShoppingBag} colorClass="bg-emerald-50 text-emerald-600" />
+                <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-green-600" trend="24" />
+                <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" />
+                <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" />
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm min-h-[400px] flex flex-col">
-                  <div className="flex justify-between items-center mb-6">
-                    <div><h3 className="text-sm font-semibold text-slate-800">Sales Performance</h3><p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Revenue Flow Analysis</p></div>
-                    <TrendingUp size={20} className="text-emerald-500" />
+                {/* 1. WEEKLY REVENUE CHART */}
+                <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm min-h-[450px] flex flex-col">
+                  <div className="flex justify-between items-center mb-8">
+                    <div>
+                      <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Weekly Revenue Flow</h3>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Performance Synchronization: Active</p>
+                    </div>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl">
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">Real-time Feed</span>
+                    </div>
                   </div>
                   <div className="flex-1 w-full min-h-[350px]">
-                    <ResponsiveContainer width="99%" height="100%">
-                      <AreaChart data={salesData}>
-                        <defs><linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/><stop offset="95%" stopColor="#10b981" stopOpacity={0}/></linearGradient></defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" /><XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8'}} dy={10} /><YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fill: '#94a3b8'}} /><Tooltip contentStyle={{borderRadius: '15px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} /><Area type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorSales)" />
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={chartData.weeklySales}>
+                        <defs>
+                          <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.15}/>
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{fontSize: 9, fontWeight: 900, fill: '#94a3b8'}} dy={10} />
+                        <YAxis axisLine={false} tickLine={false} tick={{fontSize: 9, fontWeight: 900, fill: '#94a3b8'}} />
+                        <Tooltip 
+                          contentStyle={{borderRadius: '20px', border: 'none', boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)', fontSize: '10px', fontWeight: 900}} 
+                        />
+                        <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={4} fillOpacity={1} fill="url(#colorRev)" />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
                 </div>
-                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col min-h-[400px]">
-                  <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest"><History size={16} /> Recent Activity Logs</div>
-                  <div className="space-y-6 overflow-y-auto max-h-[320px] pr-2 custom-scrollbar">
-                    {activities.map((act) => (
-                      <div key={act.id} className="flex items-start gap-4">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
-                        <div className="flex flex-col"><p className="text-xs font-bold text-slate-800 leading-tight">{act.action}</p><p className="text-[9px] text-slate-400 mt-1 uppercase font-black tracking-tighter">{act.user} • {act.time}</p></div>
-                      </div>
-                    ))}
+
+                {/* 2. TOP SELLING PRODUCTS & ACTIVITY */}
+                <div className="space-y-8 flex flex-col">
+                  {/* Market Dominance Card */}
+                  <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col flex-1">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-50 font-black uppercase tracking-widest text-[10px] text-slate-800 italic">
+                      <PieChart size={16} className="text-emerald-500" /> Market Dominance
+                    </div>
+                    <div className="space-y-6">
+                      {chartData.topProducts?.map((prod, idx) => (
+                        <div key={idx} className="flex justify-between items-center group">
+                          <div className="flex flex-col overflow-hidden">
+                            <span className="text-[10px] font-black text-slate-900 uppercase tracking-tight truncate w-32 group-hover:text-emerald-600 transition-colors">{prod.name}</span>
+                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{prod.sales_count} Sales</span>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[11px] font-black text-slate-900">₹{prod.total_revenue?.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                      {(!chartData.topProducts || chartData.topProducts.length === 0) && (
+                        <p className="text-[9px] text-slate-400 text-center py-10 uppercase tracking-widest">Awaiting Transaction Data</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Enhanced Activity Feed */}
+                  <div className="bg-[#1A1A1A] text-white p-8 rounded-[2.5rem] shadow-2xl flex flex-col flex-1">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5 font-black uppercase tracking-widest text-[10px] italic">
+                      <Activity size={16} className="text-emerald-400" /> Enterprise Logs
+                    </div>
+                    <div className="space-y-6 overflow-y-auto max-h-[220px] pr-2 custom-scrollbar">
+                      {activities.map((act, idx) => (
+                        <div key={idx} className="flex items-start gap-4 group">
+                          <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500/20 transition-all">
+                            <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                          </div>
+                          <div className="flex flex-col">
+                            <p className="text-[11px] font-bold text-white leading-tight mb-1">{act.action}</p>
+                            <p className="text-[8px] text-white/40 uppercase font-black tracking-widest italic">{act.user} • {act.time}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

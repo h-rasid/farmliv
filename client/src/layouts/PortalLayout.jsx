@@ -3,7 +3,9 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, Package, Users, LogOut, 
   Menu, X, Bell, User as UserIcon, Settings, Layers,
-  BarChart3, MessageSquare, FileText, History, HelpCircle
+  BarChart3, MessageSquare, FileText, History, HelpCircle,
+  Database, TrendingUp, ShoppingBag, Boxes, UserCircle,
+  Target, ShoppingCart, CreditCard, CheckCircle2, MapPin
 } from 'lucide-react';
 
 const PortalLayout = ({ children, role = 'admin' }) => {
@@ -17,20 +19,35 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   const dashboardPath = role === 'admin' ? '/admin-portal' : '/salesman-portal';
 
-  const menuItems = role === 'admin' ? [
-    { name: 'Dashboard', icon: LayoutDashboard, path: '/admin-portal' },
-    { name: 'Product Management', icon: Package, path: '/admin/products' },
-    { name: 'Category Management', icon: Layers, path: '/admin/categories' },
-    { name: 'Quote Engine', icon: FileText, path: '/admin/leads' }, 
-    { name: 'Inquiry Hub', icon: MessageSquare, path: '/admin/quick-enquiries' }, 
-    { name: 'Reports & Analytics', icon: BarChart3, path: '/admin/reports' },
-    { name: 'Staff Directory', icon: Users, path: '/admin/staff' },
-    { name: 'Admin Settings', icon: Settings, path: '/admin/settings' }
-  ] : [
-    { name: 'Sales Pipeline', icon: LayoutDashboard, path: '/salesman-portal' },
-    { name: 'Sales History', icon: History, path: '/salesman/history' },
-    { name: 'My Performance', icon: Settings, path: '/salesman/profile' }
-  ];
+  const getLinks = () => {
+    if (role === 'admin') {
+      return [
+        { id: 'dashboard', name: 'Console', icon: LayoutDashboard, path: '/admin-portal' },
+        { id: 'products', name: 'Product Registry', icon: Database, path: '/admin/products' },
+        { id: 'categories', name: 'Categories', icon: Layers, path: '/admin/categories' },
+        { id: 'leads', name: 'Sales Pipeline', icon: TrendingUp, path: '/admin/leads' },
+        { id: 'customers', name: 'Customer Network', icon: Users, path: '/admin/customers' },
+        { id: 'orders', name: 'Order Hub', icon: ShoppingBag, path: '/admin/orders' },
+        { id: 'inventory', name: 'Asset Track', icon: Boxes, path: '/admin/inventory' },
+        { id: 'staff', name: 'Executive Force', icon: UserCircle, path: '/admin/staff' },
+        { id: 'analytics', name: 'Intelligence', icon: BarChart3, path: '/admin/reports' },
+        { id: 'settings', name: 'Protocols', icon: Settings, path: '/admin/settings' },
+      ];
+    }
+    return [
+      { id: 'dashboard', name: 'Field Hub', icon: LayoutDashboard, path: '/salesman-portal' },
+      { id: 'leads', name: 'My Leads', icon: Target, path: '/salesman/leads' },
+      { id: 'customers', name: 'My Network', icon: Users, path: '/salesman/customers' },
+      { id: 'new-order', name: 'New Transaction', icon: ShoppingCart, path: '/salesman/new-order' },
+      { id: 'payments', name: 'Collection Hub', icon: CreditCard, path: '/salesman/payments' },
+      { id: 'visits', name: 'Visit Log', icon: MapPin, path: '/salesman/visits' },
+      { id: 'tasks', name: 'Directives', icon: CheckCircle2, path: '/salesman/tasks' },
+      { id: 'reports', name: 'Analytics', icon: BarChart3, path: '/salesman/reports' },
+      { id: 'profile', name: 'Security Hub', icon: UserIcon, path: '/salesman/profile' },
+    ];
+  };
+
+  const navLinks = getLinks();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -61,7 +78,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           </div>
 
           <nav className="flex-1 space-y-4">
-            {menuItems.map((item) => {
+            {navLinks.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <Link

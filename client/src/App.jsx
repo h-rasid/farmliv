@@ -29,15 +29,26 @@ const ProductManagementPage = React.lazy(() => import('./pages/admin/ProductMana
 const CategoryManagement = React.lazy(() => import('./pages/admin/CategoryManagement')); 
 const StaffManagementPage = React.lazy(() => import('./pages/admin/StaffManagementPage'));
 const InquiriesManagementPage = React.lazy(() => import('./pages/admin/InquiriesManagementPage'));
+const CustomerManagementPage = React.lazy(() => import('./pages/admin/CustomerManagementPage'));
+const OrderManagementPage = React.lazy(() => import('./pages/admin/OrderManagementPage'));
 const AdminSalesPerformance = React.lazy(() => import('./pages/admin/AdminSalesPerformance'));
 const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const ReportsAnalytics = React.lazy(() => import('./pages/admin/ReportsAnalytics')); 
+const InventoryManagementPage = React.lazy(() => import('./pages/admin/InventoryManagementPage'));
+const CRMHub = React.lazy(() => import('./pages/admin/CRMHub'));
 
-// ⭐ NEW: Lazy Load Quick Enquiry Hub (Popup Data)
 const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnquiryManagement'));
 
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
+const SalesLeadsPage = React.lazy(() => import('./pages/salesman/SalesLeadsPage'));
+const SalesCustomersPage = React.lazy(() => import('./pages/salesman/SalesCustomersPage'));
+const ProductCatalog = React.lazy(() => import('./pages/salesman/ProductCatalog'));
+const SalesOrderCreation = React.lazy(() => import('./pages/salesman/SalesOrderCreation'));
+const VisitManagementPage = React.lazy(() => import('./pages/salesman/VisitManagementPage'));
+const PaymentCollectionPage = React.lazy(() => import('./pages/salesman/PaymentCollectionPage'));
+const TaskManagementPage = React.lazy(() => import('./pages/salesman/TaskManagementPage'));
+const SalesmanReports = React.lazy(() => import('./pages/salesman/SalesmanReports'));
 const SalesHistory = React.lazy(() => import('./pages/salesman/SalesHistory'));
 const SalesmanLogin = React.lazy(() => import('./pages/salesman/SalesmanLogin'));
 const ProfileSettings = React.lazy(() => import('./pages/salesman/ProfileSettings'));
@@ -118,6 +129,10 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/products" element={<ProtectedRoute allowedRole="admin"><ProductManagementPage /></ProtectedRoute>} />
             <Route path="/admin/categories" element={<ProtectedRoute allowedRole="admin"><CategoryManagement /></ProtectedRoute>} />
             <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><InquiriesManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/customers" element={<ProtectedRoute allowedRole="admin"><CustomerManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute allowedRole="admin"><OrderManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/inventory" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
             
             <Route 
                 path="/admin/quick-enquiries" 
@@ -131,6 +146,14 @@ const AnimatedRoutes = ({ onOpenModal }) => {
 
             {/* SALESMAN PROTECTED ROUTES */}
             <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />
+            <Route path="/salesman/leads" element={<ProtectedRoute allowedRole="salesman"><SalesLeadsPage /></ProtectedRoute>} />
+            <Route path="/salesman/customers" element={<ProtectedRoute allowedRole="salesman"><SalesCustomersPage /></ProtectedRoute>} />
+            <Route path="/salesman/catalog" element={<ProtectedRoute allowedRole="salesman"><ProductCatalog /></ProtectedRoute>} />
+            <Route path="/salesman/new-order" element={<ProtectedRoute allowedRole="salesman"><SalesOrderCreation /></ProtectedRoute>} />
+            <Route path="/salesman/visits" element={<ProtectedRoute allowedRole="salesman"><VisitManagementPage /></ProtectedRoute>} />
+            <Route path="/salesman/payments" element={<ProtectedRoute allowedRole="salesman"><PaymentCollectionPage /></ProtectedRoute>} />
+            <Route path="/salesman/tasks" element={<ProtectedRoute allowedRole="salesman"><TaskManagementPage /></ProtectedRoute>} />
+            <Route path="/salesman/reports" element={<ProtectedRoute allowedRole="salesman"><SalesmanReports /></ProtectedRoute>} />
             <Route path="/salesman/history" element={<ProtectedRoute allowedRole="salesman"><SalesHistory /></ProtectedRoute>} />
             <Route path="/salesman/profile" element={<ProtectedRoute allowedRole="salesman"><ProfileSettings /></ProtectedRoute>} />
 
