@@ -26,8 +26,13 @@ app.use(cors({
       'https://www.farmliv.in',
       'http://farmliv.in',
       'http://www.farmliv.in',       
+      'https://farmliv.com',
+      'https://www.farmliv.com',
+      'http://farmliv.com',
+      'http://www.farmliv.com',
       /\.vercel\.app$/,
-      /farmliv\.in$/                  
+      /farmliv\.in$/,
+      /farmliv\.com$/
     ];
     if (!origin || allowedOrigins.some(item => (item instanceof RegExp ? item.test(origin) : item === origin))) {
       callback(null, true);
