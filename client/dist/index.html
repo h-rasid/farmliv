@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://res.cloudinary.com" />
+  <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
   <!-- Non-blocking Google Fonts -->
   <link
@@ -33,6 +35,30 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
+  <!-- Critical Path CSS: Brand Identity & First Paint -->
+  <style>
+    :root {
+      --primary: 46 125 50;
+      --background: 248 250 252;
+      --text-primary: 15 23 42;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+      background-color: rgb(var(--background));
+      color: rgb(var(--text-primary));
+      -webkit-font-smoothing: antialiased;
+    }
+    #root { opacity: 0; animation: fadeIn 0.4s ease-in forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Splash loader visibility */
+    .loader-root { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgb(var(--background)); z-index: 9999; }
+  </style>
+
+  <!-- Performance: Preload Critical Bundle -->
+  <link rel="modulepreload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsKaW1wb3J0IFJlYWN0RE9NIGZyb20gJ3JlYWN0LWRvbS9jbGllbnQnOwppbXBvcnQgQXBwIGZyb20gJy4vQXBwJzsgCmltcG9ydCAnLi9pbmRleC5jc3MnOwoKLy8gUGVyZm9ybWFuY2UgbW9uaXRvcmluZyBrbyBhYmhpIGtlIGxpeWUgaGF0YSBkZXRlIGhhaW4gdGFha2kgYXBwIGxvYWQgaG8gc2FrZQpSZWFjdERPTS5jcmVhdGVSb290KGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyb290JykpLnJlbmRlcigKICAgIDxSZWFjdC5TdHJpY3RNb2RlPgogICAgICAgIDxBcHAgLz4KICAgIDwvUmVhY3QuU3RyaWN0TW9kZT4KKTs=" />
+
   <!-- Self-healing script for cache recovery -->
   <script>
     window.addEventListener('error', function(e) {
@@ -44,8 +70,8 @@
       }
     }, true);
   </script>
-   <script type="module" crossorigin src="/assets/index-CXXYFG9I.js"></script>
-   <link rel="stylesheet" crossorigin href="/assets/index-DCOg0Qji.css">
+   <script type="module" crossorigin src="/assets/index-AF2pdvvD.js"></script>
+   <link rel="stylesheet" crossorigin href="/assets/index-Bi7OSNhW.css">
  </head>
  <body>
  <div id="root"></div>

@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://res.cloudinary.com" />
+  <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
   <!-- Non-blocking Google Fonts -->
   <link
@@ -32,6 +34,30 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+
+  <!-- Critical Path CSS: Brand Identity & First Paint -->
+  <style>
+    :root {
+      --primary: 46 125 50;
+      --background: 248 250 252;
+      --text-primary: 15 23 42;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+      background-color: rgb(var(--background));
+      color: rgb(var(--text-primary));
+      -webkit-font-smoothing: antialiased;
+    }
+    #root { opacity: 0; animation: fadeIn 0.4s ease-in forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Splash loader visibility */
+    .loader-root { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgb(var(--background)); z-index: 9999; }
+  </style>
+
+  <!-- Performance: Preload Critical Bundle -->
+  <link rel="modulepreload" href="/src/main.jsx" />
 
   <!-- Self-healing script for cache recovery -->
   <script>
