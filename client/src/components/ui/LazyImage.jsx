@@ -52,9 +52,10 @@ const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9'
       // c_limit ensures we don't upscale, but downscale for large originals
       let params = 'f_auto,q_auto:eco,c_limit';
       if (priority) {
-        params = 'f_auto,q_auto,c_limit,w_1920'; // High quality for hero images but capped at 1920px
+        // High quality but capped at 1440px for faster LCP (Most screens are 1366px or 1280px)
+        params = 'f_auto,q_auto:eco,c_limit,w_1440'; 
       } else {
-        params = 'f_auto,q_auto:eco,c_limit,w_1000'; // Eco quality and capped at 1000px for secondary images
+        params = 'f_auto,q_auto:eco,c_limit,w_800'; // Even smaller for secondary images
       }
       
       return url.replace('/upload/', `/upload/${params}/`);

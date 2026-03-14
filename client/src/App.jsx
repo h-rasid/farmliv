@@ -189,20 +189,14 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    // ⭐ Make non-blocking for better LCP
+    setInitialLoading(false);
+
     const initializeApp = async () => {
       console.log(`v1.0.4-prod - Checking Connection to: ${API_URL}`);
       
-      // Create a promise that rejects after a timeout
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Connection timeout')), 4000)
-      );
-
       try {
-        // Race the fetch against the timeout
-        const response = await Promise.race([
-          fetch(`${API_URL}/settings`),
-          timeoutPromise
-        ]);
+        const response = await fetch(`${API_URL}/settings`);
 
         if (response && response.ok) {
           const settings = await response.json();
@@ -219,9 +213,6 @@ function App() {
         }
       } catch (error) {
         console.warn("⚠️ Database Connection Sync Delayed or Failed:", error.message);
-      } finally {
-        // Force loader to disappear regardless of background success
-        setInitialLoading(false);
       }
     };
 
