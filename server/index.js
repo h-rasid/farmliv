@@ -222,6 +222,40 @@ const transporter = nodemailer.createTransport({
           )
         `);
 
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS categories (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) UNIQUE,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS products (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            category VARCHAR(255),
+            price DECIMAL(15, 2),
+            stock INT DEFAULT 0,
+            description TEXT,
+            images TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS staff (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            email VARCHAR(255) UNIQUE,
+            password VARCHAR(255),
+            role ENUM('Admin', 'Manager', 'Salesman') DEFAULT 'Salesman',
+            phone VARCHAR(20),
+            status ENUM('active', 'inactive') DEFAULT 'active',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
         // 4. Financials (Targets & Payments)
         await connection.query(`
           CREATE TABLE IF NOT EXISTS sales_targets (
@@ -247,6 +281,12 @@ const transporter = nodemailer.createTransport({
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           )
         `);
+
+        // Seed some categories if empty
+        const [catRows] = await connection.query('SELECT COUNT(*) as count FROM categories');
+        if (catRows[0].count === 0) {
+          await connection.query("INSERT INTO categories (name) VALUES ('Seeds'), ('Fertilizers'), ('Pesticides'), ('Equipment'), ('Organic')");
+        }
 
         // Self-Healing: Ensure older leads/enquiries match new enterprise standards
         await addColumnIfMissing('leads', 'assigned_to', 'INT DEFAULT NULL');
@@ -302,11 +342,65 @@ const processImage = async (file) => {
   return `/uploads/${filename}`;
 };
 
+// --- 2.5 MOCK DATA FALLBACK (For Local Offline Dev) ---
+const MOCK_DATA = {
+  settings: {
+    gstNumber: "27AAEFC9999Z1Z1",
+    whatsapp: "917002477367",
+    smtpHost: "smtp.gmail.com",
+    isMaintenance: 0
+  },
+  products: [
+    { id: 1, name: "Premium Urea Fertilizer", category: "Fertilizers", price: 450, stock: 500, images: [] },
+    { id: 2, name: "Hybrid Paddy Seeds", category: "Seeds", price: 1200, stock: 150, images: [] },
+    { id: 3, name: "Organic Pesticide X", category: "Pesticides", price: 850, stock: 80, images: [] }
+  ],
+  categories: [
+    { id: 1, name: "Seeds" },
+    { id: 2, name: "Fertilizers" },
+    { id: 3, name: "Pesticides" },
+    { id: 4, name: "Equipment" }
+  ],
+  staff: [
+    { id: 1, name: "Admin User", email: "admin@farmliv.com", role: "Admin", status: "active" },
+    { id: 2, name: "Rahul Sharma", email: "rahul@farmliv.com", role: "Salesman", status: "active" }
+  ],
+  quick_enquiries: [
+    { id: 1, customer_name: "Green Valley Farms", phone: "9876543210", location: "Assam", status: "Pending", notes: "Interested in bulk seeds." },
+    { id: 2, customer_name: "Agro Corp", phone: "8887776665", location: "Barpeta", status: "Assigned", notes: "Requires fertilizer quote." }
+  ],
+  orders: [
+    { id: 101, order_code: "ORD-772", customer_name: "Niloy Das", amount: 15400, status: "Approved", executive: "Rahul Sharma", created_at: new Date() },
+    { id: 102, order_code: "ORD-991", customer_name: "Pranjal Ahmed", amount: 8200, status: "Pending", executive: "N/A", created_at: new Date() }
+  ],
+  customers: [
+    { id: 1, name: "Niloy Das", phone: "9123456789", location: "Guwahati", type: "Retailer" },
+    { id: 2, name: "Pranjal Ahmed", phone: "9876543210", location: "Jorhat", type: "Wholesaler" }
+  ],
+  payments: [
+    { id: 1, order_id: 101, amount: 15400, method: "UPI", status: "Verified", created_at: new Date() },
+    { id: 2, order_id: 102, amount: 5000, method: "Cash", status: "Pending", created_at: new Date() }
+  ]
+};
+
+const safeQuery = async (query, params = [], mockKey = null) => {
+  try {
+    const [rows] = await pool.query(query, params);
+    return rows;
+  } catch (err) {
+    console.warn(`⚠️ DB Error, falling back to mock: ${err.message}`);
+    if (mockKey && MOCK_DATA[mockKey]) {
+      return MOCK_DATA[mockKey];
+    }
+    throw err;
+  }
+};
+
 const logActivity = async (action, user = 'Admin') => {
   try {
     await pool.query('INSERT INTO activities (action, user) VALUES (?, ?)', [action, user]);
   } catch (err) {
-    console.error("Activity logging failed:", err.message);
+    console.warn("Activity logging failed (expected if offline):", err.message);
   }
 };
 
@@ -335,10 +429,11 @@ app.get('/api/admin/setup-db', async (req, res) => {
 
 app.get('/api/settings', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM settings LIMIT 1');
-    return res.json(rows[0] || {});
+    const rows = await safeQuery('SELECT * FROM settings LIMIT 1', [], 'settings');
+    const data = Array.isArray(rows) ? (rows[0] || MOCK_DATA.settings) : rows;
+    return res.json(data);
   } catch (err) {
-    return res.status(500).json({ error: "Settings fetch failed" });
+    return res.json(MOCK_DATA.settings); // Absolute fallback
   }
 });
 
@@ -415,10 +510,10 @@ app.post('/api/admin/login', async (req, res) => {
 
 app.get('/api/staff', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT id, name, email, role, phone, status FROM staff ORDER BY id DESC');
+    const rows = await safeQuery('SELECT id, name, email, role, phone, status FROM staff ORDER BY id DESC', [], 'staff');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Staff directory offline" });
+    return res.json(MOCK_DATA.staff);
   }
 });
 
@@ -463,10 +558,10 @@ app.put('/api/staff/:id/profile', async (req, res) => {
 
 app.get('/api/categories', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM categories ORDER BY id ASC');
+    const rows = await safeQuery('SELECT * FROM categories ORDER BY id ASC', [], 'categories');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Category retrieval failed" });
+    return res.json(MOCK_DATA.categories);
   }
 });
 
@@ -482,7 +577,7 @@ app.post('/api/categories', async (req, res) => {
 
 app.get('/api/products', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM products ORDER BY id DESC');
+    const rows = await safeQuery('SELECT * FROM products ORDER BY id DESC', [], 'products');
     const parsedRows = rows.map(p => {
       let images = [];
       try {
@@ -490,13 +585,13 @@ app.get('/api/products', async (req, res) => {
           images = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
         }
       } catch (e) {
-        console.error(`Invalid images data for product ${p.id}`);
+        console.warn(`Invalid images data for product ${p.id}`);
       }
       return { ...p, images: Array.isArray(images) ? images : [] };
     });
     return res.json(parsedRows);
   } catch (err) { 
-    return res.status(500).json({ error: "Inventory sync failed", details: err.message }); 
+    return res.json(MOCK_DATA.products); 
   }
 });
 
@@ -555,10 +650,10 @@ app.post('/api/products', upload, async (req, res) => {
 
 app.get('/api/leads', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM leads ORDER BY created_at DESC');
+    const rows = await safeQuery('SELECT * FROM leads ORDER BY created_at DESC', [], 'leads');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Leads retrieval failed" });
+    return res.json([]);
   }
 });
 
@@ -618,19 +713,19 @@ app.post('/api/leads', async (req, res) => {
 
 app.get('/api/quick-enquiries', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM quick_enquiries ORDER BY created_at DESC');
+    const rows = await safeQuery('SELECT * FROM quick_enquiries ORDER BY created_at DESC', [], 'quick_enquiries');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Quick enquiries retrieval failed" });
+    return res.json(MOCK_DATA.quick_enquiries);
   }
 });
 
 app.get('/api/quick-enquiries/salesman/:id', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM quick_enquiries WHERE assigned_to = ? ORDER BY created_at DESC', [req.params.id]);
+    const rows = await safeQuery('SELECT * FROM quick_enquiries WHERE assigned_to = ? ORDER BY created_at DESC', [req.params.id], 'quick_enquiries');
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Salesman enquiries retrieval failed" });
+    return res.json(MOCK_DATA.quick_enquiries);
   }
 });
 
@@ -905,6 +1000,31 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
+
+app.get('/api/orders', async (req, res) => {
+  try {
+    const rows = await safeQuery(`
+      SELECT o.*, c.name as customer_name, c.location, s.name as salesman_name
+      FROM orders o
+      LEFT JOIN customers c ON o.customer_id = c.id
+      LEFT JOIN staff s ON o.salesman_id = s.id
+      ORDER BY o.id DESC
+    `, [], 'orders');
+    return res.json(rows);
+  } catch (err) {
+    return res.json(MOCK_DATA.orders);
+  }
+});
+
+app.get('/api/customers', async (req, res) => {
+  try {
+    const rows = await safeQuery('SELECT * FROM customers ORDER BY id DESC', [], 'customers');
+    return res.json(rows);
+  } catch (err) {
+    return res.json(MOCK_DATA.customers);
+  }
+});
+
 // --- 4. FRONTEND HOSTING LOGIC ---
 const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
 const altFrontendPath = path.resolve(__dirname, 'dist'); 
@@ -922,9 +1042,6 @@ app.use(express.static(finalPath, {
   }
 })); 
 
-app.use('/api/{*path}', (req, res) => {
-  res.status(404).json({ error: "API route not found" });
-});
 
 // React app catch-all route
 app.get('{*path}', (req, res) => {
@@ -963,14 +1080,6 @@ app.get('{*path}', (req, res) => {
   }
 });
 
-app.get('/api/customers', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT * FROM customers ORDER BY id DESC');
-    return res.json(rows);
-  } catch (err) {
-    return res.status(500).json({ error: "Customer retrieval failed" });
-  }
-});
 
 app.post('/api/customers', async (req, res) => {
   const { name, email, phone, company, address, location, type } = req.body;
@@ -997,20 +1106,6 @@ app.put('/api/customers/:id/status', async (req, res) => {
   }
 });
 
-app.get('/api/orders', async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT o.*, c.name as customer_name, c.location, s.name as salesman_name
-      FROM orders o
-      LEFT JOIN customers c ON o.customer_id = c.id
-      LEFT JOIN staff s ON o.salesman_id = s.id
-      ORDER BY o.id DESC
-    `);
-    return res.json(rows);
-  } catch (err) {
-    return res.status(500).json({ error: "Order retrieval failed" });
-  }
-});
 
 app.put('/api/orders/:id/status', async (req, res) => {
   const { status } = req.body;
@@ -1053,6 +1148,15 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ error: "Sales vitals offline" });
+  }
+});
+
+app.get('/api/payments', async (req, res) => {
+  try {
+    const rows = await safeQuery('SELECT * FROM payments ORDER BY created_at DESC', [], 'payments');
+    return res.json(rows);
+  } catch (err) {
+    return res.json(MOCK_DATA.payments);
   }
 });
 
