@@ -75,19 +75,14 @@ const ProductCard = ({ product }) => {
           </p>
           
           <div className="space-y-4 mt-auto">
-            {/* STOCK INFO */}
-            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-50 p-3 rounded-xl border border-gray-100">
-              <div className="flex items-center gap-2">
-                <Package className="w-4 h-4 text-[#2E7D32]" />
-                Stock: {product?.stock || '0'} Units
-              </div>
-              {product?.gsm && (
-                <div className="flex items-center gap-2 border-l border-gray-200 pl-3">
-                  <Tag className="w-4 h-4 text-[#2E7D32]" />
+            {product?.gsm && (
+              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-[#2E7D32] bg-green-50/50 p-3 rounded-xl border border-green-100">
+                <div className="flex items-center gap-2">
+                  <Tag className="w-4 h-4" />
                   {product.gsm} GSM
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* PRICE & ACTION */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">

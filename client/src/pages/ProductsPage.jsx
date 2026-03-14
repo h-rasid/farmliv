@@ -140,17 +140,11 @@ const ProductsPage = () => {
                         </p>
 
                         <div className="space-y-2 mb-6 mt-auto">
-                          <div className="flex items-center justify-between text-[11px] text-gray-600 bg-gray-50/80 p-2.5 rounded-lg border border-gray-100">
-                            <div className="flex items-center gap-2">
-                              <Package className="w-3.5 h-3.5 text-[#2E7D32]" />
-                              <span>Stock: <span className="font-bold text-gray-900">{p.stock || '0'} Units</span></span>
-                            </div>
                             {p.gsm && (
                               <span className="text-[10px] bg-white px-2 py-0.5 rounded border border-gray-200 font-bold text-[#2E7D32]">
                                 {p.gsm} GSM
                               </span>
                             )}
-                          </div>
                           
                           <div className="flex items-center gap-2 text-[11px] text-gray-600 bg-gray-50/80 p-2.5 rounded-lg border border-gray-100">
                             <Tag className="w-3.5 h-3.5 text-[#2E7D32]" />
