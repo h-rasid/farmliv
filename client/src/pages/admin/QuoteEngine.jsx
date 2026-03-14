@@ -85,6 +85,36 @@ const QuoteEngine = () => {
     // Handle submission logic here
   };
 
+  const handleDownloadQuote = (q) => {
+    const csvContent = `Quote ID,Customer,Date,Amount,Status\n${q.id},${q.customer},${q.date},${q.amount},${q.status}`;
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Farmliv_Quote_${q.id}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Download Initialized", description: `CSV document for ${q.id} generated successfully.` });
+  };
+
+  const handleShareQuote = (q) => {
+    const text = `Farmliv Enterprise Quote\nID: ${q.id}\nCustomer: ${q.customer}\nValuation: ₹${q.amount.toLocaleString()}\nStatus: ${q.status}`;
+    if (navigator.share) {
+      navigator.share({ title: `Quote ${q.id}`, text }).catch(() => {
+        navigator.clipboard.writeText(text);
+        toast({ title: "Copied to Clipboard", description: "Sharing metadata synchronized to clipboard." });
+      });
+    } else {
+      navigator.clipboard.writeText(text);
+      toast({ title: "Copied to Clipboard", description: "Sharing metadata synchronized to clipboard." });
+    }
+  };
+
+  const handleDeleteQuote = (id) => {
+    setQuotes(quotes.filter(q => q.id !== id));
+    toast({ title: "Quote Eliminated", description: `Node ${id} has been purged from history.`, variant: "destructive" });
+  };
+
   const StatusBadge = ({ status }) => {
     const styles = {
       Draft: "bg-slate-100 text-slate-600",
@@ -317,9 +347,27 @@ const QuoteEngine = () => {
                         </td>
                         <td className="px-10 py-6 text-right">
                            <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                              <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all"><Download size={14}/></button>
-                              <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-[#2E7D32] hover:text-white transition-all"><Share2 size={14}/></button>
-                              <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-rose-100 hover:text-rose-600 transition-all"><Trash2 size={14}/></button>
+                              <button 
+                                onClick={() => handleDownloadQuote(q)}
+                                className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all outline-none" 
+                                title="Download Quote"
+                              >
+                                <Download size={14}/>
+                              </button>
+                              <button 
+                                onClick={() => handleShareQuote(q)}
+                                className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-[#2E7D32] hover:text-white transition-all outline-none" 
+                                title="Share Quote"
+                              >
+                                <Share2 size={14}/>
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteQuote(q.id)}
+                                className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-rose-100 hover:text-rose-600 transition-all outline-none" 
+                                title="Purge Record"
+                              >
+                                <Trash2 size={14}/>
+                              </button>
                            </div>
                         </td>
                       </tr>
