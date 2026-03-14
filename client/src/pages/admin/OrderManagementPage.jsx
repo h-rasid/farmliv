@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingBag, Search, Filter, Truck, Package, 
   MapPin, Clock, CheckCircle2, XCircle, ChevronRight,
-  User, IndianRupee, Eye, ExternalLink
+  User, IndianRupee, Eye, ExternalLink, FileText
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -14,6 +15,7 @@ const OrderManagementPage = () => {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('All');
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOrders();
@@ -37,6 +39,26 @@ const OrderManagementPage = () => {
       toast({ title: `Order set to ${status}` });
     } catch (err) {
       toast({ variant: "destructive", title: "Protocol Error" });
+    }
+  };
+
+  const handleGenerateInvoice = async (order) => {
+    try {
+      const res = await API.post('/api/billing/invoices', {
+        order_id: order.id,
+        customer_id: order.customer_id,
+        subtotal: order.total_amount / 1.18, 
+        tax_amount: (order.total_amount / 1.18) * 0.18,
+        total_amount: order.total_amount,
+        due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      });
+      toast({ 
+        title: "Matrix Synchronized", 
+        description: `Invoice ${res.data.invoice_number} has been forged.` 
+      });
+      navigate('/admin/billing/invoices');
+    } catch (err) {
+      toast({ variant: "destructive", title: "Forge Error", description: "Internal fiscal node rejection." });
     }
   };
 
@@ -145,6 +167,13 @@ const OrderManagementPage = () => {
                           <option value="Delivered">Delivered</option>
                           <option value="Cancelled">Cancelled</option>
                         </select>
+                        <button 
+                          onClick={() => handleGenerateInvoice(order)}
+                          className="p-3 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-600 hover:text-white transition-all shadow-lg shadow-black/5"
+                          title="Generate Invoice"
+                        >
+                          <FileText size={16} />
+                        </button>
                         <button className="p-3 bg-slate-900 text-white rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-black/5">
                           <Eye size={16} />
                         </button>

@@ -39,6 +39,7 @@ const CRMHub = React.lazy(() => import('./pages/admin/CRMHub'));
 const QuoteEngine = React.lazy(() => import('./pages/admin/QuoteEngine'));
 
 const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnquiryManagement'));
+const BillingFinance = React.lazy(() => import('./pages/admin/BillingFinance'));
 
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
@@ -139,6 +140,10 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             <Route path="/admin/quote/history" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             
+            <Route path="/admin/billing" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
+            <Route path="/admin/billing/invoices" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
+            <Route path="/admin/billing/payments" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
+
             <Route 
                 path="/admin/quick-enquiries" 
                 element={<ProtectedRoute allowedRole="admin"><QuickEnquiryManagement /></ProtectedRoute>} 
