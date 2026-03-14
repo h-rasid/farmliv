@@ -15,14 +15,20 @@ const AdminSalesPerformance = () => {
     const fetchPerformanceData = async () => {
       try {
         setLoading(true);
-        // Backend se data lene ke liye
         const res = await axios.get(`${API_BASE}/api/sales`);
-        setSalesData(res.data);
+        
+        // Defensive Check: Ensure data is an array
+        const data = Array.isArray(res.data) ? res.data : [];
+        setSalesData(data);
 
-        const revenue = res.data.reduce((acc, curr) => acc + parseFloat(curr.amount), 0);
-        setStats({ totalRevenue: revenue, totalOrders: res.data.length });
+        const revenue = data.reduce((acc, curr) => acc + (parseFloat(curr.final_price || curr.amount) || 0), 0);
+        setStats({ 
+          totalRevenue: revenue, 
+          totalOrders: data.length 
+        });
       } catch (err) {
         console.error("Revenue Sync Error:", err);
+        setSalesData([]); // Fallback to empty array
       } finally {
         setLoading(false);
       }

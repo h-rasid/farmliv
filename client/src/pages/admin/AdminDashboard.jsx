@@ -39,11 +39,12 @@ const AdminDashboard = () => {
         API.get('/admin/stats'),
         API.get('/admin/charts/sales-overview').catch(() => ({ data: { weeklySales: [], topProducts: [] } }))
       ]);
-      setStats(statsRes.data);
-      setChartData(chartRes.data);
+      setStats(statsRes.data || {});
+      setChartData(chartRes.data || { weeklySales: [], topProducts: [] });
       
       const logs = await API.get('/admin/activities');
-      setActivities(logs.data.slice(0, 5).map((l, i) => ({
+      const logData = Array.isArray(logs.data) ? logs.data : [];
+      setActivities(logData.slice(0, 5).map((l, i) => ({
         id: i, action: l.action, user: l.user, time: new Date(l.created_at).toLocaleTimeString()
       })));
     } catch (err) {

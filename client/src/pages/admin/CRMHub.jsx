@@ -25,8 +25,8 @@ const CRMHub = () => {
 
   const fetchPipeline = async () => {
     try {
-      const res = await API.get('/admin/leads'); // Reusing existing leads for CRM
-      const data = res.data;
+      const res = await API.get('/admin/leads');
+      const data = Array.isArray(res.data) ? res.data : [];
       setPipeline({
         new: data.filter(l => l.status === 'new'),
         contacted: data.filter(l => l.status === 'contacted' || l.status === 'follow-up'),

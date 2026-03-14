@@ -849,6 +849,23 @@ app.post('/api/sales', async (req, res) => {
   }
 });
 
+app.get('/api/sales', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT s.*, l.customer_name, p.name as product_name, st.name as salesperson_name
+      FROM sales s
+      JOIN leads l ON s.lead_id = l.id
+      LEFT JOIN products p ON l.product_id = p.id
+      LEFT JOIN staff st ON s.salesman_id = st.id
+      ORDER BY s.created_at DESC
+    `);
+    return res.json(rows);
+  } catch (err) {
+    console.warn("Fetch sales fallback (offline):", err.message);
+    return res.json([]); // Balanced Resiliency
+  }
+});
+
 app.get('/api/sales/salesman/:id', async (req, res) => {
   try {
     const [rows] = await pool.query(`
