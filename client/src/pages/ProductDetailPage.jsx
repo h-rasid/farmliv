@@ -54,10 +54,17 @@ const ProductDetailPage = () => {
         setActiveImage(0);
 
         try {
-          const relatedRes = await API.get(`/products/related/${data.category}?exclude=${cleanId}`);
-          if (relatedRes.data && relatedRes.data.length > 0) {
-            setRelatedProducts(relatedRes.data);
+          if (data.category) {
+            const relatedRes = await API.get(`/products/related/${data.category}?exclude=${cleanId}`);
+            if (relatedRes.data && relatedRes.data.length > 0) {
+              setRelatedProducts(relatedRes.data);
+            } else {
+              const allRes = await API.get('/products');
+              const fallback = allRes.data.filter(p => String(p.id) !== String(cleanId)).slice(0, 4);
+              setRelatedProducts(fallback);
+            }
           } else {
+            // Fallback for missing category
             const allRes = await API.get('/products');
             const fallback = allRes.data.filter(p => String(p.id) !== String(cleanId)).slice(0, 4);
             setRelatedProducts(fallback);

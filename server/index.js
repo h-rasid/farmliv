@@ -648,7 +648,7 @@ app.get('/api/products/related/:category', async (req, res) => {
   const excludeId = req.query.exclude;
   try {
     const [rows] = await pool.query(
-      'SELECT id, name, images, retail_price as price, stock FROM products WHERE category = ? AND id != ? LIMIT 4',
+      'SELECT id, name, images, retail_price as price FROM products WHERE category = ? AND id != ? LIMIT 4',
       [category, excludeId]
     );
     return res.json(rows);
