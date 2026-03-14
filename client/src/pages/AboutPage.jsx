@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, Target, Users, TrendingUp, Globe, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import LazyImage from '@/components/ui/LazyImage';
 const AboutPage = () => {
   const values = [{
     icon: Award,
@@ -97,8 +98,8 @@ const AboutPage = () => {
               }} transition={{
                 duration: 0.6
               }} className="grid grid-cols-2 gap-4">
-                  <img src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483748/Polyfilm3_w5seiz.webp" alt="Modern agricultural manufacturing facility" className="rounded-xl shadow-lg" />
-                  <img src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483748/Polyfilm4_sc2eyg.webp" alt="Quality control in agricultural production" className="rounded-xl shadow-lg mt-8" />
+                  <LazyImage src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483748/Polyfilm3_w5seiz.webp" alt="Modern agricultural manufacturing facility" className="rounded-xl shadow-lg" />
+                  <LazyImage src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483748/Polyfilm4_sc2eyg.webp" alt="Quality control in agricultural production" className="rounded-xl shadow-lg mt-8" />
                 </motion.div>
               </div>
             </div>

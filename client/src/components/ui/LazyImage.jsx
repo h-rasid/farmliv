@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-const LazyImage = ({ src, alt, className, priority = false }) => {
+const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9' }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [error, setError] = useState(false); 
@@ -47,7 +47,17 @@ const LazyImage = ({ src, alt, className, priority = false }) => {
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       // Avoid double injection
       if (url.includes('f_auto') || url.includes('q_auto')) return url;
-      return url.replace('/upload/', '/upload/f_auto,q_auto/');
+      
+      // Advanced Optimization: Automatic format, dynamic quality (eco for savings), and responsive width
+      // c_limit ensures we don't upscale, but downscale for large originals
+      let params = 'f_auto,q_auto:eco,c_limit';
+      if (priority) {
+        params = 'f_auto,q_auto,c_limit,w_1920'; // High quality for hero images but capped at 1920px
+      } else {
+        params = 'f_auto,q_auto:eco,c_limit,w_1000'; // Eco quality and capped at 1000px for secondary images
+      }
+      
+      return url.replace('/upload/', `/upload/${params}/`);
     }
     return url;
   };
@@ -59,7 +69,7 @@ const LazyImage = ({ src, alt, className, priority = false }) => {
       ref={imgRef} 
       /* ⭐ 'will-change-transform' Hardware Acceleration provide karta hai */
       className={`relative overflow-hidden bg-slate-50 will-change-transform ${className}`}
-      style={{ aspectRatio: '16/9' }} 
+      style={{ aspectRatio }} 
     >
       {/* Placeholder Loading Spinner */}
       {!isLoaded && !error && (

@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, CheckCircle, FileCheck, Shield, ZoomIn, Star, Landmark, X } from 'lucide-react'; // ⭐ Added X icon
 import { motion, AnimatePresence } from 'framer-motion';
+import LazyImage from '@/components/ui/LazyImage';
 
 const CertificationPage = () => {
   // ⭐ NEW: State to handle zooming
@@ -112,11 +113,11 @@ const CertificationPage = () => {
                       className="relative aspect-[3/4] bg-gray-50 rounded-lg border-2 border-gray-100 p-4 shadow-sm group hover:shadow-xl hover:border-[#2E7D32]/30 transition-all duration-500 mb-8 cursor-zoom-in"
                     >
                       <div className="w-full h-full bg-white overflow-hidden rounded shadow-inner flex items-center justify-center">
-                        <img 
+                        <LazyImage 
                           src={cert.image} 
                           alt={cert.title} 
-                          className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
-                          onError={(e) => { e.target.src = 'https://via.placeholder.com/600x800?text=View+Certificate' }}
+                          className="w-full h-full"
+                          aspectRatio="3/4"
                         />
                       </div>
                       {/* Zoom Overlay */}
@@ -163,7 +164,7 @@ const CertificationPage = () => {
 
                 <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
                   <div className="rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white">
-                    <img src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet7_mt70ge.webp" alt="Farmliv Quality Inspection" className="w-full h-full object-cover" />
+                    <LazyImage src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet7_mt70ge.webp" alt="Farmliv Quality Inspection" className="w-full h-full" aspectRatio="4/3" />
                   </div>
                   <div className="absolute -bottom-6 -right-6 bg-[#2E7D32] text-white p-8 rounded-[2rem] shadow-xl">
                     <FileCheck size={40} />
