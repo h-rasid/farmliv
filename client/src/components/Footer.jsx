@@ -128,7 +128,7 @@ const Footer = () => {
                 <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-80" />
                 <span className="text-green-100 text-sm sm:text-base">
                   Farmliv Industries <br/>
-                  1st Floar Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146
+                  1st Floor Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146
                 </span>
               </li>
               <li className="flex items-center gap-3">
