@@ -29,7 +29,7 @@ const AboutSection = () => {
             </p>
             <p className="text-lg text-gray-700 mb-8 leading-relaxed">
              Our Commitment to Quality
-             Our state-of-the-art manufacturing facilities and ISO-certified processes ensure that every solution—from Leno bags to mulching films—meets stringent international quality standards. We are dedicated to empowering your business success through reliable product consistency, innovative engineering, and exceptional customer support.
+             Our state of the art manufacturing facilities and ISO-certified processes ensure that every solution from Leno bags to mulching films meets stringent international quality standards. We are dedicated to empowering your business success through reliable product consistency, innovative engineering, and exceptional customer support.
             </p>
 
             {/* Metrics */}
