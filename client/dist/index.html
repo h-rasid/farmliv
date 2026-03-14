@@ -35,24 +35,50 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <!-- Critical Path CSS: Brand Identity & First Paint -->
-  <style>
+  <script data-critical="true">
+    // High-priority CSS Interceptor: Converts Vite-injected CSS to non-blocking
+    (function() {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.tagName === 'LINK' && node.rel === 'stylesheet' && !node.hasAttribute('data-critical')) {
+              node.media = 'print';
+              node.onload = function() { 
+                this.media = 'all'; 
+                console.log('Farmliv: Styled bundle internalized.');
+              };
+            }
+          });
+        });
+      });
+      observer.observe(document.head, { childList: true });
+    })();
+  </script>
+
+  <!-- Critical Path CSS: Brand Identity & UI Stability -->
+  <style data-critical="true">
     :root {
       --primary: 46 125 50;
       --background: 248 250 252;
       --text-primary: 15 23 42;
     }
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       font-family: 'Poppins', -apple-system, system-ui, sans-serif;
       background-color: rgb(var(--background));
       color: rgb(var(--text-primary));
       -webkit-font-smoothing: antialiased;
     }
-    #root { opacity: 1; }
+    #root { opacity: 1; min-height: 100vh; }
     
-    /* Splash loader visibility - Deprecated for LCP performance */
-    .loader-root { display: none; }
+    /* Splash loader visibility - Deprecated */
+    .loader-root { display: none !important; }
+    
+    /* Prevent FOUC for critical elements */
+    h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 800; }
   </style>
 
   <!-- Performance Optimization: Asset connection establishment -->
@@ -70,8 +96,8 @@
       }
     }, true);
   </script>
-   <script type="module" crossorigin src="/assets/index-BOcWpkek.js"></script>
-   <link rel="stylesheet" crossorigin href="/assets/index-CCt1G8y5.css">
+   <script type="module" crossorigin src="/assets/index-DSqOmmNy.js"></script>
+   <link rel="stylesheet" crossorigin href="/assets/index-D7nmAZxi.css">
  </head>
  <body>
  <div id="root"></div>
