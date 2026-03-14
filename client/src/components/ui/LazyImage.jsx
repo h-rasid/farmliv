@@ -52,10 +52,10 @@ const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9'
       // c_limit ensures we don't upscale, but downscale for large originals
       let params = 'f_auto,q_auto:eco,c_limit';
       if (priority) {
-        // High quality but capped at 1440px for faster LCP (Most screens are 1366px or 1280px)
-        params = 'f_auto,q_auto:eco,c_limit,w_1440'; 
+        // High quality but capped at 1280px for faster LCP (Most mobile/tablet benchmarks)
+        params = 'f_auto,q_auto:eco,c_limit,w_1280'; 
       } else {
-        params = 'f_auto,q_auto:eco,c_limit,w_800'; // Even smaller for secondary images
+        params = 'f_auto,q_auto:eco,c_limit,w_800'; 
       }
       
       return url.replace('/upload/', `/upload/${params}/`);

@@ -49,20 +49,20 @@
       color: rgb(var(--text-primary));
       -webkit-font-smoothing: antialiased;
     }
-    #root { opacity: 0; animation: fadeIn 0.4s ease-in forwards; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    #root { opacity: 1; }
     
-    /* Splash loader visibility */
-    .loader-root { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgb(var(--background)); z-index: 9999; }
+    /* Splash loader visibility - Deprecated for LCP performance */
+    .loader-root { display: none; }
   </style>
 
-  <!-- Performance: Preload Critical Bundle -->
-  <link rel="modulepreload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsKaW1wb3J0IFJlYWN0RE9NIGZyb20gJ3JlYWN0LWRvbS9jbGllbnQnOwppbXBvcnQgQXBwIGZyb20gJy4vQXBwJzsgCmltcG9ydCAnLi9pbmRleC5jc3MnOwoKLy8gUGVyZm9ybWFuY2UgbW9uaXRvcmluZyBrbyBhYmhpIGtlIGxpeWUgaGF0YSBkZXRlIGhhaW4gdGFha2kgYXBwIGxvYWQgaG8gc2FrZQpSZWFjdERPTS5jcmVhdGVSb290KGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyb290JykpLnJlbmRlcigKICAgIDxSZWFjdC5TdHJpY3RNb2RlPgogICAgICAgIDxBcHAgLz4KICAgIDwvUmVhY3QuU3RyaWN0TW9kZT4KKTs=" />
+  <!-- Performance Optimization: Asset connection establishment -->
+  <link rel="preconnect" href="https://res.cloudinary.com" />
+  <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
   <!-- Self-healing script for cache recovery -->
   <script>
     window.addEventListener('error', function(e) {
-      if (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK' || (e.message && e.message.includes('module script'))) {
+      if (e.target.tagName === 'SCRIPT' || (e.message && (e.message.includes('module script') || e.message.includes('Unexpected token')))) {
         if (window.location.search.indexOf('clear_cache=') === -1) {
           console.warn('Farmliv: Asset loading error. Forcing cache bypass...');
           window.location.replace(window.location.pathname + '?clear_cache=' + new Date().getTime());
@@ -70,8 +70,8 @@
       }
     }, true);
   </script>
-   <script type="module" crossorigin src="/assets/index-FPxS0XYm.js"></script>
-   <link rel="stylesheet" crossorigin href="/assets/index-Bi7OSNhW.css">
+   <script type="module" crossorigin src="/assets/index-BOcWpkek.js"></script>
+   <link rel="stylesheet" crossorigin href="/assets/index-CCt1G8y5.css">
  </head>
  <body>
  <div id="root"></div>

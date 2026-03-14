@@ -12,9 +12,9 @@ import QuickEnquiryTab from './components/QuickEnquiryTab';
 
 // ⭐ Modal for Popup behavior
 import QuickEnquiryModal from './components/QuickEnquiryModal';
+import HomePage from './pages/HomePage';
 
 // --- Lazy Load Public Pages ---
-const HomePage = React.lazy(() => import('./pages/HomePage'));
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
 const ProductsPage = React.lazy(() => import('./pages/ProductsPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
