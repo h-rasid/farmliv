@@ -30,6 +30,13 @@ const ProductDetailPage = () => {
       try {
         setLoading(true);
         const cleanId = productId.split(':')[0].replace(/[^0-9]/g, ''); 
+
+        // Defensive check: prevent literal ':id' or empty ID from triggering a 404
+        if (!cleanId || cleanId === '' || productId.includes(':id')) {
+          console.warn('ProductDetailPage: Invalid productId detected, skipping fetch:', productId);
+          setLoading(false);
+          return;
+        }
         
         const response = await API.get(`/products/${cleanId}`);
         let data = response.data;
