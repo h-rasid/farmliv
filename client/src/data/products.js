@@ -11,7 +11,7 @@ export const productCategories = [
     name: 'Weed Control',
     icon: Sprout,
     image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773240650/weedmat1_meffjq.webp',
-    description: 'High-quality weed mats for effective suppression and soil health.'
+    description: 'High quality weed mats for effective suppression and soil health.'
   },
   /* 
   {
@@ -157,7 +157,7 @@ export const products = [
     id: 'prod-poly-film',
     name: 'Poly Film',
     category: 'greenhouse-materials',
-    description: 'Clear UV-stabilized poly film for greenhouse cladding.',
+    description: 'Clear UV stabilized poly film for greenhouse cladding.',
     fullDescription: 'High-quality Poly Film for greenhouses, offering excellent light transmission and durability. It protects crops from weather elements while creating an optimal microclimate for growth.',
     priceRange: '₹200 - ₹250 / kg',
     moq: '500 kg',
@@ -183,7 +183,7 @@ export const products = [
     id: 'prod-pond-liner',
     name: 'Pond Liner',
     category: 'water-management',
-    description: 'Heavy-duty geomembrane for water retention and aquaculture.',
+    description: 'Heavy duty geomembrane for water retention and aquaculture.',
     fullDescription: 'Our Pond Liners are made from high-density polyethylene (HDPE) to prevent water seepage. Ideal for farm ponds, aquaculture, and water reservoirs, ensuring efficient water storage.',
     priceRange: '₹40 - ₹80 / sqm',
     moq: '500 sqm',
