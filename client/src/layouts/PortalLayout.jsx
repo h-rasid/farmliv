@@ -148,7 +148,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         { 
           id: 'crm', name: 'CRM & Leads', icon: Target, path: '/admin/leads',
           submenu: [
-            { name: 'Lead Pipeline', path: '/admin/leads' },
+            { name: 'Request Quote', path: '/admin/leads' },
             { name: 'Quick Enquiries', path: '/admin/quick-enquiries' }
           ]
         },
@@ -256,7 +256,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                   <span className="text-2xl font-black italic tracking-tighter text-white uppercase">
                     Farmliv
                   </span>
-                  <span className="text-[8px] font-black text-green-300 uppercase tracking-[0.4em]">Admin Hub</span>
+                  <span className="text-[8px] font-black text-green-300 uppercase tracking-[0.4em]">Admin</span>
                 </div>
               </Link>
             )}
