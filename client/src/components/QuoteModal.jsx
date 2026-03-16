@@ -112,7 +112,7 @@ const QuoteModal = ({ isOpen, onClose, productName = '', productId = null }) => 
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="md:col-span-2">
-                      <label className={labelClasses}>Selected Asset</label>
+                      <label className={labelClasses}>Selected Product</label>
                       <input type="text" name="productName" value={productName} readOnly className={`${inputClasses} bg-gray-100 cursor-not-allowed`} />
                     </div>
 

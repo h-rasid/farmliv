@@ -112,7 +112,7 @@ const SalesRecordModal = ({ isOpen, onClose, onSuccess, recordToEdit = null }) =
             {/* Product Selection */}
             <div className="space-y-1.5">
               <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4 flex items-center gap-2">
-                <Package size={14} className="text-[#2E7D32]" /> Select Asset
+                <Package size={14} className="text-[#2E7D32]" /> Select Product
               </label>
               <select
                 required

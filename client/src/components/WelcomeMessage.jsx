@@ -30,7 +30,7 @@ const WelcomeMessage = () => {
         </div>
         <p className="text-sm font-bold text-white leading-relaxed max-w-md tracking-tight">
           Welcome to the <span className="text-[#2E7D32]">Command Center</span>. 
-          Describe the feature or asset you wish to generate, and I'll handle the rest.
+          Describe the feature or product you wish to generate, and I'll handle the rest.
         </p>
       </motion.div>
     </div>

@@ -327,6 +327,7 @@ const transporter = nodemailer.createTransport({
         await connection.query("UPDATE products SET description = REPLACE(description, 'Node Assets', 'Products')");
         await connection.query("UPDATE products SET description = REPLACE(description, 'Node Asset', 'Product')");
         await connection.query("UPDATE products SET description = REPLACE(description, 'Node', '')");
+        await connection.query("UPDATE products SET description = REPLACE(description, '-', ' ')");
         await connection.query("UPDATE products SET description = REPLACE(description, 'Assets', 'Products')");
         await connection.query("UPDATE products SET description = REPLACE(description, 'Asset', 'Product')");
         
