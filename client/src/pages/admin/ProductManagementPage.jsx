@@ -63,11 +63,11 @@ const ProductManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Purge this asset permanently?")) return;
+    if (!window.confirm("Purge this product permanently?")) return;
     try {
       await axios.delete(`${API_BASE}/api/products/${id}`);
       setProducts(products.filter(p => p.id !== id));
-      toast({ title: "Asset Purged Successfully" });
+      toast({ title: "Product Purged Successfully" });
     } catch (err) { 
       toast({ variant: "destructive", title: "Action Failed" }); 
     }
@@ -102,10 +102,10 @@ const ProductManagement = () => {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       if (editingProd) {
         await axios.put(`${API_BASE}/api/products/${editingProd.id}`, data, config);
-        toast({ title: "Asset Updated Successfully" });
+        toast({ title: "Product Updated Successfully" });
       } else {
         await axios.post(`${API_BASE}/api/products`, data, config);
-        toast({ title: "New Asset Deployed Ready" });
+        toast({ title: "New Product Deployed Ready" });
       }
       closeModal();
       fetchProducts();
@@ -135,7 +135,7 @@ const ProductManagement = () => {
             <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Enterprise Inventory</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 text-xs font-semibold hover:bg-emerald-700 transition-all shadow-lg active:scale-95">
-            <Plus size={18} /> Add New Asset
+            <Plus size={18} /> Add New Product
           </button>
         </div>
 
@@ -177,7 +177,7 @@ const ProductManagement = () => {
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={closeModal}>
               <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white w-full max-w-5xl rounded-[2.5rem] p-10 overflow-y-auto max-h-[90vh] shadow-2xl relative" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-10 pb-6 border-b">
-                  <h2 className="text-xl font-semibold text-slate-800">{editingProd ? 'Update Asset' : 'New Product Asset'}</h2>
+                  <h2 className="text-xl font-semibold text-slate-800">{editingProd ? 'Update Product' : 'New Product Item'}</h2>
                   <button onClick={closeModal} className="p-2 hover:bg-slate-50 rounded-full transition-all text-gray-400"><X size={24}/></button>
                 </div>
 
@@ -192,7 +192,7 @@ const ProductManagement = () => {
 
                   {/* ⭐ Optimized Description Box with Enter support */}
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">Asset Description</label>
+                    <label className="text-[10px] uppercase font-bold text-slate-400 ml-1">Product Description</label>
                     <textarea 
                       placeholder="Technical properties... (Press Enter for new line)" 
                       rows="6" 
@@ -231,7 +231,7 @@ const ProductManagement = () => {
 
                   <div className="flex gap-4">
                     <button type="submit" className="flex-1 bg-slate-900 text-white py-5 rounded-2xl font-semibold uppercase tracking-widest text-xs hover:bg-emerald-600 shadow-xl transition-all">
-                      {editingProd ? 'Commit Update' : 'Initialize Asset'}
+                      {editingProd ? 'Commit Update' : 'Initialize Product'}
                     </button>
                     <button type="button" onClick={closeModal} className="px-8 bg-slate-100 text-slate-600 py-5 rounded-2xl font-semibold uppercase tracking-widest text-xs hover:bg-slate-200 transition-all">Cancel</button>
                   </div>

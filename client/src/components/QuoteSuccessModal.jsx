@@ -48,8 +48,8 @@ const QuoteSuccessModal = ({ isOpen, onClose, quoteData }) => {
           <div className="p-10 space-y-6 bg-white">
             <div className="grid grid-cols-1 gap-4 bg-gray-50/50 p-6 rounded-[2rem] border border-gray-100">
               <div className="flex justify-between items-center border-b border-gray-100 pb-3">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Asset Name</span>
-                <span className="text-xs font-black text-gray-900 uppercase">{quoteData?.productName || 'Agricultural Asset'}</span>
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Product Name</span>
+                <span className="text-xs font-black text-gray-900 uppercase">{quoteData?.productName || 'Agricultural Product'}</span>
               </div>
               <div className="flex justify-between items-center border-b border-gray-100 pb-3">
                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Volume</span>

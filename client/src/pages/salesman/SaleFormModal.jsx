@@ -89,7 +89,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
             <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
                <div className="flex items-center gap-3 mb-2">
                   <Smartphone size={14} className="text-farmliv-green" />
-                  <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Product Node</p>
+                  <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Product Profile</p>
                </div>
                <p className="font-black text-gray-900 uppercase italic">{leadData?.product_name}</p>
             </div>

@@ -54,7 +54,7 @@ const SalesHistory = () => {
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Transaction ID</th>
                   <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Client</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Asset</th>
+                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Product</th>
                   <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Valuation</th>
                   <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Protocol</th>
                   <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Timestamp</th>

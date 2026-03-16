@@ -48,7 +48,7 @@ const ProductCatalog = () => {
         <header className="flex justify-between items-center mb-4">
           <div>
             <h1 className="text-2xl font-black tracking-tighter text-slate-900 italic uppercase">Catalog</h1>
-            <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">{filtered.length} Indexed Assets</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">{filtered.length} Indexed Products</p>
           </div>
           <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-[1.5rem] flex items-center justify-center">
              <Package size={24} />

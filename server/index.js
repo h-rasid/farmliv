@@ -324,11 +324,17 @@ const transporter = nodemailer.createTransport({
         await addColumnIfMissing('products', 'video', 'TEXT DEFAULT NULL');
 
         // --- 3. Terminology Cleanup (Migration) ---
-        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Assets', 'Assets')");
-        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Asset', 'Asset')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Assets', 'Products')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Asset', 'Product')");
         await connection.query("UPDATE products SET description = REPLACE(description, 'Node', '')");
-        await connection.query("UPDATE activities SET action = REPLACE(action, 'Node Assets', 'Assets')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Assets', 'Products')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Asset', 'Product')");
+        
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Node Assets', 'Products')");
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Node Asset', 'Product')");
         await connection.query("UPDATE activities SET action = REPLACE(action, 'Node', '')");
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Assets', 'Products')");
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Asset', 'Product')");
         
         // Add dummy logs if empty
         const [logRows] = await connection.query('SELECT COUNT(*) as count FROM activities');
@@ -695,11 +701,11 @@ app.post('/api/products', upload, async (req, res) => {
       [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl]
     );
 
-    await logActivity(`New Asset Deployed: ${name} (ID: ${result.insertId})`);
+    await logActivity(`New Product Deployed: ${name} (ID: ${result.insertId})`);
     return res.status(201).json({ id: result.insertId, success: true });
   } catch (err) {
-    console.warn("Asset creation fallback (offline):", err.message);
-    return res.status(201).json({ id: Date.now(), success: true, message: "Asset Logged in Offline Dossier" });
+    console.warn("Product creation fallback (offline):", err.message);
+    return res.status(201).json({ id: Date.now(), success: true, message: "Product Logged in Offline Dossier" });
   }
 });
 
@@ -744,8 +750,8 @@ app.put('/api/products/:id', upload, async (req, res) => {
       [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
     );
 
-    await logActivity(`Asset Updated: ${name} (ID: ${productId})`);
-    return res.json({ success: true, message: "Asset Synchronized Successfully" });
+    await logActivity(`Product Updated: ${name} (ID: ${productId})`);
+    return res.json({ success: true, message: "Product Synchronized Successfully" });
   } catch (err) {
     console.error(`❌ UPDATE FAILURE [Product ${productId}]:`, err.message);
     return res.status(500).json({ error: "Product update failed: " + err.message });
@@ -1193,7 +1199,7 @@ app.delete('/api/products/:id', async (req, res) => {
     await pool.query('DELETE FROM products WHERE id = ?', [req.params.id]);
     return res.json({ success: true });
   } catch (err) {
-    return res.status(500).json({ error: "Asset purge failed." });
+    return res.status(500).json({ error: "Product purge failed." });
   }
 });
 
@@ -1263,7 +1269,7 @@ app.get('{*path}', (req, res) => {
       return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
     }
     
-    return res.status(404).send('Asset not found');
+    return res.status(404).send('Product not found');
   }
 
   const indexPath = path.join(finalPath, 'index.html');

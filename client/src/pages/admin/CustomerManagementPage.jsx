@@ -54,7 +54,7 @@ const CustomerManagementPage = () => {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">Customer Hub</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Managing Global Agri-Network Assets</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Managing Global Agri-Network</p>
           </div>
           <button className="flex items-center gap-2 px-8 py-4 bg-emerald-600 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-green-900/20">
             <UserPlus size={16} /> Onboard Customer

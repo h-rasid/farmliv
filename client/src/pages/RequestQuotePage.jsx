@@ -58,7 +58,7 @@ const RequestQuotePage = () => {
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">
                   <ShieldCheck className="w-6 h-6 text-[#2E7D32] mb-4 group-hover:scale-110 transition-transform" />
                   <p className="font-black text-gray-900 uppercase text-xs tracking-widest">ISO 9001:2026</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Asset Node</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Enterprise Unit</p>
                 </div>
                 
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">

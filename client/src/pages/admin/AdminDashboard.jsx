@@ -287,7 +287,7 @@ const AdminDashboard = () => {
           {activeTab === 'products' && (
             <motion.div key="products" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex-1">
               <div className="flex justify-between items-center mb-8">
-                <h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Asset Matrix</h3>
+                <h3 className="text-sm font-bold uppercase tracking-tight text-slate-800 italic">Inventory Matrix</h3>
                 <button 
                   onClick={() => navigate('/admin/products')} 
                   className="flex items-center gap-2 px-6 py-3 bg-[#2E7D32] text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#1B5E20] transition-all shadow-xl shadow-green-900/10"
@@ -299,7 +299,7 @@ const AdminDashboard = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                      <th className="py-4 px-2">Asset Identity</th>
+                      <th className="py-4 px-2">Product Identity</th>
                       <th className="py-4 px-2">Category</th>
                       <th className="py-4 px-2">Stock Threshold</th>
                       <th className="py-4 px-2 text-right">Unit Price</th>

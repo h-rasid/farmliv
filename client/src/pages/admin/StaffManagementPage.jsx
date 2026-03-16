@@ -70,7 +70,7 @@ const StaffManagementPage = () => {
   // ⭐ ROLE PERMISSIONS LOGIC
   const getRolePermissions = (role) => {
     if (role === 'admin') return ["Full System Access", "Financial Control", "HR Oversight"];
-    return ["Lead Management", "Asset View Only", "Order Status Update"];
+    return ["Lead Management", "Product View Only", "Order Status Update"];
   };
 
   return (

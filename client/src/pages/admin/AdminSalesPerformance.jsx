@@ -71,7 +71,7 @@ const AdminSalesPerformance = () => {
             <thead className="bg-gray-50 text-[10px] font-black uppercase text-gray-400">
               <tr>
                 <th className="px-10 py-6">Customer</th>
-                <th className="px-10 py-6">Asset</th>
+                <th className="px-10 py-6">Product</th>
                 <th className="px-10 py-6">Amount</th>
                 <th className="px-10 py-6">Salesman</th>
               </tr>

@@ -154,7 +154,7 @@ const QuoteForm = () => {
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Required';
     if (!formData.phone.trim()) newErrors.phone = 'Required';
-    if (!formData.productId) newErrors.productId = 'Select Asset';
+    if (!formData.productId) newErrors.productId = 'Select Product';
     if (!formData.quantity) newErrors.quantity = 'Invalid Volume';
     if (!formData.deliveryLocation.trim()) newErrors.deliveryLocation = 'Required';
     

@@ -71,7 +71,7 @@ const InventoryManagementPage = () => {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">Inventory Control</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Supply Chain Asset Monitoring</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Supply Chain Monitoring</p>
           </div>
           <div className="flex gap-4">
             <button 
@@ -130,7 +130,7 @@ const InventoryManagementPage = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-50/50">
-                  <th className="py-6 px-8">Asset Profile</th>
+                  <th className="py-6 px-8">Product Profile</th>
                   <th className="py-6 px-4">Classification</th>
                   <th className="py-6 px-4 text-center">Current Vol..</th>
                   <th className="py-6 px-4">Threshold status</th>
@@ -315,7 +315,7 @@ const InventoryManagementPage = () => {
                 <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-100">
                   <div>
                     <h2 className="text-2xl font-black italic uppercase tracking-tighter">New Stock Unit</h2>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Initialize Supply Chain Asset</p>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Initialize Inventory Item</p>
                   </div>
                   <button onClick={() => setIsModalOpen(false)} className="p-3 hover:bg-slate-50 rounded-2xl transition-all text-slate-400"><X size={24}/></button>
                 </div>
@@ -336,7 +336,7 @@ const InventoryManagementPage = () => {
                     };
                     setProducts(prev => [newAsset, ...prev]);
 
-                    toast({ title: "Stock Unit Deployed", description: "Asset has been synchronized with the HQ Warehouse." });
+                    toast({ title: "Stock Unit Deployed", description: "Product has been synchronized with the HQ Warehouse." });
                     setIsModalOpen(false);
                   } catch (err) {
                     toast({ variant: "destructive", title: "Deployment Failed" });
@@ -344,7 +344,7 @@ const InventoryManagementPage = () => {
                 }} className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                       <label className="text-[10px] uppercase font-black text-slate-400 ml-1">Asset Identity</label>
+                       <label className="text-[10px] uppercase font-black text-slate-400 ml-1">Item Identity</label>
                        <input 
                          type="text" 
                          placeholder="E.g. Plastic Crate XT" 

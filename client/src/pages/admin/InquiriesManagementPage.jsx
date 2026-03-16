@@ -184,7 +184,7 @@ const InquiriesManagementPage = () => {
                 </div>
 
                 <div className="flex-1 min-w-[200px]">
-                  <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Asset Request</p>
+                  <p className="text-[9px] text-slate-400 uppercase font-black tracking-widest mb-1">Inquiry Request</p>
                   <p className="text-xs font-bold uppercase text-slate-700">{lead.product_name || 'General Query'}</p>
                 </div>
 
@@ -260,7 +260,7 @@ const InquiriesManagementPage = () => {
                   {/* ⭐ Added: Order Specification (Product & Quantity) */}
                   <div className="grid grid-cols-2 gap-8 p-6 bg-emerald-50/50 rounded-2xl border border-emerald-100">
                     <div>
-                      <p className="text-[9px] uppercase font-black text-emerald-600 tracking-widest">Asset Requested</p>
+                      <p className="text-[9px] uppercase font-black text-emerald-600 tracking-widest">Product Requested</p>
                       <p className="text-xs font-bold text-slate-900 mt-1 uppercase">{selectedLead.product_name || 'General Inquiry'}</p>
                     </div>
                     <div>

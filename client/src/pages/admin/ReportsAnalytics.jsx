@@ -124,7 +124,7 @@ const ReportsAnalytics = () => {
             <p className="text-[10px] text-slate-400 font-medium mt-2">Verified enterprise partners</p>
           </div>
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Top Asset</p>
+            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Top Product</p>
             <h2 className="text-2xl font-semibold text-slate-900 tracking-tighter truncate">{stats?.topProduct}</h2>
             <p className="text-[10px] text-blue-500 font-medium mt-2">Highest demand volume</p>
           </div>

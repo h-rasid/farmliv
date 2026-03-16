@@ -107,7 +107,7 @@ const ProductDetailPage = () => {
         <X className="w-16 h-16 text-red-500 mx-auto mb-6" />
         <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Product Offline</h2>
         <p className="text-sm text-gray-500 mt-4 leading-relaxed font-medium">
-          Product Asset <span className="text-red-600 font-bold">#{productId}</span> could not be synchronized.
+          Product Item <span className="text-red-600 font-bold">#{productId}</span> could not be synchronized.
         </p>
       </div>
       <Link to="/products" className="text-[#2E7D32] font-black uppercase text-xs tracking-widest flex items-center gap-2">
@@ -199,7 +199,7 @@ const ProductDetailPage = () => {
                   Description
                 </h3>
                 <p className="text-sm text-gray-700 leading-relaxed font-medium whitespace-pre-wrap relative z-10">
-                  {product.description || "Inquiry pending for technical asset documentation."}
+                  {product.description || "Inquiry pending for technical documentation."}
                 </p>
               </div>
 
@@ -238,7 +238,7 @@ const ProductDetailPage = () => {
           {/* 1. TECHNICAL SPECIFICATIONS */}
           <ProductDescriptionSection product={product} />
 
-          {/* 2. SIMILAR ASSETS (MODERN PORTRAIT GRID) */}
+          {/* 2. SIMILAR PRODUCTS (MODERN PORTRAIT GRID) */}
           {relatedProducts.length > 0 && (
             <div className="mt-28 mb-16">
               <div className="flex items-center justify-between gap-4 mb-12">

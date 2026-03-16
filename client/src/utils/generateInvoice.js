@@ -39,7 +39,7 @@ export const generateInvoice = (data) => {
   doc.text(`FR-${Math.floor(1000 + Math.random() * 9000)}`, 140, 62);
 
   // --- 3. Product Table ---
-  const tableColumn = ["Asset Description", "Quantity", "Unit Price", "Total Amount"];
+  const tableColumn = ["Product Description", "Quantity", "Unit Price", "Total Amount"];
   const unitPrice = (parseFloat(data.amount) / parseFloat(data.quantity)).toFixed(2);
   const tableRows = [
     [
