@@ -313,6 +313,15 @@ const transporter = nodemailer.createTransport({
         await addColumnIfMissing('leads', 'updated_at', 'DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
         await addColumnIfMissing('quick_enquiries', 'assigned_to', 'INT DEFAULT NULL');
         await addColumnIfMissing('quick_enquiries', 'notes', 'TEXT DEFAULT NULL');
+        
+        // --- 2. Products Table Self-Healing ---
+        await addColumnIfMissing('products', 'sub_category', 'VARCHAR(255) DEFAULT NULL');
+        await addColumnIfMissing('products', 'moq', 'VARCHAR(255) DEFAULT NULL');
+        await addColumnIfMissing('products', 'gsm', 'VARCHAR(255) DEFAULT NULL');
+        await addColumnIfMissing('products', 'durability', 'VARCHAR(255) DEFAULT NULL');
+        await addColumnIfMissing('products', 'hsn', 'VARCHAR(255) DEFAULT NULL');
+        await addColumnIfMissing('products', 'status', 'VARCHAR(50) DEFAULT "Active"');
+        await addColumnIfMissing('products', 'video', 'TEXT DEFAULT NULL');
 
         // Add dummy logs if empty
         const [logRows] = await connection.query('SELECT COUNT(*) as count FROM activities');
@@ -697,18 +706,32 @@ app.put('/api/products/:id', upload, async (req, res) => {
     const [[existing]] = await pool.query('SELECT images, video FROM products WHERE id = ?', [productId]);
     if (!existing) return res.status(404).json({ error: "Product not found" });
 
-    let images = existing.images ? JSON.parse(existing.images) : [];
+    // Robust Image Parsing
+    let images = [];
+    try {
+      if (existing.images) {
+        images = typeof existing.images === 'string' ? JSON.parse(existing.images) : existing.images;
+      }
+    } catch (e) {
+      console.warn("Existing images parse failed, resetting for product:", productId);
+    }
+
     if (req.files && req.files['images']) {
       images = await Promise.all(req.files['images'].map(file => processImage(file)));
     }
     
     let videoUrl = existing.video;
     if (req.files && req.files['video']) {
-      const videoFilename = `video_${Date.now()}${path.extname(req.files['video'][0].originalname)}`;
-      fs.writeFileSync(path.join(uploadDir, videoFilename), req.files['video'][0].buffer);
-      videoUrl = `/uploads/${videoFilename}`;
+      try {
+        const videoFilename = `video_${Date.now()}${path.extname(req.files['video'][0].originalname)}`;
+        fs.writeFileSync(path.join(uploadDir, videoFilename), req.files['video'][0].buffer);
+        videoUrl = `/uploads/${videoFilename}`;
+      } catch (e) {
+        console.error("Video upload failed:", e.message);
+      }
     }
 
+    // Enterprise Mapping Sync: sub_category (DB) vs subCategory (Frontend)
     await pool.query(
       'UPDATE products SET name=?, description=?, category=?, sub_category=?, moq=?, gsm=?, durability=?, hsn=?, stock=?, status=?, images=?, video=? WHERE id=?',
       [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
@@ -717,8 +740,8 @@ app.put('/api/products/:id', upload, async (req, res) => {
     await logActivity(`Asset Updated: ${name} (ID: ${productId})`);
     return res.json({ success: true, message: "Asset Synchronized Successfully" });
   } catch (err) {
-    console.error("Update error:", err);
-    return res.status(500).json({ error: "Product update failed" });
+    console.error(`❌ UPDATE FAILURE [Product ${productId}]:`, err.message);
+    return res.status(500).json({ error: "Product update failed: " + err.message });
   }
 });
 
