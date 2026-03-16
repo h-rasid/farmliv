@@ -687,6 +687,41 @@ app.post('/api/products', upload, async (req, res) => {
   }
 });
 
+// Update Product (PUT)
+app.put('/api/products/:id', upload, async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const { name, description, category, subCategory, moq, gsm, durability, hsn, stock, status } = req.body;
+    
+    // Fetch existing product to preserve images/video if not updated
+    const [[existing]] = await pool.query('SELECT images, video FROM products WHERE id = ?', [productId]);
+    if (!existing) return res.status(404).json({ error: "Product not found" });
+
+    let images = existing.images ? JSON.parse(existing.images) : [];
+    if (req.files && req.files['images']) {
+      images = await Promise.all(req.files['images'].map(file => processImage(file)));
+    }
+    
+    let videoUrl = existing.video;
+    if (req.files && req.files['video']) {
+      const videoFilename = `video_${Date.now()}${path.extname(req.files['video'][0].originalname)}`;
+      fs.writeFileSync(path.join(uploadDir, videoFilename), req.files['video'][0].buffer);
+      videoUrl = `/uploads/${videoFilename}`;
+    }
+
+    await pool.query(
+      'UPDATE products SET name=?, description=?, category=?, sub_category=?, moq=?, gsm=?, durability=?, hsn=?, stock=?, status=?, images=?, video=? WHERE id=?',
+      [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
+    );
+
+    await logActivity(`Asset Updated: ${name} (ID: ${productId})`);
+    return res.json({ success: true, message: "Asset Synchronized Successfully" });
+  } catch (err) {
+    console.error("Update error:", err);
+    return res.status(500).json({ error: "Product update failed" });
+  }
+});
+
 app.get('/api/leads', async (req, res) => {
   try {
     const rows = await safeQuery('SELECT * FROM leads ORDER BY created_at DESC', [], 'leads');
