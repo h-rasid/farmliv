@@ -1,103 +1,202 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PortalLayout from '../../layouts/PortalLayout';
 import API from '@/utils/axios';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Receipt, Calendar, User, IndianRupee, 
-  Package, History, Search, Filter 
+  Package, History, Search, Filter,
+  ArrowUpRight, Download, MoreHorizontal,
+  ChevronRight, CheckCircle2, Clock, 
+  Activity, ShieldCheck, Globe
 } from 'lucide-react';
 
 const SalesHistory = () => {
   const [sales, setSales] = useState([]);
+  const [filteredSales, setFilteredSales] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('farmliv_salesman'));
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all');
 
-  useEffect(() => {
-    if (user?.id) fetchSalesHistory();
-  }, [user?.id]);
-
-  const fetchSalesHistory = async () => {
+  const fetchSalesHistory = useCallback(async () => {
     try {
+      const userStr = localStorage.getItem('farmliv_salesman');
+      if (!userStr) return;
+      const user = JSON.parse(userStr);
       const cleanId = user.id.toString().split(':')[0];
       const res = await API.get(`/sales/salesman/${cleanId}`);
       setSales(res.data);
+      setFilteredSales(res.data);
     } catch (err) {
       console.error("History Error:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchSalesHistory();
+  }, [fetchSalesHistory]);
+
+  useEffect(() => {
+    let result = sales.filter(s => 
+      s.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      s.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      s.id.toString().includes(searchTerm)
+    );
+    
+    if (filterType !== 'all') {
+      result = result.filter(s => s.payment_method?.toLowerCase() === filterType);
+    }
+    
+    setFilteredSales(result);
+  }, [searchTerm, filterType, sales]);
 
   return (
     <PortalLayout role="salesman">
-      <div className="max-w-[1600px] mx-auto p-8 space-y-12 animate-in fade-in duration-700">
+      <div className="flex flex-col gap-10">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-gray-100 pb-10">
-          <div className="space-y-4">
-            <h1 className="text-6xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">
-              Sales <span className="text-emerald-600">History</span>
-            </h1>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.5em]">Executive Accomplishments Hub</p>
-          </div>
-          <div className="bg-white px-8 py-4 rounded-3xl border border-gray-100 flex items-center gap-4 shadow-sm">
-             <History className="text-emerald-600" size={20} />
-             <span className="text-sm font-black text-gray-900 uppercase italic">Total Conversions: {sales.length}</span>
-          </div>
+        {/* HEADER SECTION */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+           <div className="flex flex-col">
+              <h1 className="text-4xl font-black text-slate-900 tracking-tighter italic uppercase leading-none">Transaction Archives</h1>
+              <div className="flex items-center gap-2 mt-3">
+                 <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Verified Field Conversions</span>
+              </div>
+           </div>
+           <div className="flex items-center gap-4">
+              <div className="bg-white px-6 py-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+                 <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                    <History size={16} />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Operational Yield</span>
+                    <span className="text-base font-black italic">{sales.length} Verified Entries</span>
+                 </div>
+              </div>
+              <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-slate-900/20 active:scale-95 transition-all flex items-center gap-2">
+                 <Download size={16} /> Ledger Export
+              </button>
+           </div>
         </div>
 
-        {/* Sales Table */}
-        <div className="bg-white rounded-[3rem] shadow-2xl border border-gray-50 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Transaction ID</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Client</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Product</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Valuation</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Protocol</th>
-                  <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-widest text-gray-400">Timestamp</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {sales.map((sale) => (
-                  <tr key={sale.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="px-10 py-8">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
-                          <Receipt size={16} />
-                        </div>
-                        <span className="text-[11px] font-black text-gray-900 tracking-wider">TRX-{sale.id.toString().padStart(6, '0')}</span>
-                      </div>
-                    </td>
-                    <td className="px-10 py-8">
-                      <span className="text-sm font-black text-gray-800 uppercase italic">{sale.customer_name}</span>
-                    </td>
-                    <td className="px-10 py-8 text-[11px] font-bold text-gray-500 uppercase">{sale.product_name}</td>
-                    <td className="px-10 py-8">
-                      <div className="flex items-center gap-1 text-emerald-600 font-black italic text-lg">
-                        <IndianRupee size={16} /> {parseFloat(sale.final_price).toLocaleString()}
-                      </div>
-                    </td>
-                    <td className="px-10 py-8">
-                      <span className="px-4 py-2 bg-gray-100 rounded-full text-[9px] font-black uppercase tracking-widest text-gray-500">
-                        {sale.payment_method}
-                      </span>
-                    </td>
-                    <td className="px-10 py-8 text-[10px] font-bold text-gray-400">
-                      {new Date(sale.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {sales.length === 0 && !loading && (
-            <div className="py-20 text-center text-gray-300 uppercase text-[10px] font-black tracking-widest">
-              No transactions recorded in history
-            </div>
-          )}
+        {/* CONTROLS */}
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+           <div className="relative flex-1 group w-full">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={20} />
+              <input 
+                 type="text" 
+                 placeholder="Identify Transaction ID or Entity Node..." 
+                 value={searchTerm}
+                 onChange={(e) => setSearchTerm(e.target.value)}
+                 className="w-full pl-16 pr-6 py-5 bg-white border border-slate-100 rounded-[2rem] text-sm focus:ring-4 ring-emerald-500/5 outline-none shadow-sm transition-all font-medium"
+              />
+           </div>
+           <div className="flex gap-2 p-1.5 bg-white border border-slate-100 rounded-[2rem] shadow-sm w-full md:w-auto">
+              {['all', 'cash', 'credit', 'online'].map((t) => (
+                 <button
+                    key={t}
+                    onClick={() => setFilterType(t)}
+                    className={`px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${filterType === t ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'}`}
+                 >
+                    {t}
+                 </button>
+              ))}
+           </div>
+        </div>
+
+        {/* DATA MATRIX */}
+        <div className="bg-white rounded-[3.5rem] border border-slate-100 shadow-xl overflow-hidden group">
+           <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                 <thead>
+                    <tr className="bg-slate-50/50 border-b border-slate-100">
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Vector ID</th>
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Merchant Entity</th>
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Asset Profile</th>
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Valuation</th>
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Protocol</th>
+                       <th className="px-10 py-8 text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Timestamp</th>
+                       <th className="px-10 py-8 text-right text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Auth</th>
+                    </tr>
+                 </thead>
+                 <tbody className="divide-y divide-slate-50">
+                    <AnimatePresence mode="popLayout">
+                       {filteredSales.map((sale) => (
+                          <motion.tr 
+                             layout
+                             initial={{ opacity: 0 }}
+                             animate={{ opacity: 1 }}
+                             exit={{ opacity: 0 }}
+                             key={sale.id} 
+                             className="hover:bg-slate-50/50 transition-colors group/row"
+                          >
+                             <td className="px-10 py-8">
+                                <div className="flex items-center gap-4">
+                                   <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover/row:bg-emerald-50 group-hover/row:text-emerald-600 transition-all border border-transparent group-hover/row:border-emerald-100">
+                                      <Receipt size={18} />
+                                   </div>
+                                   <div className="flex flex-col">
+                                      <span className="text-[11px] font-black text-slate-900 tracking-wider">TRX-{sale.id.toString().padStart(6, '0')}</span>
+                                      <span className="text-[9px] font-bold text-slate-400 uppercase">Internal Log</span>
+                                   </div>
+                                </div>
+                             </td>
+                             <td className="px-10 py-8 text-sm font-black text-slate-800 uppercase italic tracking-tight">{sale.customer_name}</td>
+                             <td className="px-10 py-8">
+                                <div className="flex items-center gap-2">
+                                   <Package size={14} className="text-slate-300" />
+                                   <span className="text-[11px] font-bold text-slate-500 uppercase">{sale.product_name}</span>
+                                </div>
+                             </td>
+                             <td className="px-10 py-8">
+                                <div className="flex items-center gap-1 text-emerald-600 font-black italic text-lg leading-none">
+                                   <IndianRupee size={16} /> 
+                                   {parseFloat(sale.final_price).toLocaleString()}
+                                </div>
+                             </td>
+                             <td className="px-10 py-8">
+                                <div className="flex items-center gap-2">
+                                   <div className={`w-1.5 h-1.5 rounded-full ${sale.payment_method === 'cash' ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                      {sale.payment_method}
+                                   </span>
+                                </div>
+                             </td>
+                             <td className="px-10 py-8 text-[10px] font-bold text-slate-400 whitespace-nowrap">
+                                {new Date(sale.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                             </td>
+                             <td className="px-10 py-8 text-right">
+                                <div className="inline-flex p-2 items-center justify-center text-emerald-500 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors">
+                                   <ShieldCheck size={18} />
+                                </div>
+                             </td>
+                          </motion.tr>
+                       ))}
+                    </AnimatePresence>
+                 </tbody>
+              </table>
+           </div>
+           
+           {(filteredSales.length === 0 && !loading) && (
+              <div className="py-32 flex flex-col items-center justify-center text-center px-10">
+                 <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-6">
+                    <Activity size={40} />
+                 </div>
+                 <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mb-2">Null Data Vector</h3>
+                 <p className="max-w-xs text-[10px] font-black text-slate-400 uppercase tracking-widest leading-loose">No transactional records detected within the specified search parameters.</p>
+              </div>
+           )}
+
+           {loading && (
+              <div className="py-32 flex items-center justify-center">
+                 <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" />
+                 </div>
+              </div>
+           )}
         </div>
       </div>
     </PortalLayout>
