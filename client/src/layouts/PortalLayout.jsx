@@ -30,10 +30,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     setNotifLoading(true);
     try {
       const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
-        API.get('/admin/activities'),
-        API.get('/admin/stats'),
-        API.get('/leads'),
-        API.get('/quick-enquiries')
+        API.get('admin/activities'),
+        API.get('admin/stats'),
+        API.get('leads'),
+        API.get('quick-enquiries')
       ]);
 
       const alerts = [];
