@@ -26,8 +26,8 @@ const ProductCatalog = () => {
         API.get('/products'),
         API.get('/categories')
       ]);
-      setProducts(prodRes.data);
-      setCategories(catRes.data);
+      setProducts(Array.isArray(prodRes.data) ? prodRes.data : []);
+      setCategories(Array.isArray(catRes.data) ? catRes.data : []);
     } catch (err) {
       toast({ variant: "destructive", title: "Catalog Sync Interrupted" });
     } finally {
@@ -39,7 +39,8 @@ const ProductCatalog = () => {
     fetchCatalog();
   }, [fetchCatalog]);
 
-  const filtered = products.filter(p => {
+  const filtered = (Array.isArray(products) ? products : []).filter(p => {
+    if (!p) return false;
     const matchesSearch = p.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           p.sku?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || p.category_id === parseInt(selectedCategory);

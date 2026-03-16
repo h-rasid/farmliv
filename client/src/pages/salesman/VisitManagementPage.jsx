@@ -24,7 +24,7 @@ const VisitManagementPage = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const res = await API.get(`/salesman/${user.id}/customers`);
-      setCustomers(res.data);
+      setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Node Retrieval Offline");
     } finally {
@@ -122,7 +122,10 @@ const VisitManagementPage = () => {
                </div>
 
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {customers.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase())).map(c => (
+                  {(Array.isArray(customers) ? customers : []).filter(c => {
+                    if (!c) return false;
+                    return c.name.toLowerCase().includes(searchTerm.toLowerCase());
+                  }).map(c => (
                      <motion.button 
                        whileHover={{ y: -5 }}
                        key={c.id}

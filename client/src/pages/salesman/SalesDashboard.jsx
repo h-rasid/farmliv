@@ -38,7 +38,13 @@ const SalesDashboard = () => {
       const user = JSON.parse(userStr);
 
       const res = await API.get(`/salesman/${user.id}/dashboard-stats`);
-      setStats(prev => ({ ...prev, ...res.data }));
+      const data = res.data || {};
+      setStats(prev => ({ 
+        ...prev, 
+        ...data,
+        weeklyTrend: Array.isArray(data.weeklyTrend) ? data.weeklyTrend : [],
+        recentActivities: Array.isArray(data.recentActivities) ? data.recentActivities : []
+      }));
       setLastSync(new Date());
     } catch (err) {
       console.warn("Vitals Out of Sync:", err.message);
@@ -177,7 +183,7 @@ const SalesDashboard = () => {
                
                <div className="h-[300px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                     <AreaChart data={stats.weeklyTrend}>
+                     <AreaChart data={Array.isArray(stats.weeklyTrend) ? stats.weeklyTrend : []}>
                         <defs>
                            <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
@@ -269,7 +275,7 @@ const SalesDashboard = () => {
                </div>
                
                <div className="space-y-6">
-                  {stats.recentActivities.map((log, idx) => (
+                  {(Array.isArray(stats.recentActivities) ? stats.recentActivities : []).map((log, idx) => (
                     <motion.div 
                       key={idx}
                       initial={{ opacity: 0, x: 20 }}

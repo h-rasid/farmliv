@@ -24,8 +24,9 @@ const SalesHistory = () => {
       const user = JSON.parse(userStr);
       const cleanId = user.id.toString().split(':')[0];
       const res = await API.get(`/sales/salesman/${cleanId}`);
-      setSales(res.data);
-      setFilteredSales(res.data);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setSales(data);
+      setFilteredSales(data);
     } catch (err) {
       console.error("History Error:", err);
     } finally {
@@ -38,11 +39,13 @@ const SalesHistory = () => {
   }, [fetchSalesHistory]);
 
   useEffect(() => {
-    let result = sales.filter(s => 
-      s.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.id.toString().includes(searchTerm)
-    );
+    const data = Array.isArray(sales) ? sales : [];
+    let result = data.filter(s => {
+      if (!s) return false;
+      return s.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             s.product_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             s.id?.toString().includes(searchTerm);
+    });
     
     if (filterType !== 'all') {
       result = result.filter(s => s.payment_method?.toLowerCase() === filterType);

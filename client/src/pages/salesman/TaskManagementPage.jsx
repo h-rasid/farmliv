@@ -21,7 +21,7 @@ const TaskManagementPage = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const res = await API.get(`/salesman/${user.id}/tasks`);
-      setTasks(res.data);
+      setTasks(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Directive Sync Failed");
     } finally {
@@ -36,7 +36,7 @@ const TaskManagementPage = () => {
   const handleCompleteTask = async (id) => {
     try {
       await API.put(`/tasks/${id}/status`, { status: 'completed' });
-      setTasks(prev => prev.map(t => t.id === id ? { ...t, status: 'completed' } : t));
+      setTasks(prev => (Array.isArray(prev) ? prev : []).map(t => t.id === id ? { ...t, status: 'completed' } : t));
       toast({ title: "Objective Secured", description: "Protocol goal achieved and synchronized." });
     } catch (err) {
        toast({ variant: "destructive", title: "Protocol Refusal" });
@@ -50,8 +50,9 @@ const TaskManagementPage = () => {
     return { color: 'text-blue-500', bg: 'bg-blue-50', icon: Flag };
   };
 
-  const pendingTasks = tasks.filter(t => t.status !== 'completed');
-  const completedTasks = tasks.filter(t => t.status === 'completed');
+  const data = Array.isArray(tasks) ? tasks : [];
+  const pendingTasks = data.filter(t => t && t.status !== 'completed');
+  const completedTasks = data.filter(t => t && t.status === 'completed');
   const completionRate = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
 
   return (

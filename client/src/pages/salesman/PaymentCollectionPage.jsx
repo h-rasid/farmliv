@@ -37,9 +37,9 @@ const PaymentCollectionPage = () => {
         API.get(`/salesman/${user.id}/payments`),
         API.get(`/salesman/${user.id}/customers`)
       ]);
-      setPayments(payRes.data);
-      setFilteredPayments(payRes.data);
-      setCustomers(custRes.data);
+      setPayments(Array.isArray(payRes.data) ? payRes.data : []);
+      setFilteredPayments(Array.isArray(payRes.data) ? payRes.data : []);
+      setCustomers(Array.isArray(custRes.data) ? custRes.data : []);
     } catch (err) {
       console.error("Ledger Desync");
     } finally {
@@ -52,10 +52,12 @@ const PaymentCollectionPage = () => {
   }, [fetchData]);
 
   useEffect(() => {
-    let result = payments.filter(p => 
-      p.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.id.toString().includes(searchTerm)
-    );
+    const data = Array.isArray(payments) ? payments : [];
+    let result = data.filter(p => {
+      if (!p) return false;
+      return p.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             p.id.toString().includes(searchTerm);
+    });
 
     if (filterMethod !== 'all') {
       result = result.filter(p => p.method?.toLowerCase() === filterMethod.toLowerCase());
@@ -79,7 +81,7 @@ const PaymentCollectionPage = () => {
     }
   };
 
-  const totalCollected = payments.reduce((acc, curr) => acc + parseFloat(curr.amount || 0), 0);
+  const totalCollected = (Array.isArray(payments) ? payments : []).reduce((acc, curr) => acc + parseFloat(curr?.amount || 0), 0);
 
   return (
     <PortalLayout role="salesman">

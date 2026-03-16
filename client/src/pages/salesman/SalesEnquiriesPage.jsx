@@ -26,8 +26,9 @@ const SalesEnquiriesPage = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const res = await API.get(`/quick-enquiries/salesman/${user.id}`);
-      setEnquiries(res.data);
-      setFilteredEnquiries(res.data);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setEnquiries(data);
+      setFilteredEnquiries(data);
     } catch (err) {
       toast({ variant: "destructive", title: "Enquiry Feed Offline" });
     } finally {
@@ -40,11 +41,13 @@ const SalesEnquiriesPage = () => {
   }, [fetchEnquiries]);
 
   useEffect(() => {
-    let result = enquiries.filter(e => 
-      e.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      e.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      e.phone?.includes(searchTerm)
-    );
+    const data = Array.isArray(enquiries) ? enquiries : [];
+    let result = data.filter(e => {
+      if (!e) return false;
+      return e.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             e.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+             e.phone?.includes(searchTerm);
+    });
 
     if (filterStatus !== 'all') {
       result = result.filter(e => e.status?.toLowerCase() === filterStatus.toLowerCase());

@@ -23,7 +23,7 @@ const SalesCustomersPage = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const res = await API.get(`/salesman/${user.id}/customers`);
-      setCustomers(res.data);
+      setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Network Sync Failed:", err.message);
     } finally {
@@ -35,11 +35,15 @@ const SalesCustomersPage = () => {
     fetchCustomers();
   }, [fetchCustomers]);
 
-  const filtered = customers.filter(c => 
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.location?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = (Array.isArray(customers) ? customers : []).filter(c => {
+    if (!c) return false;
+    const name = c.name || "";
+    const company = c.company || "";
+    const location = c.location || "";
+    return name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           location.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <PortalLayout role="salesman">
