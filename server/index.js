@@ -1322,6 +1322,32 @@ app.put('/api/orders/:id/status', async (req, res) => {
   }
 });
 
+// Admin Analytics & Pulse
+app.get('/api/admin/activities', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 20');
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: "Activity pulse offline" });
+  }
+});
+
+app.get('/api/admin/stats', async (req, res) => {
+  try {
+    const [[stockAlerts]] = await pool.query('SELECT COUNT(*) as count FROM products WHERE stock <= min_stock');
+    const [[todayOrders]] = await pool.query('SELECT COUNT(*) as count FROM orders WHERE DATE(created_at) = CURDATE()');
+    const [[todayRevenue]] = await pool.query('SELECT SUM(total_amount) as total FROM orders WHERE DATE(created_at) = CURDATE()');
+    
+    res.json({
+      lowStockAlerts: stockAlerts.count,
+      todayOrders: todayOrders.count,
+      todayRevenue: todayRevenue.total || 0
+    });
+  } catch (err) {
+    res.status(500).json({ error: "Admin metrics offline" });
+  }
+});
+
 app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
   try {
     const salesmanId = req.params.id;
@@ -1368,6 +1394,7 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
 
     return res.json({
       ...stats,
+      currentSales: achievement.currentSales,
       targetAchievement: achievementPercent,
       weeklyTrend,
       recentActivities

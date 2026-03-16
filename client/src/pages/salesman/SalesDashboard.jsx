@@ -147,12 +147,12 @@ const SalesDashboard = () => {
                   <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl backdrop-blur-sm border border-white/5">
                      <div className="flex flex-col">
                         <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Current Milestone</span>
-                        <span className="text-xs font-bold tracking-tight">₹{currentNum.toLocaleString()}</span>
+                        <span className="text-xs font-bold tracking-tight">₹{(stats.currentSales || 0).toLocaleString()}</span>
                      </div>
                      <div className="h-4 w-px bg-white/10" />
                      <div className="flex flex-col text-right">
                         <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">End Goal</span>
-                        <span className="text-xs font-bold tracking-tight">₹{targetNum.toLocaleString()}</span>
+                        <span className="text-xs font-bold tracking-tight">₹{(stats.monthlyTarget || 50000).toLocaleString()}</span>
                      </div>
                   </div>
                </div>
