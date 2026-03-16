@@ -23,7 +23,7 @@ const SalesLeadsPage = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const res = await API.get(`/salesman/${user.id}/leads`);
-      setLeads(res.data);
+      setLeads(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Lead Sync Failed:", err.message);
     } finally {
@@ -45,10 +45,15 @@ const SalesLeadsPage = () => {
     }
   };
 
-  const filtered = leads.filter(l => {
-    const matchesSearch = l.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        l.product_interest?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        l.company?.toLowerCase().includes(searchTerm.toLowerCase());
+  const filtered = (Array.isArray(leads) ? leads : []).filter(l => {
+    if (!l) return false;
+    const name = l.name || "";
+    const product = l.product_interest || "";
+    const company = l.company || "";
+
+    const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        product.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        company.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterStatus === 'all' || l.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -66,10 +71,10 @@ const SalesLeadsPage = () => {
   };
 
   const stats = {
-    total: leads.length,
-    new: leads.filter(l => l.status === 'new').length,
-    converted: leads.filter(l => l.status === 'converted').length,
-    pending: leads.filter(l => ['contacted', 'follow-up', 'negotiation'].includes(l.status)).length
+    total: Array.isArray(leads) ? leads.length : 0,
+    new: (Array.isArray(leads) ? leads : []).filter(l => l.status === 'new').length,
+    converted: (Array.isArray(leads) ? leads : []).filter(l => l.status === 'converted').length,
+    pending: (Array.isArray(leads) ? leads : []).filter(l => ['contacted', 'follow-up', 'negotiation'].includes(l.status)).length
   };
 
   return (

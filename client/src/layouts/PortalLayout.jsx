@@ -107,7 +107,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         ]);
 
         const alerts = [];
-        const pendingLeads = (leadsRes.data || []).filter(l => l.status === 'assigned').slice(0, 5);
+        const leadsData = Array.isArray(leadsRes.data) ? leadsRes.data : [];
+        const pendingLeads = leadsData.filter(l => l.status === 'assigned').slice(0, 5);
         pendingLeads.forEach(lead => {
           alerts.push({
             id: `lead-${lead.id}`,
