@@ -8,7 +8,8 @@ import {
   Database, TrendingUp, ShoppingBag, Boxes, UserCircle,
   Target, ShoppingCart, CreditCard, CheckCircle2, MapPin,
   ChevronRight, ChevronDown, Calculator, Megaphone, ShieldCheck, 
-  ScrollText, UserCog, Mail, MessageCircle, Zap, AlertCircle
+  ScrollText, UserCog, Mail, MessageCircle, Zap, AlertCircle,
+  Activity, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
