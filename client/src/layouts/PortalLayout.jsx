@@ -231,13 +231,15 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     return [
       { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard, path: '/salesman-portal' },
       { id: 'leads', name: 'Leads', icon: Target, path: '/salesman/leads', badge: notifications.length > 0 ? notifications.length : null },
+      { id: 'enquiries', name: 'Enquiries', icon: MessageSquare, path: '/salesman/enquiries' },
       { id: 'customers', name: 'Customers', icon: Users, path: '/salesman/customers' },
-      { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/salesman/orders' },
+      { id: 'catalog', name: 'Product Catalog', icon: Package, path: '/salesman/catalog' },
+      { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/salesman/history' },
+      { id: 'new-order', name: 'New Order', icon: ShoppingCart, path: '/salesman/new-order' },
+      { id: 'visits', name: 'Visit Log', icon: MapPin, path: '/salesman/visits' },
       { id: 'payments', name: 'Payments', icon: CreditCard, path: '/salesman/payments' },
       { id: 'tasks', name: 'Tasks', icon: Activity, path: '/salesman/tasks' },
-      { id: 'targets', name: 'My Targets', icon: Star, path: '/salesman/performance' },
       { id: 'reports', name: 'Reports', icon: BarChart3, path: '/salesman/reports' },
-      { id: 'search', name: 'Search', icon: Zap, path: '/salesman/search' },
       { id: 'profile', name: 'My Farmliv', icon: UserCircle, path: '/salesman/profile' },
     ];
   };
