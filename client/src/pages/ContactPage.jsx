@@ -76,8 +76,8 @@ const ContactPage = () => {
       icon: MapPin,
       title: 'Our Locations',
       details: [
-        { label: 'Unit 1', address: '1st Floor Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146' },
-        { label: 'Unit 2', address: 'A-7, Pushkar Industrial Hub, Opp. Gayatri Exotik, Lambha, Ahmedabad. Pin - 382405' }
+        { label: 'Unit 1', address: '1st Floor Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin 784146' },
+        { label: 'Unit 2', address: 'A-7, Pushkar Industrial Hub, Opp. Gayatri Exotik, Lambha, Ahmedabad. Pin 382405' }
       ],
       link: null,
       color: 'bg-orange-50 text-orange-600'

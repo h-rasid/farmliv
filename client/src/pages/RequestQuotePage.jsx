@@ -64,7 +64,7 @@ const RequestQuotePage = () => {
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">
                   <Zap className="w-6 h-6 text-amber-500 mb-4 group-hover:scale-110 transition-transform" />
                   <p className="font-black text-gray-900 uppercase text-xs tracking-widest">24h Response</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">High-Speed Sync</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">High Speed Sync</p>
                 </div>
                 
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">

@@ -28,7 +28,7 @@ const CertificationPage = () => {
     {
       icon: Star, 
       title: 'ZED Certification',
-      description: 'Bronze level certification under MSME Sustainable scheme for high-quality production with Zero Defect & Zero Effect.',
+      description: 'Bronze level certification under MSME Sustainable scheme for high quality production with Zero Defect & Zero Effect.',
       year: '2025',
       image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771580951/7_azlzsl.png' 
     },
@@ -36,7 +36,7 @@ const CertificationPage = () => {
 
   const qualityStandards = [
     'Rigorous quality control at every production stage', 
-    'Regular third-party audits and inspections', 
+    'Regular third party audits and inspections', 
     'Advanced testing laboratories', 
     'Compliance with international standards', 
     'Continuous improvement programs', 

@@ -25,11 +25,11 @@ const AboutSection = () => {
               Trusted Partner in Agricultural Excellence
             </h2>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-             At Farmliv Industries, we specialize in providing premium agricultural solutions to businesses and industrial partners worldwide. With a legacy of manufacturing excellence, we deliver high-performance products tailored to meet the evolving demands of modern, sustainable agriculture.
+             At Farmliv Industries, we specialize in providing premium agricultural solutions to businesses and industrial partners worldwide. With a legacy of manufacturing excellence, we deliver high performance products tailored to meet the evolving demands of modern, sustainable agriculture.
             </p>
             <p className="text-lg text-gray-700 mb-8 leading-relaxed">
              Our Commitment to Quality
-             Our state of the art manufacturing facilities and ISO-certified processes ensure that every solution from Leno bags to mulching films meets stringent international quality standards. We are dedicated to empowering your business success through reliable product consistency, innovative engineering, and exceptional customer support.
+             Our state of the art manufacturing facilities and ISO certified processes ensure that every solution from Leno bags to mulching films meets stringent international quality standards. We are dedicated to empowering your business success through reliable product consistency, innovative engineering, and exceptional customer support.
             </p>
 
             {/* Metrics */}
