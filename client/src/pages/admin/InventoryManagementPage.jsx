@@ -190,7 +190,7 @@ const InventoryManagementPage = () => {
           {filtered.length === 0 && (
             <div className="py-20 text-center">
               <Database size={40} className="mx-auto text-slate-100 mb-4" />
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">No Synchronized Inventory Nodes Found</p>
+              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">No Synchronized Inventory Items Found</p>
             </div>
           )}
         </div>
@@ -265,7 +265,7 @@ const InventoryManagementPage = () => {
                 <div className="flex justify-between items-start mb-10">
                    <div>
                       <h2 className="text-2xl font-black italic uppercase tracking-tighter">Enterprise Batch Audit</h2>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Multi-Node Supply Chain Verification</p>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Enterprise Supply Chain Verification</p>
                    </div>
                    <button onClick={() => setIsBatchAuditOpen(false)} className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:bg-slate-900 hover:text-white transition-all"><X size={20}/></button>
                 </div>
@@ -274,7 +274,7 @@ const InventoryManagementPage = () => {
                    <div className="p-6 bg-indigo-50/50 rounded-3xl border border-indigo-100 flex flex-col gap-2">
                       <Layers size={20} className="text-indigo-500" />
                       <span className="text-[24px] font-black tracking-tighter italic text-indigo-700">{products.length}</span>
-                      <span className="text-[9px] font-black uppercase text-indigo-400">Total Nodes</span>
+                      <span className="text-[9px] font-black uppercase text-indigo-400">Total Items</span>
                    </div>
                    <div className="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100 flex flex-col gap-2">
                       <Package size={20} className="text-emerald-500" />
@@ -292,7 +292,7 @@ const InventoryManagementPage = () => {
                    <p className="text-slate-400 text-xs font-medium leading-relaxed italic">"Batch Audit Protocol automatically synchronizes physical inventory counts across all HQ Warehouse sectors. This action will be logged in the Enterprise Ledger."</p>
                    <button 
                      onClick={() => {
-                       toast({ title: "Audit Synchronized", description: "All inventory nodes have been verified." });
+                       toast({ title: "Audit Synchronized", description: "All inventory units have been verified." });
                        setIsBatchAuditOpen(false);
                      }}
                      className="px-10 py-5 bg-white text-slate-900 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-xl active:scale-95"

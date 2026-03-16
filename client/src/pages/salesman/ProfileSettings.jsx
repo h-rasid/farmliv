@@ -61,7 +61,7 @@ const ProfileSettings = () => {
                  <div className="flex items-center gap-4">
                     <div className="p-2 bg-slate-50 text-slate-400 rounded-xl"><Phone size={16}/></div>
                     <div className="flex flex-col">
-                       <span className="text-[9px] font-bold text-slate-400 uppercase">Contact Node</span>
+                       <span className="text-[9px] font-bold text-slate-400 uppercase">Contact Info</span>
                        <span className="text-xs font-black">{user.phone || '+91 Trace Pending'}</span>
                     </div>
                  </div>

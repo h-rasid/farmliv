@@ -70,7 +70,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
             </div>
             <div className="space-y-1">
               <h2 className="text-4xl font-black uppercase italic tracking-tighter">Final <span className="text-farmliv-green">Checkout</span></h2>
-              <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.4em]">Transaction Node #{leadData?.id}</p>
+              <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.4em]">Transaction Record #{leadData?.id}</p>
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
                     : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'
                 }`}
               >
-                <CreditCard size={18} /> Digital Node
+                <CreditCard size={18} /> Digital Pay
               </button>
             </div>
           </div>

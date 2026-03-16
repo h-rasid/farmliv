@@ -115,7 +115,7 @@ const transporter = nodemailer.createTransport({
         // Seed default admin if empty
         const [adminExists] = await connection.query('SELECT COUNT(*) as count FROM admins');
         if (adminExists[0].count === 0) {
-          console.log('👤 Seeding default administrative node...');
+          console.log('👤 Seeding default administrative account...');
           await connection.query('INSERT INTO admins (name, email, password) VALUES (?, ?, ?)', ['Farmliv Admin', 'admin@farmliv.com', 'admin123']);
         }
 
@@ -323,12 +323,19 @@ const transporter = nodemailer.createTransport({
         await addColumnIfMissing('products', 'status', 'VARCHAR(50) DEFAULT "Active"');
         await addColumnIfMissing('products', 'video', 'TEXT DEFAULT NULL');
 
+        // --- 3. Terminology Cleanup (Migration) ---
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Assets', 'Assets')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Node Asset', 'Asset')");
+        await connection.query("UPDATE products SET description = REPLACE(description, 'Node', '')");
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Node Assets', 'Assets')");
+        await connection.query("UPDATE activities SET action = REPLACE(action, 'Node', '')");
+        
         // Add dummy logs if empty
         const [logRows] = await connection.query('SELECT COUNT(*) as count FROM activities');
         if (logRows[0].count === 0) {
           await connection.query(`
             INSERT INTO activities (action, user) VALUES 
-            ('Enterprise Node Synchronized', 'System'),
+            ('Enterprise Synchronized', 'System'),
             ('Staff Directory Initialized', 'Admin'),
             ('Security Protocols Active', 'System')
           `);
@@ -565,7 +572,7 @@ app.delete('/api/staff/:id', async (req, res) => {
       return res.status(404).json({ error: "Staff member identity not found" });
     }
     await logActivity(`Staff Member Purged (ID: ${req.params.id})`);
-    return res.json({ success: true, message: "Staff node purged from Enterprise Force" });
+    return res.json({ success: true, message: "Staff record purged from Enterprise Force" });
   } catch (err) {
     return res.status(500).json({ error: "Purge protocol failed" });
   }
@@ -598,7 +605,7 @@ app.post('/api/categories', async (req, res) => {
     const [result] = await pool.query('INSERT INTO categories (name) VALUES (?)', [name]);
     res.status(201).json({ id: result.insertId, name });
   } catch (err) {
-    res.status(500).json({ error: "Failed to add category node" });
+    res.status(500).json({ error: "Failed to add category" });
   }
 });
 
@@ -648,7 +655,7 @@ app.get('/api/products/:id', async (req, res) => {
     product.images = product.images ? (typeof product.images === 'string' ? JSON.parse(product.images) : product.images) : [];
     return res.json(product);
   } catch (err) {
-    return res.status(500).json({ error: "Node synchronization failed" });
+    return res.status(500).json({ error: "Synchronization failed" });
   }
 });
 
@@ -662,7 +669,7 @@ app.get('/api/products/related/:category', async (req, res) => {
     );
     return res.json(rows);
   } catch (err) {
-    return res.status(500).json({ error: "Related nodes retrieval failed" });
+    return res.status(500).json({ error: "Related products retrieval failed" });
   }
 });
 
@@ -1005,7 +1012,7 @@ app.delete('/api/quick-enquiries/:id', async (req, res) => {
     await pool.query('DELETE FROM quick_enquiries WHERE id = ?', [req.params.id]);
     return res.json({ success: true, message: "Enquiry purged successfully" });
   } catch (err) {
-    return res.status(500).json({ error: "Failed to delete enquiry node" });
+    return res.status(500).json({ error: "Failed to delete enquiry" });
   }
 });
 
@@ -1177,7 +1184,7 @@ app.get('/api/admin/activities', async (req, res) => {
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);
-    return res.status(500).json({ error: "Activities node sync failure: " + err.message });
+    return res.status(500).json({ error: "Activities sync failure: " + err.message });
   }
 });
 
@@ -1278,7 +1285,7 @@ app.post('/api/customers', async (req, res) => {
       'INSERT INTO customers (name, email, phone, company, address, location, type) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [name, email, phone, company, address, location, type || 'Farmer']
     );
-    await logActivity(`Network Node Synchronized: ${name} (${type})`);
+    await logActivity(`Member Synchronized: ${name} (${type})`);
     return res.status(201).json({ id: result.insertId, name, type });
   } catch (err) {
     return res.status(500).json({ error: "Synchronization failed" });
@@ -1289,7 +1296,7 @@ app.put('/api/customers/:id/status', async (req, res) => {
   const { status } = req.body;
   try {
     await pool.query('UPDATE customers SET status = ? WHERE id = ?', [status, req.params.id]);
-    await logActivity(`Customer Node ${status.toUpperCase()} (ID: ${req.params.id})`);
+    await logActivity(`Customer ${status.toUpperCase()} (ID: ${req.params.id})`);
     return res.json({ success: true });
   } catch (err) {
     return res.status(500).json({ error: "Status update failed" });

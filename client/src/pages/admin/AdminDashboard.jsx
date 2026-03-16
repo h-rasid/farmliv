@@ -151,7 +151,7 @@ const AdminDashboard = () => {
                   <div className="flex justify-between items-center mb-8">
                     <div>
                       <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Monthly Revenue</h3>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Fiscal Node Aggregation</p>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Fiscal Data Aggregation</p>
                     </div>
                   </div>
                   <div className="flex-1 w-full min-h-[300px] flex items-end gap-2 px-4">

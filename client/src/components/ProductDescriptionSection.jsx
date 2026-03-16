@@ -30,9 +30,9 @@ const ProductDescriptionSection = ({ product }) => {
 
   const specRows = [
     { label: 'Standard Material', value: product.category === 'mulch' ? 'High-Density Polymer (UV)' : 'Industrial Grade' },
-    { label: 'Technical GSM', value: product.gsm || 'Standard Node Specs' },
+    { label: 'Technical GSM', value: product.gsm || 'Industrial Standard' },
     { label: 'Operational Life', value: product.durability ? `${product.durability} (UV Protected)` : '5+ Years' },
-    { label: 'System Asset ID', value: `FLV-NODE-00${product.id}`, highlight: true },
+    { label: 'System Asset ID', value: `FLV-ID-00${product.id}`, highlight: true },
     { label: 'Compliance Status', value: 'ISO Certified Multi-Tier' }
   ];
 
