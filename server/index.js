@@ -1229,61 +1229,6 @@ app.get('/api/customers', async (req, res) => {
   }
 });
 
-// --- 4. FRONTEND HOSTING LOGIC ---
-const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
-const altFrontendPath = path.resolve(__dirname, 'dist'); 
-const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
-
-// Serve static files with caching, EXCEPT index.html
-app.use(express.static(finalPath, { 
-  maxAge: '7d',
-  setHeaders: (res, path) => {
-    if (path.endsWith('index.html')) {
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
-    }
-  }
-})); 
-
-
-// React app catch-all route
-app.get('{*path}', (req, res) => {
-  // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
-  if (req.path.includes('.') && 
-      !req.path.endsWith('.html') && 
-      !req.path.startsWith('/api')) {
-    
-    // Self-Healing SPA Cache Buster: If browser asks for old JS, force reload!
-    if (req.path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send(`
-        console.warn('Farmliv: Outdated cache detected. Forcing page reload...');
-        if (window.location.search.indexOf('v=') === -1) {
-          window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
-        }
-      `);
-    } else if (req.path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
-    }
-    
-    return res.status(404).send('Product not found');
-  }
-
-  const indexPath = path.join(finalPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
-  }
-});
-
 
 app.post('/api/customers', async (req, res) => {
   const { name, email, phone, company, address, location, type } = req.body;
@@ -1322,31 +1267,6 @@ app.put('/api/orders/:id/status', async (req, res) => {
   }
 });
 
-// Admin Analytics & Pulse
-app.get('/api/admin/activities', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 20');
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: "Activity pulse offline" });
-  }
-});
-
-app.get('/api/admin/stats', async (req, res) => {
-  try {
-    const [[stockAlerts]] = await pool.query('SELECT COUNT(*) as count FROM products WHERE stock <= min_stock');
-    const [[todayOrders]] = await pool.query('SELECT COUNT(*) as count FROM orders WHERE DATE(created_at) = CURDATE()');
-    const [[todayRevenue]] = await pool.query('SELECT SUM(total_amount) as total FROM orders WHERE DATE(created_at) = CURDATE()');
-    
-    res.json({
-      lowStockAlerts: stockAlerts.count,
-      todayOrders: todayOrders.count,
-      todayRevenue: todayRevenue.total || 0
-    });
-  } catch (err) {
-    res.status(500).json({ error: "Admin metrics offline" });
-  }
-});
 
 app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
   try {
@@ -1495,6 +1415,61 @@ app.put('/api/tasks/:id/status', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+// --- 4. FRONTEND HOSTING LOGIC ---
+const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
+const altFrontendPath = path.resolve(__dirname, 'dist'); 
+const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
+
+// Serve static files with caching, EXCEPT index.html
+app.use(express.static(finalPath, { 
+  maxAge: '7d',
+  setHeaders: (res, path) => {
+    if (path.endsWith('index.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+    }
+  }
+})); 
+
+
+// React app catch-all route
+app.get('{*path}', (req, res) => {
+  // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
+  if (req.path.includes('.') && 
+      !req.path.endsWith('.html') && 
+      !req.path.startsWith('/api')) {
+    
+    // Self-Healing SPA Cache Buster: If browser asks for old JS, force reload!
+    if (req.path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      return res.send(`
+        console.warn('Farmliv: Outdated cache detected. Forcing page reload...');
+        if (window.location.search.indexOf('v=') === -1) {
+          window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
+        }
+      `);
+    } else if (req.path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
+    }
+    
+    return res.status(404).send('Product not found');
+  }
+
+  const indexPath = path.join(finalPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Farmliv Server active on port ${PORT}`);
 });
