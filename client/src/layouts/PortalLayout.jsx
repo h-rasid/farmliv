@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import API from '@/utils/axios';
 import { 
   LayoutDashboard, Package, Users, LogOut, 
   Menu, X, Bell, User as UserIcon, Settings, Layers,
@@ -7,7 +8,7 @@ import {
   Database, TrendingUp, ShoppingBag, Boxes, UserCircle,
   Target, ShoppingCart, CreditCard, CheckCircle2, MapPin,
   ChevronRight, ChevronDown, Calculator, Megaphone, ShieldCheck, 
-  ScrollText, UserCog, Mail, MessageCircle, Zap
+  ScrollText, UserCog, Mail, MessageCircle, Zap, AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,6 +18,113 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  // Notification State
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifPanel, setShowNotifPanel] = useState(false);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const notifRef = useRef(null);
+
+  const fetchNotifications = async () => {
+    if (role !== 'admin') return;
+    setNotifLoading(true);
+    try {
+      const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
+        API.get('/admin/activities'),
+        API.get('/admin/stats'),
+        API.get('/leads'),
+        API.get('/quick-enquiries')
+      ]);
+
+      const alerts = [];
+      
+      // 1. Stock Alerts
+      if (statsRes.data?.lowStockAlerts > 0) {
+        alerts.push({
+          id: 'stock-alert',
+          type: 'alert',
+          title: 'Low Stock Detected',
+          message: `There are ${statsRes.data.lowStockAlerts} products with critically low stock levels.`,
+          time: 'Action Required',
+          icon: AlertCircle,
+          color: 'text-rose-500',
+          bg: 'bg-rose-50',
+          path: '/admin/inventory'
+        });
+      }
+
+      // 2. New Leads (Request Quote)
+      const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.status === 'Pending').slice(0, 3) : [];
+      pendingLeads.forEach(lead => {
+        alerts.push({
+          id: `lead-${lead.id}`,
+          type: 'lead',
+          title: 'New Quote Request',
+          message: `${lead.customer_name} from ${lead.company || 'Individual'} requested a quote.`,
+          time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          icon: Calculator,
+          color: 'text-blue-500',
+          bg: 'bg-blue-50',
+          path: '/admin/leads'
+        });
+      });
+
+      // 3. Quick Enquiries
+      const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.status === 'Pending').slice(0, 3) : [];
+      pendingEnq.forEach(enq => {
+        alerts.push({
+          id: `enq-${enq.id}`,
+          type: 'enquiry',
+          title: 'New Quick Enquiry',
+          message: `${enq.customer_name} sent a new enquiry from ${enq.location || 'N/A'}.`,
+          time: new Date(enq.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          icon: Zap,
+          color: 'text-amber-500',
+          bg: 'bg-amber-50',
+          path: '/admin/quick-enquiries'
+        });
+      });
+
+      // 4. Recent Activities
+      const recentLogs = Array.isArray(activitiesRes.data) ? activitiesRes.data.slice(0, 5) : [];
+      recentLogs.forEach((log, index) => {
+        alerts.push({
+          id: `act-${index}-${Date.now()}`,
+          type: 'activity',
+          title: log.user || 'System',
+          message: log.action,
+          time: new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          icon: History,
+          color: 'text-emerald-500',
+          bg: 'bg-emerald-50'
+        });
+      });
+
+      setNotifications(alerts);
+    } catch (err) {
+      console.warn("Notification sync delayed:", err.message);
+    } finally {
+      setNotifLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (role === 'admin') {
+      fetchNotifications();
+      const interval = setInterval(fetchNotifications, 10000); // Faster polling for real-time feel
+      return () => clearInterval(interval);
+    }
+  }, [role]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setShowNotifPanel(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   
   const adminEmail = "admin@farmliv.com";
   const sessionKey = role === 'admin' ? 'farmliv_admin' : 'farmliv_salesman';
@@ -247,16 +355,107 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           <div className="flex items-center gap-8">
             {/* ACTION ICONS HUB */}
             <div className="hidden md:flex items-center gap-6 border-r border-gray-100 pr-8">
-               <div className="relative cursor-pointer group">
+                <div className="relative cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-all">
                   <MessageCircle size={20} className="text-slate-400 group-hover:text-[#134E4A] transition-colors" />
-                  <span className="absolute -top-2 -right-2 w-4 h-4 bg-rose-500 text-white text-[8px] font-black flex items-center justify-center rounded-full border-2 border-white">5</span>
-               </div>
+                </div>
                <div className="relative cursor-pointer group">
                   <Mail size={20} className="text-slate-400 group-hover:text-[#134E4A] transition-colors" />
                </div>
-               <div className="relative cursor-pointer group">
-                  <Bell size={20} className="text-slate-400 group-hover:text-[#134E4A] transition-colors animation-pulse" />
-               </div>
+              <div className="relative" ref={notifRef}>
+                <div 
+                  onClick={() => setShowNotifPanel(!showNotifPanel)}
+                  className="relative cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-all"
+                >
+                  <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${notifications.length > 0 ? 'animate-pulse' : ''}`} />
+                  {notifications.length > 0 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white shadow-lg animate-bounce">
+                      {notifications.length}
+                    </span>
+                  )}
+                </div>
+
+                {/* NOTIFICATION PANEL */}
+                <AnimatePresence>
+                  {showNotifPanel && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 mt-4 w-96 bg-white rounded-[2rem] border border-slate-100 shadow-2xl z-[100] overflow-hidden"
+                    >
+                      <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                        <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-2">
+                          <Bell size={14} className="text-[#2E7D32]" /> System Directives
+                        </span>
+                        <button 
+                          onClick={() => setShowNotifPanel(false)}
+                          className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+
+                      <div className="max-h-[450px] overflow-y-auto custom-scrollbar p-2">
+                        {notifLoading ? (
+                          <div className="p-12 flex flex-col items-center gap-4">
+                            <div className="w-8 h-8 border-2 border-[#2E7D32] border-t-transparent rounded-full animate-spin" />
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Syncing Pulse...</span>
+                          </div>
+                        ) : notifications.length > 0 ? (
+                          <div className="space-y-1">
+                            {notifications.map((notif) => (
+                              <div 
+                                key={notif.id}
+                                onClick={() => {
+                                  if (notif.path) {
+                                    navigate(notif.path);
+                                    setShowNotifPanel(false);
+                                  }
+                                }}
+                                className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-all cursor-pointer border border-transparent hover:border-slate-100"
+                              >
+                                <div className={`p-3 rounded-xl ${notif.bg} ${notif.color} group-hover:scale-110 transition-transform`}>
+                                  <notif.icon size={16} />
+                                </div>
+                                <div className="flex-1 flex flex-col gap-1">
+                                  <div className="flex justify-between items-start">
+                                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-tight">{notif.title}</span>
+                                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{notif.time}</span>
+                                  </div>
+                                  <p className="text-[11px] font-bold text-slate-500 leading-relaxed italic line-clamp-2">
+                                    {notif.message}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="p-16 flex flex-col items-center text-center gap-4">
+                            <div className="p-4 bg-slate-50 rounded-2xl text-slate-200">
+                               <ShieldCheck size={40} />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Enterprise Secure</span>
+                              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">No active alerts detected</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {notifications.length > 0 && (
+                        <div className="p-4 border-t border-slate-50 text-center">
+                          <button 
+                            onClick={() => setNotifications([])}
+                            className="text-[9px] font-black text-[#2E7D32] uppercase tracking-[0.2em] hover:opacity-70 transition-all"
+                          >
+                            Dismiss All Protocols
+                          </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* PREMIUM USER PROFILE SECTION */}
