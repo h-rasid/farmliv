@@ -132,7 +132,7 @@ const ProductManagement = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-100 pb-10">
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Product Management</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Enterprise Inventory</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Farmliv Inventory</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 text-xs font-semibold hover:bg-emerald-700 transition-all shadow-lg active:scale-95">
             <Plus size={18} /> Add New Product

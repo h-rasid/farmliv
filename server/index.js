@@ -150,9 +150,9 @@ const transporter = nodemailer.createTransport({
           }
         };
 
-        // --- ENTERPRISE SCHEMA SYNC ---
+        // --- FARMLIV SCHEMA SYNC ---
         
-        // 1. Customers Table (Enterprise CRM)
+        // 1. Customers Table (Farmliv CRM)
         await connection.query(`
           CREATE TABLE IF NOT EXISTS customers (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -306,7 +306,7 @@ const transporter = nodemailer.createTransport({
           await connection.query("INSERT INTO categories (name) VALUES ('Seeds'), ('Fertilizers'), ('Pesticides'), ('Equipment'), ('Organic')");
         }
 
-        // Self-Healing: Ensure older leads/enquiries match new enterprise standards
+        // Self-Healing: Ensure older leads/enquiries match new Farmliv standards
         await addColumnIfMissing('leads', 'assigned_to', 'INT DEFAULT NULL');
         await addColumnIfMissing('leads', 'notes', 'TEXT DEFAULT NULL');
         await addColumnIfMissing('leads', 'product_id', 'INT DEFAULT NULL');
@@ -342,7 +342,7 @@ const transporter = nodemailer.createTransport({
         if (logRows[0].count === 0) {
           await connection.query(`
             INSERT INTO activities (action, user) VALUES 
-            ('Enterprise Synchronized', 'System'),
+            ('Farmliv Synchronized', 'System'),
             ('Staff Directory Initialized', 'Admin'),
             ('Security Protocols Active', 'System')
           `);
@@ -462,7 +462,7 @@ app.get('/api/admin/setup-db', async (req, res) => {
     await connection.query(`CREATE TABLE IF NOT EXISTS activities (id INT AUTO_INCREMENT PRIMARY KEY, action VARCHAR(255), user VARCHAR(255), created_at DATETIME DEFAULT CURRENT_TIMESTAMP)`);
     await connection.query(`INSERT INTO activities (action, user) VALUES ('Database Protocols Manually Refreshed', 'System')`);
     connection.release();
-    res.json({ success: true, message: "Enterprise Database Synchronized" });
+    res.json({ success: true, message: "Farmliv Database Synchronized" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -579,7 +579,7 @@ app.delete('/api/staff/:id', async (req, res) => {
       return res.status(404).json({ error: "Staff member identity not found" });
     }
     await logActivity(`Staff Member Purged (ID: ${req.params.id})`);
-    return res.json({ success: true, message: "Staff record purged from Enterprise Force" });
+    return res.json({ success: true, message: "Staff record purged from Farmliv Team" });
   } catch (err) {
     return res.status(500).json({ error: "Purge protocol failed" });
   }
@@ -745,7 +745,7 @@ app.put('/api/products/:id', upload, async (req, res) => {
       }
     }
 
-    // Enterprise Mapping Sync: sub_category (DB) vs subCategory (Frontend)
+    // Farmliv Mapping Sync: sub_category (DB) vs subCategory (Frontend)
     await pool.query(
       'UPDATE products SET name=?, description=?, category=?, sub_category=?, moq=?, gsm=?, durability=?, hsn=?, stock=?, status=?, images=?, video=? WHERE id=?',
       [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
@@ -841,10 +841,10 @@ app.get('/api/quick-enquiries/salesman/:id', async (req, res) => {
 });
 
 app.post('/api/quick-enquiries', async (req, res) => {
-  const { representative_identity, primary_contact_hub, email_node, enterprise_entity, deployment_location, additional_protocols } = req.body;
+  const { representative_identity, primary_contact_hub, email_node, farmliv_entity, deployment_location, additional_protocols } = req.body;
   try {
     const query = `INSERT INTO quick_enquiries (customer_name, phone, email, company, location, notes, status) VALUES (?, ?, ?, ?, ?, ?, 'Pending')`;
-    const [result] = await pool.query(query, [representative_identity, primary_contact_hub, email_node, enterprise_entity, deployment_location, additional_protocols]);
+    const [result] = await pool.query(query, [representative_identity, primary_contact_hub, email_node, farmliv_entity, deployment_location, additional_protocols]);
 
     const adminMail = {
       from: process.env.EMAIL_USER,
@@ -861,7 +861,7 @@ app.post('/api/quick-enquiries', async (req, res) => {
               <tr><td style="padding: 8px; font-weight: bold; width: 40%;">Name:</td><td style="padding: 8px;">${representative_identity || 'N/A'}</td></tr>
               <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Phone:</td><td style="padding: 8px;">${primary_contact_hub || 'N/A'}</td></tr>
               <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email_node || 'N/A'}</td></tr>
-              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Company:</td><td style="padding: 8px;">${enterprise_entity || 'Individual'}</td></tr>
+              <tr style="background: #f9f9f9;"><td style="padding: 8px; font-weight: bold;">Company:</td><td style="padding: 8px;">${farmliv_entity || 'Individual'}</td></tr>
               <tr><td style="padding: 8px; font-weight: bold;">Location:</td><td style="padding: 8px;">${deployment_location || 'N/A'}</td></tr>
             </table>
 
@@ -1342,13 +1342,35 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
        WHERE salesman_id = ? AND MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())
     `, [salesmanId]);
 
+    // Weekly Trend (Last 7 Days)
+    const [weeklyTrend] = await pool.query(`
+      SELECT DATE_FORMAT(created_at, '%a') as day, COALESCE(SUM(total_amount), 0) as amount
+      FROM (
+        SELECT CURDATE() as d UNION SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) UNION SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) UNION SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+      ) as dates
+      LEFT JOIN orders ON DATE(orders.created_at) = dates.d AND orders.salesman_id = ?
+      GROUP BY dates.d
+      ORDER BY dates.d ASC
+    `, [salesmanId]);
+
+    // Recent Activity
+    const [recentActivities] = await pool.query(`
+      SELECT action, user, created_at FROM activities 
+      ORDER BY id DESC LIMIT 5
+    `);
+
     const targetNum = parseFloat(stats.monthlyTarget) || 50000;
     const currentNum = parseFloat(achievement.currentSales) || 0;
     const achievementPercent = Math.min(Math.round((currentNum / targetNum) * 100), 100);
 
     return res.json({
       ...stats,
-      targetAchievement: achievementPercent
+      targetAchievement: achievementPercent,
+      weeklyTrend,
+      recentActivities
     });
   } catch (err) {
     return res.status(500).json({ error: "Sales vitals offline" });

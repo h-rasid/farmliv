@@ -93,7 +93,7 @@ const ReportsAnalytics = () => {
         {/* Header Section */}
         <header className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight">Enterprise Analytics</h1>
+            <h1 className="text-3xl font-semibold tracking-tight">Farmliv Analytics</h1>
             <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">B2B Performance & Intelligence</p>
           </div>
           <button 
@@ -121,7 +121,7 @@ const ReportsAnalytics = () => {
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Active Dealers</p>
             <h2 className="text-2xl font-semibold text-slate-900 tracking-tighter">{stats?.activeDealers} Partners</h2>
-            <p className="text-[10px] text-slate-400 font-medium mt-2">Verified enterprise partners</p>
+            <p className="text-[10px] text-slate-400 font-medium mt-2">Verified Farmliv partners</p>
           </div>
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Top Product</p>

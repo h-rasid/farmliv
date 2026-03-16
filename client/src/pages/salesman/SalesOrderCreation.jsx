@@ -34,7 +34,7 @@ const SalesOrderCreation = () => {
       setCustomers(custRes.data);
       setProducts(prodRes.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Enterprise Sync Interrupted" });
+      toast({ variant: "destructive", title: "Farmliv Sync Interrupted" });
     }
   };
 

@@ -14,7 +14,7 @@ const RequestQuotePage = () => {
   return (
     <>
       <Helmet>
-        <title>Request Quote | Farmliv Industries Enterprise Node</title>
+        <title>Request Quote | Farmliv Industries Hub</title>
         <meta name="description" content="Request a detailed quote for bulk agricultural products. Competitive pricing, fast turnaround, and custom solutions available." />
       </Helmet>
 
@@ -53,12 +53,12 @@ const RequestQuotePage = () => {
                 </div>
             </div>
 
-            {/* --- Enterprise Trust Nodes --- */}
+            {/* --- Farmliv Trust Network --- */}
             <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">
                   <ShieldCheck className="w-6 h-6 text-[#2E7D32] mb-4 group-hover:scale-110 transition-transform" />
                   <p className="font-black text-gray-900 uppercase text-xs tracking-widest">ISO 9001:2026</p>
-                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Enterprise Unit</p>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Certified Farmliv Unit</p>
                 </div>
                 
                 <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 transition-all hover:bg-white hover:shadow-xl group">

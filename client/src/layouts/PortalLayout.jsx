@@ -26,81 +26,102 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const notifRef = useRef(null);
 
   const fetchNotifications = async () => {
-    if (role !== 'admin') return;
     setNotifLoading(true);
     try {
-      const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
-        API.get('admin/activities'),
-        API.get('admin/stats'),
-        API.get('leads'),
-        API.get('quick-enquiries')
-      ]);
+      if (role === 'admin') {
+        const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
+          API.get('admin/activities'),
+          API.get('admin/stats'),
+          API.get('leads'),
+          API.get('quick-enquiries')
+        ]);
 
-      const alerts = [];
-      
-      // 1. Stock Alerts
-      if (statsRes.data?.lowStockAlerts > 0) {
-        alerts.push({
-          id: 'stock-alert',
-          type: 'alert',
-          title: 'Low Stock Detected',
-          message: `There are ${statsRes.data.lowStockAlerts} products with critically low stock levels.`,
-          time: 'Action Required',
-          icon: AlertCircle,
-          color: 'text-rose-500',
-          bg: 'bg-rose-50',
-          path: '/admin/inventory'
+        const alerts = [];
+        if (statsRes.data?.lowStockAlerts > 0) {
+          alerts.push({
+            id: 'stock-alert',
+            type: 'alert',
+            title: 'Low Stock Detected',
+            message: `There are ${statsRes.data.lowStockAlerts} products with critically low stock levels.`,
+            time: 'Action Required',
+            icon: AlertCircle,
+            color: 'text-rose-500',
+            bg: 'bg-rose-50',
+            path: '/admin/inventory'
+          });
+        }
+
+        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.status === 'Pending').slice(0, 3) : [];
+        pendingLeads.forEach(lead => {
+          alerts.push({
+            id: `lead-${lead.id}`,
+            type: 'lead',
+            title: 'New Quote Request',
+            message: `${lead.customer_name} from ${lead.company || 'Individual'} requested a quote.`,
+            time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            icon: Calculator,
+            color: 'text-blue-500',
+            bg: 'bg-blue-50',
+            path: '/admin/leads'
+          });
         });
+
+        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.status === 'Pending').slice(0, 3) : [];
+        pendingEnq.forEach(enq => {
+          alerts.push({
+            id: `enq-${enq.id}`,
+            type: 'enquiry',
+            title: 'New Quick Enquiry',
+            message: `${enq.customer_name} sent a new enquiry from ${enq.location || 'N/A'}.`,
+            time: new Date(enq.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            icon: Zap,
+            color: 'text-amber-500',
+            bg: 'bg-amber-50',
+            path: '/admin/quick-enquiries'
+          });
+        });
+
+        const recentLogs = Array.isArray(activitiesRes.data) ? activitiesRes.data.slice(0, 5) : [];
+        recentLogs.forEach((log, index) => {
+          alerts.push({
+            id: `act-${index}-${Date.now()}`,
+            type: 'activity',
+            title: log.user || 'System',
+            message: log.action,
+            time: new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            icon: History,
+            color: 'text-emerald-500',
+            bg: 'bg-emerald-50'
+          });
+        });
+        setNotifications(alerts);
+      } else if (role === 'salesman') {
+        const userStr = localStorage.getItem('farmliv_salesman');
+        if (!userStr) return;
+        const salesman = JSON.parse(userStr);
+
+        const [leadsRes, statsRes] = await Promise.all([
+          API.get(`/salesman/${salesman.id}/leads`),
+          API.get(`/salesman/${salesman.id}/dashboard-stats`)
+        ]);
+
+        const alerts = [];
+        const pendingLeads = (leadsRes.data || []).filter(l => l.status === 'assigned').slice(0, 5);
+        pendingLeads.forEach(lead => {
+          alerts.push({
+            id: `lead-${lead.id}`,
+            type: 'lead',
+            title: 'New Lead Assigned',
+            message: `You have been assigned to ${lead.customer_name}.`,
+            time: 'Recently',
+            icon: Target,
+            color: 'text-blue-500',
+            bg: 'bg-blue-50',
+            path: '/salesman/leads'
+          });
+        });
+        setNotifications(alerts);
       }
-
-      // 2. New Leads (Request Quote)
-      const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.status === 'Pending').slice(0, 3) : [];
-      pendingLeads.forEach(lead => {
-        alerts.push({
-          id: `lead-${lead.id}`,
-          type: 'lead',
-          title: 'New Quote Request',
-          message: `${lead.customer_name} from ${lead.company || 'Individual'} requested a quote.`,
-          time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          icon: Calculator,
-          color: 'text-blue-500',
-          bg: 'bg-blue-50',
-          path: '/admin/leads'
-        });
-      });
-
-      // 3. Quick Enquiries
-      const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.status === 'Pending').slice(0, 3) : [];
-      pendingEnq.forEach(enq => {
-        alerts.push({
-          id: `enq-${enq.id}`,
-          type: 'enquiry',
-          title: 'New Quick Enquiry',
-          message: `${enq.customer_name} sent a new enquiry from ${enq.location || 'N/A'}.`,
-          time: new Date(enq.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          icon: Zap,
-          color: 'text-amber-500',
-          bg: 'bg-amber-50',
-          path: '/admin/quick-enquiries'
-        });
-      });
-
-      // 4. Recent Activities
-      const recentLogs = Array.isArray(activitiesRes.data) ? activitiesRes.data.slice(0, 5) : [];
-      recentLogs.forEach((log, index) => {
-        alerts.push({
-          id: `act-${index}-${Date.now()}`,
-          type: 'activity',
-          title: log.user || 'System',
-          message: log.action,
-          time: new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          icon: History,
-          color: 'text-emerald-500',
-          bg: 'bg-emerald-50'
-        });
-      });
-
-      setNotifications(alerts);
     } catch (err) {
       console.warn("Notification sync delayed:", err.message);
     } finally {
@@ -109,11 +130,9 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   };
 
   useEffect(() => {
-    if (role === 'admin') {
-      fetchNotifications();
-      const interval = setInterval(fetchNotifications, 10000); // Faster polling for real-time feel
-      return () => clearInterval(interval);
-    }
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 10000); // Polling for everyone
+    return () => clearInterval(interval);
   }, [role]);
 
   useEffect(() => {
@@ -208,16 +227,16 @@ const PortalLayout = ({ children, role = 'admin' }) => {
       ];
     }
     return [
-      { id: 'dashboard', name: 'Field Hub', icon: LayoutDashboard, path: '/salesman-portal' },
-      { id: 'leads', name: 'My Leads', icon: Target, path: '/salesman/leads' },
-      { id: 'enquiries', name: 'Quick Enquiries', icon: Zap, path: '/salesman/enquiries' },
-      { id: 'customers', name: 'My Network', icon: Users, path: '/salesman/customers' },
-      { id: 'new-order', name: 'New Transaction', icon: ShoppingCart, path: '/salesman/new-order' },
-      { id: 'payments', name: 'Collection Hub', icon: CreditCard, path: '/salesman/payments' },
-      { id: 'visits', name: 'Visit Log', icon: MapPin, path: '/salesman/visits' },
-      { id: 'tasks', name: 'Directives', icon: CheckCircle2, path: '/salesman/tasks' },
-      { id: 'reports', name: 'Analytics', icon: BarChart3, path: '/salesman/reports' },
-      { id: 'profile', name: 'Security Hub', icon: UserIcon, path: '/salesman/profile' },
+      { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard, path: '/salesman-portal' },
+      { id: 'leads', name: 'Leads', icon: Target, path: '/salesman/leads', badge: notifications.length > 0 ? notifications.length : null },
+      { id: 'customers', name: 'Customers', icon: Users, path: '/salesman/customers' },
+      { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/salesman/orders' },
+      { id: 'payments', name: 'Payments', icon: CreditCard, path: '/salesman/payments' },
+      { id: 'tasks', name: 'Tasks', icon: Activity, path: '/salesman/tasks' },
+      { id: 'targets', name: 'My Targets', icon: Star, path: '/salesman/performance' },
+      { id: 'reports', name: 'Reports', icon: BarChart3, path: '/salesman/reports' },
+      { id: 'search', name: 'Search', icon: Zap, path: '/salesman/search' },
+      { id: 'profile', name: 'My Farmliv', icon: UserCircle, path: '/salesman/profile' },
     ];
   };
 
@@ -225,7 +244,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    if (window.confirm("Disconnect your enterprise session?")) {
+    if (window.confirm("Disconnect your Farmliv session?")) {
       localStorage.removeItem(sessionKey);
       const loginPath = role === 'admin' ? '/admin/login' : '/salesman/login';
       navigate(loginPath);
@@ -256,7 +275,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                   <span className="text-2xl font-black italic tracking-tighter text-white uppercase">
                     Farmliv
                   </span>
-                  <span className="text-[8px] font-black text-green-300 uppercase tracking-[0.4em]">Admin</span>
+                  <span className="text-[8px] font-black text-green-300 uppercase tracking-[0.4em]">{role === 'admin' ? 'Admin Hub' : 'Field Operations'}</span>
                 </div>
               </Link>
             )}
@@ -282,7 +301,16 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                   >
                     <div className="flex items-center gap-4">
                       <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-green-300' : 'text-white/60 group-hover:text-white transition-colors'} />
-                      {!isCollapsed && <span>{item.name}</span>}
+                      {!isCollapsed && (
+                        <div className="flex items-center justify-between w-full gap-2 min-w-[140px]">
+                          <span>{item.name}</span>
+                          {item.badge && (
+                            <span className="bg-rose-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black min-w-[18px] text-center">
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                     {!isCollapsed && hasSubmenu && (
                       <div className={`transition-transform duration-300 ${isSubmenuOpen ? 'rotate-180' : ''}`}>
@@ -330,7 +358,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
       {/* --- CONTENT AREA --- */}
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative">
         
-        {/* PREMIUM ENTERPRISE HEADER */}
+        {/* PREMIUM FARMLIV HEADER */}
         <header className="h-24 flex-shrink-0 flex items-center justify-between px-10 bg-white/80 backdrop-blur-xl border-b border-gray-100 z-40">
           <div className="flex items-center gap-8">
             <button 
@@ -435,7 +463,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                                <ShieldCheck size={40} />
                             </div>
                             <div className="flex flex-col gap-1">
-                              <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Enterprise Secure</span>
+                              <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Farmliv Protected</span>
                               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">No active alerts detected</p>
                             </div>
                           </div>

@@ -24,7 +24,7 @@ const CustomerManagementPage = () => {
       const res = await API.get('/customers');
       setCustomers(res.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Enterprise Node Sync Failed" });
+      toast({ variant: "destructive", title: "Farmliv Database Sync Failed" });
     } finally {
       setLoading(false);
     }

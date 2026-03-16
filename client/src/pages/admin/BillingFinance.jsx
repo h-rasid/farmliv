@@ -356,7 +356,7 @@ const BillingFinance = () => {
                <div className="bg-[#1B5E20] p-12 rounded-[3.5rem] text-white flex flex-col justify-between shadow-2xl shadow-green-900/30 relative overflow-hidden h-full">
                   <div className="relative z-10">
                      <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-60">Settlement Calibration</span>
-                     <h3 className="text-4xl font-black italic tracking-tighter uppercase mt-4">Enterprise Ledger</h3>
+                     <h3 className="text-4xl font-black italic tracking-tighter uppercase mt-4">Farmliv Ledger</h3>
                      
                      <div className="mt-12 space-y-10">
                         <div className="space-y-4">

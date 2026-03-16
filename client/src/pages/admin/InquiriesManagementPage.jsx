@@ -247,7 +247,7 @@ const InquiriesManagementPage = () => {
                     </div>
                     <div className="space-y-4">
                        <div>
-                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Enterprise Entity</p>
+                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Farmliv Entity</p>
                         <p className="text-xs font-bold text-slate-700 mt-1 flex items-center gap-2"><Building2 size={14}/> {selectedLead.company || 'Not Specified'}</p>
                       </div>
                       <div>

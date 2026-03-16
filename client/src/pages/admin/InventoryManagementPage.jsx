@@ -264,8 +264,8 @@ const InventoryManagementPage = () => {
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500" />
                 <div className="flex justify-between items-start mb-10">
                    <div>
-                      <h2 className="text-2xl font-black italic uppercase tracking-tighter">Enterprise Batch Audit</h2>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Enterprise Supply Chain Verification</p>
+                      <h2 className="text-2xl font-black italic uppercase tracking-tighter">Farmliv Batch Audit</h2>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Farmliv Supply Chain Verification</p>
                    </div>
                    <button onClick={() => setIsBatchAuditOpen(false)} className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:bg-slate-900 hover:text-white transition-all"><X size={20}/></button>
                 </div>
@@ -289,7 +289,7 @@ const InventoryManagementPage = () => {
                 </div>
 
                 <div className="p-8 bg-slate-900 rounded-[2rem] text-center space-y-4">
-                   <p className="text-slate-400 text-xs font-medium leading-relaxed italic">"Batch Audit Protocol automatically synchronizes physical inventory counts across all HQ Warehouse sectors. This action will be logged in the Enterprise Ledger."</p>
+                   <p className="text-slate-400 text-xs font-medium leading-relaxed italic">"Batch Audit Protocol automatically synchronizes physical inventory counts across all HQ Warehouse sectors. This action will be logged in the Farmliv Ledger."</p>
                    <button 
                      onClick={() => {
                        toast({ title: "Audit Synchronized", description: "All inventory units have been verified." });

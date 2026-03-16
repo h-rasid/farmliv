@@ -59,7 +59,7 @@ const StaffManagementPage = () => {
   };
 
   const handleDelete = async (id, name) => {
-    if (!window.confirm(`Purge ${name} from Enterprise Force?`)) return;
+    if (!window.confirm(`Purge ${name} from Farmliv Team?`)) return;
     try {
       await API.delete(`/staff/${id}`);
       toast({ title: "Staff Purged" });
@@ -96,7 +96,7 @@ const StaffManagementPage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="sticky top-32 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-8">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold uppercase flex items-center gap-3"><UserPlus className="text-emerald-600" size={20}/> Onboard Staff</h3>
-                <p className="text-[10px] text-slate-400 uppercase font-medium">Initialize new enterprise credentials</p>
+                <p className="text-[10px] text-slate-400 uppercase font-medium">Initialize new Farmliv credentials</p>
               </div>
 
               <form onSubmit={handleAddStaff} className="space-y-5">

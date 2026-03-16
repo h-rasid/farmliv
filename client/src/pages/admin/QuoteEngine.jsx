@@ -81,7 +81,7 @@ const QuoteEngine = () => {
       toast({ title: "Validation Error", description: "Please add customer name and at least one product.", variant: "destructive" });
       return;
     }
-    toast({ title: "Quote Generated", description: "Enterprise quote has been successfully initialized." });
+    toast({ title: "Quote Generated", description: "Farmliv quote has been successfully initialized." });
     // Handle submission logic here
   };
 
@@ -98,7 +98,7 @@ const QuoteEngine = () => {
   };
 
   const handleShareQuote = (q) => {
-    const text = `Farmliv Enterprise Quote\nID: ${q.id}\nCustomer: ${q.customer}\nValuation: ₹${q.amount.toLocaleString()}\nStatus: ${q.status}`;
+    const text = `Farmliv Industries Quote\nID: ${q.id}\nCustomer: ${q.customer}\nValuation: ₹${q.amount.toLocaleString()}\nStatus: ${q.status}`;
     if (navigator.share) {
       navigator.share({ title: `Quote ${q.id}`, text }).catch(() => {
         navigator.clipboard.writeText(text);

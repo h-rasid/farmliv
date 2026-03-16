@@ -101,7 +101,7 @@ const ProfileSettings = () => {
 
         <div className="text-center">
            <p className="text-[9px] font-bold text-slate-300 uppercase tracking-widest flex items-center justify-center gap-2">
-              <Shield size={10}/> Farmliv Enterprise v2.4.0 Secure
+              <Shield size={10}/> Farmliv Industries v2.4.0 Protect
            </p>
         </div>
       </div>

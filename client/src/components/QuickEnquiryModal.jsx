@@ -29,7 +29,7 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
         representative_identity: formData.fullName,
         primary_contact_hub: formData.mobile,
         email_node: formData.email,
-        enterprise_entity: formData.companyName,
+        farmliv_entity: formData.companyName,
         deployment_location: formData.location,
         additional_protocols: formData.message
       });
