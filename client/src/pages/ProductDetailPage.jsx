@@ -140,27 +140,52 @@ const ProductDetailPage = () => {
             {/* LEFT: IMAGES */}
             <div className="space-y-6">
               <div 
-                className="relative group rounded-[3rem] overflow-hidden border border-gray-100 shadow-2xl bg-gray-50 aspect-square cursor-zoom-in" 
-                onClick={() => setIsLightboxOpen(true)}
+                className="relative group rounded-[3rem] overflow-hidden border border-gray-100 shadow-2xl bg-gray-50 aspect-square" 
               >
-                <div className="absolute top-8 right-8 z-20 bg-white/90 backdrop-blur-md shadow-xl p-3 rounded-2xl opacity-0 group-hover:opacity-100 transition-all">
+                <div 
+                  className="absolute top-8 right-8 z-20 bg-white/90 backdrop-blur-md shadow-xl p-3 rounded-2xl opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer pointer-events-auto"
+                  onClick={() => setIsLightboxOpen(true)}
+                >
                   <Maximize2 className="w-5 h-5 text-[#2E7D32]" />
                 </div>
-                <AnimatePresence mode='wait'>
-                  <motion.div 
-                    key={activeImage}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="w-full h-full"
-                  >
-                    <img 
-                      src={product.images[activeImage]} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+
+                <div className="w-full h-full flex items-center justify-center relative bg-gray-50">
+                  <AnimatePresence mode='wait'>
+                    <motion.div 
+                      key={activeImage}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.8}
+                      onDragEnd={(e, { offset, velocity }) => {
+                        const swipeThreshold = 40;
+                        if (offset.x < -swipeThreshold) {
+                          // Swipe Left -> Next
+                          setActiveImage((prev) => (prev + 1) % product.images.length);
+                        } else if (offset.x > swipeThreshold) {
+                          // Swipe Right -> Prev
+                          setActiveImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+                        } else {
+                          // Tap / Click detection
+                          if (Math.abs(offset.x) < 5) {
+                            setIsLightboxOpen(true);
+                          }
+                        }
+                      }}
+                    >
+                      <img 
+                        src={product.images[activeImage]} 
+                        alt={product.name} 
+                        draggable="false"
+                        className="w-full h-full object-cover select-none transition-transform duration-700 md:group-hover:scale-110"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
 
               <div className="flex gap-4 overflow-x-auto pb-4 px-2 no-scrollbar">
