@@ -28,6 +28,9 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const [showNotifPanel, setShowNotifPanel] = useState(false);
   const [notifLoading, setNotifLoading] = useState(false);
   const notifRef = useRef(null);
+  // Client-side lock: IDs the admin has already marked as seen
+  // Prevents 5s polling from re-adding dismissed notifications
+  const seenIds = useRef(new Set());
 
   const fetchNotifications = async (isQuiet = false) => {
     if (!isQuiet) setNotifLoading(true);
@@ -63,7 +66,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         }
 
-        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.is_seen === 0).slice(0, 5) : [];
+        // Filter out already-seen IDs (client-side lock)
+        const pendingLeads = Array.isArray(leadsRes.data)
+          ? leadsRes.data.filter(l => l.is_seen === 0 && !seenIds.current.has(`lead-${l.id}`)).slice(0, 5)
+          : [];
         pendingLeads.forEach(lead => {
           alerts.push({
             id: `lead-${lead.id}`,
@@ -80,7 +86,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         });
 
-        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.is_seen === 0).slice(0, 5) : [];
+        // Filter out already-seen enquiry IDs
+        const pendingEnq = Array.isArray(quickEnqRes.data)
+          ? quickEnqRes.data.filter(e => e.is_seen === 0 && !seenIds.current.has(`enq-${e.id}`)).slice(0, 5)
+          : [];
         pendingEnq.forEach(enq => {
           alerts.push({
             id: `enq-${enq.id}`,
@@ -110,7 +119,16 @@ const PortalLayout = ({ children, role = 'admin' }) => {
             bg: 'bg-emerald-50'
           });
         });
+        // Recalculate badge count based on filtered (not-yet-seen-in-DB) items
+        const trueBadgeLeads = Array.isArray(leadsRes.data)
+          ? leadsRes.data.filter(l => l.is_seen === 0 && !seenIds.current.has(`lead-${l.id}`)).length
+          : 0;
+        const trueBadgeEnq = Array.isArray(quickEnqRes.data)
+          ? quickEnqRes.data.filter(e => e.is_seen === 0 && !seenIds.current.has(`enq-${e.id}`)).length
+          : 0;
+        setCrmBadges({ leads: trueBadgeLeads, enquiries: trueBadgeEnq });
         setNotifications(alerts);
+
       } else if (role === 'salesman') {
         const userStr = localStorage.getItem('farmliv_salesman');
         if (!userStr) return;
@@ -154,15 +172,22 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   const markAllSeen = async () => {
     try {
-      // Optimistically clear UI
+      // Add all current lead/enquiry IDs to the seenIds lock
+      setNotifications(prev => {
+        prev.forEach(n => {
+          if (n.type === 'lead' || n.type === 'enquiry') seenIds.current.add(n.id);
+        });
+        return prev.filter(n => n.type === 'activity');
+      });
       setCrmBadges({ leads: 0, enquiries: 0 });
-      setNotifications(prev => prev.filter(n => n.type === 'activity')); // Keep only activities
-      
-      // Call backend to mark both as seen
+
+      // Call backend
       await Promise.all([
         API.post('admin/mark-seen', { type: 'leads' }),
         API.post('admin/mark-seen', { type: 'enquiries' })
       ]);
+      // After backend confirms, clear the lock - DB is now consistent
+      seenIds.current.clear();
     } catch (err) {
       console.error("Failed to sync seen status:", err);
     }
@@ -171,19 +196,25 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const handleMarkIndividualSeen = async (notif) => {
     if (notif.is_seen === 1) return;
     try {
+      // Add to client-side seen lock FIRST
+      seenIds.current.add(notif.id);
       // Optimistic update: Remove from list
       setNotifications(prev => prev.filter(n => n.id !== notif.id));
-      
+
       const type = notif.type === 'lead' ? 'leads' : 'enquiries';
       await API.post('admin/mark-seen', { type, id: notif.rawId });
-      
+
       // Update badge counts locally
       setCrmBadges(prev => ({
         ...prev,
         [type]: Math.max(0, prev[type] - 1)
       }));
+      // After DB confirms, we can remove from lock
+      seenIds.current.delete(notif.id);
     } catch (err) {
       console.error("Failed to mark individual notification seen:", err);
+      // On failure, remove from lock so it becomes visible again
+      seenIds.current.delete(notif.id);
     }
   };
 
