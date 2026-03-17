@@ -460,6 +460,21 @@ const logActivity = async (action, user = 'Admin') => {
 
 // --- 3. ROUTES (API) ---
 
+app.get('/api/debug/schema', async (req, res) => {
+  try {
+    const [tables] = await pool.query("SHOW TABLES");
+    const schema = {};
+    for (const table of tables) {
+      const tableName = Object.values(table)[0];
+      const [columns] = await pool.query(`DESCRIBE ${tableName}`);
+      schema[tableName] = columns;
+    }
+    return res.json(schema);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/status', (req, res) => res.json({ 
   status: "Live", 
   sync: true, 
