@@ -178,7 +178,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           ]
         },
         { 
-          id: 'crm', name: 'CRM & Leads', icon: Target, path: '/admin/leads',
+          id: 'crm', name: 'LEADS', icon: Target, path: '/admin/leads',
           badge: (crmBadges.leads + crmBadges.enquiries) || null,
           submenu: [
             { name: 'Request Quote', path: '/admin/leads', badge: crmBadges.leads || null },
