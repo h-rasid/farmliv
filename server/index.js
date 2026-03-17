@@ -463,15 +463,13 @@ const logActivity = async (action, user = 'Admin') => {
 app.get('/api/debug/schema', async (req, res) => {
   try {
     const [tables] = await pool.query("SHOW TABLES");
-    const result = { schema: {}, counts: {} };
+    const counts = {};
     for (const table of tables) {
       const tableName = Object.values(table)[0];
       const [[{ count }]] = await pool.query(`SELECT COUNT(*) as count FROM ${tableName}`);
-      const [columns] = await pool.query(`DESCRIBE ${tableName}`);
-      result.schema[tableName] = columns;
-      result.counts[tableName] = count;
+      counts[tableName] = count;
     }
-    return res.json(result);
+    return res.json(counts);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
