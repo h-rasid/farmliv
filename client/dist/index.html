@@ -35,25 +35,10 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <script data-critical="true">
-    // High-priority CSS Interceptor: Converts Vite-injected CSS to non-blocking
-    (function() {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          mutation.addedNodes.forEach((node) => {
-            if (node.tagName === 'LINK' && node.rel === 'stylesheet' && !node.hasAttribute('data-critical')) {
-              node.media = 'print';
-              node.onload = function() { 
-                this.media = 'all'; 
-                console.log('Farmliv: Styled bundle internalized.');
-              };
-            }
-          });
-        });
-      });
-      observer.observe(document.head, { childList: true });
-    })();
-  </script>
+  <!-- Anti-cache headers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <!-- Critical Path CSS: Brand Identity & UI Stability -->
   <style data-critical="true">
