@@ -5,11 +5,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Package, Tag, ArrowRight, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import LazyImage from '@/components/ui/LazyImage';
 
 const ProductsPage = () => {
+  const { categoryId } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +25,26 @@ const ProductsPage = () => {
         const response = await API.get('/products');
         
         // Backend se aane wale data ko handle karna (Array ensure karna)
-        setProducts(Array.isArray(response.data) ? response.data : []);
+        const allProducts = Array.isArray(response.data) ? response.data : [];
+        setProducts(allProducts);
+
+        // ⭐ SEO Legacy Redirect: Handle URLs like /products/mulching-film indexed by Google
+        if (categoryId) {
+            const decodedParam = decodeURIComponent(categoryId).toLowerCase().replace(/-/g, ' ');
+            const knownCategories = ['seeds', 'fertilizers', 'pesticides', 'equipment', 'organic'];
+            
+            // Checking if the URL param resembles an exact product name rather than a category
+            const matchedProduct = allProducts.find(p => p.name.toLowerCase() === decodedParam || p.name.toLowerCase().includes(decodedParam));
+            
+            if (!knownCategories.includes(decodedParam) && matchedProduct) {
+                console.log(`Smart Redirect: Routing legacy slug '${categoryId}' to product ID ${matchedProduct.id}`);
+                navigate(`/product/${matchedProduct.id}`, { replace: true });
+                return;
+            } else {
+                // Otherwise, treat it as a search/category filter
+                setSearchTerm(decodedParam);
+            }
+        }
       } catch (error) {
         console.error("Data fetch error:", error);
       } finally {
@@ -31,7 +52,7 @@ const ProductsPage = () => {
       }
     };
     fetchProducts();
-  }, [API_BASE]); // Added API_BASE as dependency
+  }, [API_BASE, categoryId, navigate]);
 
   const filteredProducts = products.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

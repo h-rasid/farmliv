@@ -1618,9 +1618,10 @@ app.get('/sitemap.xml', async (req, res) => {
 
     // Products
     products.forEach(prod => {
+      const slug = prod.name ? prod.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
       xml += `
   <url>
-    <loc>${baseUrl}/product/${prod.id}</loc>
+    <loc>${baseUrl}/product/${prod.id}-${slug}</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>`;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import API from '@/utils/axios';
 import { API_BASE } from '@/utils/config';
 import Header from '@/components/Header';
@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
@@ -33,13 +34,21 @@ const ProductDetailPage = () => {
 
         // Defensive check: prevent literal ':id' or empty ID from triggering a 404
         if (!cleanId || cleanId === '' || productId.includes(':id')) {
-          console.warn('ProductDetailPage: Invalid productId detected, skipping fetch:', productId);
+          console.warn('ProductDetailPage: Invalid productId detected:', productId);
+          
+          if (productId && productId.length > 3 && !productId.includes(':id')) {
+             // Route text-only legacy slugs to the ProductsPage smart interceptor
+             navigate(`/products/${productId}`, { replace: true });
+             return;
+          }
+
           setLoading(false);
           return;
         }
         
         const response = await API.get(`/products/${cleanId}`);
         let data = response.data;
+
         
         if (data.images) {
           try {
