@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9', objectFit = null, fullHeight = true }) => {
+const LazyImage = ({ src, alt, className, imgClassName = '', priority = false, aspectRatio = '16/9', objectFit = null, fullHeight = true }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [error, setError] = useState(false); 
@@ -102,7 +102,7 @@ const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9'
             isLoaded 
               ? 'opacity-100 scale-100' 
               : 'opacity-0 scale-100'
-          }`}
+          } ${imgClassName}`}
           style={objectFit ? { objectFit, maxHeight: '100%' } : { maxHeight: '100%' }}
           decoding="async" 
         />

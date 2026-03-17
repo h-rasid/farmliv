@@ -117,6 +117,7 @@ const CertificationPage = () => {
                           src={cert.image} 
                           alt={cert.title} 
                           className="w-full h-full"
+                          imgClassName="certificate-img"
                           aspectRatio="auto"
                           objectFit="contain"
                           fullHeight={true}
