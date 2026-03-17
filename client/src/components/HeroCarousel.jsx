@@ -93,17 +93,35 @@ const HeroCarousel = () => {
             }
           }}
           /* --- Added Drag Logic End --- */
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
-                  <motion.h1
-                    initial={currentSlide === 0 ? false : { y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: currentSlide === 0 ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
-                    className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-['Playfair_Display'] leading-tight tracking-tight text-shadow-lg will-change-transform break-words"
-                  >
-                    {slides[currentSlide].title}
-                  </motion.h1>
-                </div>
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
+            opacity: { duration: 0.3 }
+          }}
+          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing"
+        >
+          <div className="relative h-full w-full">
+            <LazyImage
+              priority={true}
+              src={slides[currentSlide].image}
+              alt={slides[currentSlide].title}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1920px"
+              className="w-full h-full object-cover pointer-events-none select-none"
+            />
+            
+            <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/40 to-transparent pointer-events-none" />
+            
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="text-center text-white px-4 max-w-5xl w-full">
+                <div className="overflow-hidden mb-4 sm:mb-6">
+                  <motion.h1
+                    initial={currentSlide === 0 ? false : { y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: currentSlide === 0 ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
+                    className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-['Playfair_Display'] leading-tight tracking-tight text-shadow-lg will-change-transform break-words"
+                  >
+                    {slides[currentSlide].title}
+                  </motion.h1>
+                </div>
                 
                 <div className="overflow-hidden">
                   <motion.p
