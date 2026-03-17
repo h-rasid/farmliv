@@ -46,14 +46,23 @@ app.use(cors({
 
 app.use(express.json());
 
-// Static files management
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+// Serve static files from 'dist' (Farmliv Production)
+app.use(express.static(path.join(__dirname, '../client/dist'), {
+  maxAge: '7d', // Base index.html cache
+  index: 'index.html'
+}));
+
+// ⭐ Aggressive Caching for Assets (Vite Hashed Files)
+app.use('/assets', express.static(path.join(__dirname, '../client/dist/assets'), {
+  maxAge: '365d', // 1 Year
+  immutable: true,
+  etag: true
+}));
 
 app.use('/uploads', express.static(uploadDir, {
   maxAge: '30d', 
   etag: true
-})); 
+}));
 
 // --- 2. DATABASE & EMAIL CONFIG ---
 // Hostinger server2205 Optimized Configuration

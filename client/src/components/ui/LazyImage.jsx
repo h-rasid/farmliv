@@ -58,13 +58,13 @@ const LazyImage = ({
       // Avoid double injection
       if (url.includes('f_auto') || url.includes('q_auto')) return url;
       
-      let params = 'f_auto,q_auto:eco,c_limit';
+      let params = 'f_auto,q_auto:low,c_limit';
       if (width) {
         params += `,w_${width}`;
       } else if (maxWidth) {
         params += `,w_${maxWidth}`;
       } else if (priority) {
-        params += ',w_1280'; 
+        params += ',w_1080'; 
       } else {
         params += ',w_800'; 
       }
