@@ -51,8 +51,9 @@ if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 // Serve static files from 'dist' (Farmliv Production)
 app.use(express.static(path.join(__dirname, '../client/dist'), {
-  maxAge: '7d', // Base index.html cache
-  index: 'index.html'
+  maxAge: '1d', // Enable root index.html caching for Lighthouse Best Practices
+  index: 'index.html',
+  etag: true
 }));
 
 // ⭐ Aggressive Caching for Assets (Vite Hashed Files)

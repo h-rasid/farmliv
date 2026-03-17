@@ -99,7 +99,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location }) => {
           onClick={handlePageMove}
         >
           Products
-          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isProductsOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isProductsOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
         </Link>
         <span className={`absolute bottom-2 left-0 h-0.5 bg-[#2E7D32] rounded-full transition-all duration-300 ease-out ${isProductsOpen || location.pathname.includes('/products') ? 'w-full' : 'w-0'}`}></span>
         
@@ -300,12 +300,12 @@ const Header = () => {
         `}>
           <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center text-xs font-medium tracking-wide">
             <div className="flex items-center gap-6">
-              <a href="tel:+919181395595" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors">
-                <Phone className="w-3 h-3" />
+              <a href="tel:+919181395595" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
+                <Phone className="w-3 h-3" aria-hidden="true" />
                 <span>+91 91813 95595</span>
               </a>
-              <a href="mailto:sales@farmliv.com" className="hidden sm:flex items-center gap-2 hover:text-[#4CAF50] transition-colors">
-                <Mail className="w-3 h-3" />
+              <a href="mailto:sales@farmliv.com" className="hidden sm:flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
+                <Mail className="w-3 h-3" aria-hidden="true" />
                 <span>sales@farmliv.com</span>
               </a>
             </div>
