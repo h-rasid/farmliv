@@ -29,8 +29,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const [notifLoading, setNotifLoading] = useState(false);
   const notifRef = useRef(null);
 
-  const fetchNotifications = async () => {
-    setNotifLoading(true);
+  const fetchNotifications = async (isQuiet = false) => {
+    if (!isQuiet) setNotifLoading(true);
     try {
       if (role === 'admin') {
         const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
@@ -148,7 +148,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 5000); // Increased polling to 5s for realtime
+    const interval = setInterval(() => fetchNotifications(true), 5000); // 5s silent sync
     return () => clearInterval(interval);
   }, [role]);
 
@@ -501,7 +501,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                       </div>
 
                       <div className="max-h-[450px] overflow-y-auto custom-scrollbar p-2">
-                        {notifLoading ? (
+                        {notifLoading && notifications.length === 0 ? (
                           <div className="p-12 flex flex-col items-center gap-4">
                             <div className="w-8 h-8 border-2 border-[#2E7D32] border-t-transparent rounded-full animate-spin" />
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Syncing Pulse...</span>
@@ -556,10 +556,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                       {notifications.length > 0 && (
                         <div className="p-4 border-t border-slate-50 text-center">
                           <button 
-                            onClick={() => setNotifications([])}
+                            onClick={markAllSeen}
                             className="text-[9px] font-black text-[#2E7D32] uppercase tracking-[0.2em] hover:opacity-70 transition-all"
                           >
-                            Dismiss All Protocols
+                            Mark All Notifications
                           </button>
                         </div>
                       )}
