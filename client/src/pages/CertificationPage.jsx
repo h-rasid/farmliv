@@ -156,7 +156,7 @@ const CertificationPage = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {qualityStandards.map((standard, index) => (
                       <div key={index} className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                        <CheckCircle className="w-5 h-5 text-[#2E7D32] mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-[#2E7D32] mt-0.5" />
                         <span className="text-sm text-gray-700 font-bold leading-tight">{standard}</span>
                       </div>
                     ))}
