@@ -1420,11 +1420,18 @@ const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
 const altFrontendPath = path.resolve(__dirname, 'dist'); 
 const finalPath = fs.existsSync(frontendPath) ? frontendPath : altFrontendPath;
 
-// Serve static files with caching, EXCEPT index.html
+// Serve static files with aggressive caching (1 year)
 app.use(express.static(finalPath, { 
-  maxAge: '7d',
-  setHeaders: (res, path) => {
-    if (path.endsWith('index.html')) {
+  maxAge: '365d', // 1 year in milliseconds
+  setHeaders: (res, filePath) => {
+    // 1. Hashed assets (JS/CSS/WebP) should be immutable
+    if (filePath.match(/\.(js|css|webp|png|jpg|jpeg|gif|ico|woff2|woff|ttf|otf)$/) && 
+        filePath.includes(path.sep + 'assets' + path.sep)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+    
+    // 2. index.html should NEVER be cached to ensure users get latest JS/CSS hashes
+    if (filePath.endsWith('index.html')) {
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
