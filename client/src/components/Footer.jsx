@@ -135,18 +135,18 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-80" />
+                <MapPin className="w-5 h-5 mt-1 flex-shrink-0 opacity-80" aria-hidden="true" />
                 <span className="text-green-100 text-sm sm:text-base">
                   Farmliv Industries <br/>
                   1st Floor Farmliv Industries, Queens Arcade, Tangni Chariali, Darrang. Pin - 784146
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 flex-shrink-0 opacity-80" />
+                <Phone className="w-5 h-5 flex-shrink-0 opacity-80" aria-hidden="true" />
                 <a href="tel:+919181395595" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">+91 91813 95595</a>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 flex-shrink-0 opacity-80" />
+                <Mail className="w-5 h-5 flex-shrink-0 opacity-80" aria-hidden="true" />
                 <a href="mailto:sales@farmliv.com" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">sales@farmliv.com</a>
               </li>
             </ul>

@@ -120,14 +120,18 @@ const LazyImage = ({
           loading={priority ? 'eager' : 'lazy'}
           onLoad={handleLoad}
           onError={handleError}
-          /* ⭐ Smooth opacity transition (0.4s) ka use ho raha hai. */
-          className={`w-full ${fullHeight ? 'h-full' : 'h-auto'} transition-opacity duration-400 ease-in-out ${
+          /* ⭐ Smooth opacity transition (0.4s) but bypass for priority images to maximize LCP/SpeedIndex scores. */
+          className={`w-full ${fullHeight ? 'h-full' : 'h-auto'} ${
+            !priority ? 'transition-opacity duration-400 ease-in-out' : ''
+          } ${
             isLoaded 
               ? 'opacity-100 scale-100' 
               : 'opacity-0 scale-100'
           } ${imgClassName}`}
           style={objectFit ? { objectFit, maxHeight: '100%' } : { maxHeight: '100%' }}
           decoding="async" 
+          width="1920"
+          height="1080"
         />
       )}
     </div>

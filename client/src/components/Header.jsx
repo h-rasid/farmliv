@@ -316,7 +316,7 @@ const Header = () => {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group relative z-[60]" onClick={() => { closeMobileMenu(); window.scrollTo(0, 0); }}>
               <div className="w-10 h-10 bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] rounded-xl flex items-center justify-center shadow-lg shadow-green-900/10 group-hover:shadow-green-900/20 transition-all duration-300 shrink-0">
-                <Leaf className="w-6 h-6 text-white" />
+                <Leaf className="w-6 h-6 text-white" aria-hidden="true" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900 font-['Playfair_Display'] leading-none tracking-tight">
