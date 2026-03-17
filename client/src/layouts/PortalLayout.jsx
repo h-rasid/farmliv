@@ -23,6 +23,12 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   // CRM Badge State
   const [crmBadges, setCrmBadges] = useState({ leads: 0, enquiries: 0 });
 
+  // Notification State
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifPanel, setShowNotifPanel] = useState(false);
+  const [notifLoading, setNotifLoading] = useState(false);
+  const notifRef = useRef(null);
+
   const fetchNotifications = async () => {
     setNotifLoading(true);
     try {
