@@ -1534,6 +1534,73 @@ app.put('/api/tasks/:id/status', async (req, res) => {
   }
 });
 
+// --- 3. SEO & SITEMAP GENERATION ---
+app.get('/robots.txt', (req, res) => {
+  const robots = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin-portal
+Disallow: /salesman
+Disallow: /salesman-portal
+Disallow: /api/debug
+
+Sitemap: https://farmliv.com/sitemap.xml`;
+  res.header('Content-Type', 'text/plain');
+  res.send(robots);
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const baseUrl = 'https://farmliv.com';
+    const staticPages = ['', '/about', '/products', '/certification', '/contact', '/request-quote'];
+    
+    const [categories] = await pool.query('SELECT id FROM categories');
+    const [products] = await pool.query('SELECT id FROM products');
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+    // Static Pages
+    staticPages.forEach(page => {
+      xml += `
+  <url>
+    <loc>${baseUrl}${page}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>${page === '' ? '1.0' : '0.8'}</priority>
+  </url>`;
+    });
+
+    // Categories
+    categories.forEach(cat => {
+      xml += `
+  <url>
+    <loc>${baseUrl}/products/${cat.id}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    // Products
+    products.forEach(prod => {
+      xml += `
+  <url>
+    <loc>${baseUrl}/product/${prod.id}</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`;
+    });
+
+    xml += `
+</urlset>`;
+
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (err) {
+    console.error("Sitemap Generation Error:", err);
+    res.status(500).end();
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 // --- 4. FRONTEND HOSTING LOGIC ---
 const frontendPath = path.resolve(__dirname, '..', 'client', 'dist');
