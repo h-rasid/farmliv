@@ -116,9 +116,10 @@ const CertificationPage = () => {
                         <LazyImage 
                           src={cert.image} 
                           alt={cert.title} 
-                          className="w-full"
+                          className="w-full min-h-[300px]"
                           aspectRatio="auto"
                           objectFit="contain"
+                          fullHeight={false}
                         />
                       </div>
                       {/* Zoom Overlay */}
