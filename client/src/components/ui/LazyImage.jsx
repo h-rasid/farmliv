@@ -98,12 +98,12 @@ const LazyImage = ({ src, alt, className, priority = false, aspectRatio = '16/9'
           onLoad={handleLoad}
           onError={handleError}
           /* ⭐ Smooth opacity transition (0.4s) ka use ho raha hai. */
-          className={`w-full ${fullHeight ? 'h-full' : ''} transition-opacity duration-400 ease-in-out ${
+          className={`w-full ${fullHeight ? 'h-full' : 'h-auto'} transition-opacity duration-400 ease-in-out ${
             isLoaded 
               ? 'opacity-100 scale-100' 
               : 'opacity-0 scale-100'
           }`}
-          style={{ objectFit }}
+          style={{ objectFit: objectFit, maxHeight: '100%' }}
           decoding="async" 
         />
       )}
