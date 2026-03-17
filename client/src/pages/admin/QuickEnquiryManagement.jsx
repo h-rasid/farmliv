@@ -18,7 +18,7 @@ const QuickEnquiryManagement = () => {
   useEffect(() => {
     fetchData();
     markSeen();
-    const interval = setInterval(fetchData, 5000); // Red dot sync polling
+    const interval = setInterval(() => fetchData(true), 5000); // Red dot sync polling (Quietly)
     return () => clearInterval(interval);
   }, []);
 
@@ -30,9 +30,9 @@ const QuickEnquiryManagement = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async (isQuiet = false) => {
     try {
-      setLoading(true);
+      if (!isQuiet) setLoading(true);
       const [enqRes, staffRes] = await Promise.all([
         API.get('/quick-enquiries'),
         API.get('/staff')
@@ -40,8 +40,10 @@ const QuickEnquiryManagement = () => {
       setEnquiries(enqRes.data);
       setStaff(staffRes.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Sync Failed" });
-    } finally { setLoading(false); }
+      if (!isQuiet) toast({ variant: "destructive", title: "Sync Error" });
+    } finally {
+      if (!isQuiet) setLoading(false);
+    }
   };
 
   const handleAssign = async (id, staffId) => {

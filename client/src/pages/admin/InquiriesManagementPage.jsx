@@ -25,7 +25,7 @@ const InquiriesManagementPage = () => {
     fetchLeads();
     fetchStaff();
     markSeen();
-    const interval = setInterval(fetchLeads, 5000); // 5s realtime sync (Admin Directive)
+    const interval = setInterval(() => fetchLeads(true), 5000); // 5s realtime sync (Quietly)
     return () => clearInterval(interval);
   }, []);
 
@@ -37,20 +37,22 @@ const InquiriesManagementPage = () => {
     }
   };
 
-  const fetchLeads = async () => {
+  const fetchLeads = async (isQuiet = false) => {
     try {
-      setLoading(true);
+      if (!isQuiet) setLoading(true);
       const res = await axios.get(`${API_BASE}/api/leads`);
       setLeads(res.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Sync Offline" });
+      if (!isQuiet) toast({ variant: "destructive", title: "Sync Offline" });
       setLeads([{ 
         id: 1, customer_name: 'Harunar Rasid', phone: '9876543210', 
         email: 'rasid@farmliv.com', company: 'Farmliv Industries',
         location: 'Assam', product_name: 'Mulching Film', status: 'New', 
         assigned_to: null, notes: 'Interested in bulk buy.' 
       }]);
-    } finally { setLoading(false); }
+    } finally { 
+      if (!isQuiet) setLoading(false); 
+    }
   };
 
   const fetchStaff = async () => {
