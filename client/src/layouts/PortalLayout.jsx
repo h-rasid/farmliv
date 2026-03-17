@@ -148,6 +148,28 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     return () => clearInterval(interval);
   }, [role]);
 
+  const markAllSeen = async () => {
+    try {
+      // Optimistically clear badges in UI
+      setCrmBadges({ leads: 0, enquiries: 0 });
+      // Call backend to mark both as seen
+      await Promise.all([
+        API.post('admin/mark-seen', { type: 'leads' }),
+        API.post('admin/mark-seen', { type: 'enquiries' })
+      ]);
+    } catch (err) {
+      console.error("Failed to sync seen status:", err);
+    }
+  };
+
+  const handleNotifClick = () => {
+    const nextState = !showNotifPanel;
+    setShowNotifPanel(nextState);
+    if (nextState && role === 'admin') {
+      markAllSeen();
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (notifRef.current && !notifRef.current.contains(event.target)) {
@@ -407,7 +429,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                </div>
               <div className="relative" ref={notifRef}>
                 <div 
-                  onClick={() => setShowNotifPanel(!showNotifPanel)}
+                  onClick={handleNotifClick}
                   className="relative cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-all"
                 >
                   <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${notifications.length > 0 ? 'animate-pulse' : ''}`} />
