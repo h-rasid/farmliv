@@ -13,6 +13,7 @@ import QuickEnquiryTab from './components/QuickEnquiryTab';
 // ⭐ Modal for Popup behavior
 import QuickEnquiryModal from './components/QuickEnquiryModal';
 import HomePage from './pages/HomePage';
+import SystemLogs from './pages/admin/SystemLogs';
 
 // --- Lazy Load Public Pages ---
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
@@ -162,6 +163,10 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/settings" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
             <Route path="/admin/settings/roles" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
             <Route path="/admin/settings/access" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
+ 
+            <Route path="/admin/logs" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
+            <Route path="/admin/logs/activity" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
+            <Route path="/admin/logs/security" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
 
             {/* SALESMAN PROTECTED ROUTES */}
             <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />

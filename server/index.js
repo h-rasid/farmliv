@@ -456,7 +456,7 @@ const safeQuery = async (query, params = [], mockKey = null) => {
 
 const logActivity = async (action, user = 'Admin') => {
   try {
-    await pool.query('INSERT INTO activities (action, staff_user) VALUES (?, ?)', [action, user]);
+    await pool.query('INSERT INTO activities (action, user) VALUES (?, ?)', [action, user]);
   } catch (err) {
     console.warn("Activity logging failed (expected if offline):", err.message);
   }
@@ -1239,13 +1239,7 @@ app.get('/api/admin/reports/staff-performance', async (req, res) => {
 
 app.get('/api/admin/activities', async (req, res) => {
   try {
-    // Debug: check if table exists
-    const [tables] = await pool.query("SHOW TABLES LIKE 'activities'");
-    if (tables.length === 0) {
-      return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
-    }
-
-    const [rows] = await pool.query('SELECT action, staff_user as user, created_at FROM activities ORDER BY id DESC LIMIT 50');
+    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);

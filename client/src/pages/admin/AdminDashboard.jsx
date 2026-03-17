@@ -224,22 +224,30 @@ const AdminDashboard = () => {
                          <Activity size={16} className="text-emerald-500" /> Recent Activity
                       </span>
                    </div>
-                   <div className="space-y-4">
-                       {[
-                        { type: 'order', text: 'Order #1540 Completed', time: '2m ago', icon: History, color: 'text-[#2E7D32]', bg: 'bg-green-50' },
-                        { type: 'lead', text: 'New Customer Added', time: '15m ago', icon: Target, color: 'text-blue-500', bg: 'bg-blue-50' },
-                        { type: 'stock', text: 'Low Stock Alert', time: '1h ago', icon: AlertCircle, color: 'text-amber-500', bg: 'bg-amber-50' },
-                        { type: 'payment', text: 'Payment Received', time: '3h ago', icon: IndianRupee, color: 'text-[#2E7D32]', bg: 'bg-green-50' }
-                      ].map((act, i) => (
-                        <div key={i} className="flex items-start gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
-                           <div className={`p-2 rounded-xl ${act.bg} ${act.color}`}><act.icon size={14} /></div>
-                           <div className="flex flex-col">
-                              <span className="text-[10px] font-bold text-slate-900">{act.text}</span>
-                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{act.time}</span>
-                           </div>
-                        </div>
-                      ))}
-                   </div>
+                                <div className="space-y-4">
+                       {activities.length > 0 ? activities.map((act, i) => (
+                         <div key={i} className="flex items-start gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                            <div className={`p-2 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white transition-all`}>
+                               <History size={14} />
+                            </div>
+                            <div className="flex flex-col">
+                               <span className="text-[10px] font-bold text-slate-900 line-clamp-1">{act.action}</span>
+                               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{act.time} • {act.user}</span>
+                            </div>
+                         </div>
+                       )) : (
+                         <div className="py-8 text-center bg-slate-50 rounded-2xl">
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No Recent protocols</p>
+                         </div>
+                       )}
+                       
+                       <button 
+                         onClick={() => navigate('/admin/logs')}
+                         className="w-full py-3 mt-4 border border-dashed border-slate-200 rounded-2xl text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] hover:border-emerald-500 hover:text-emerald-500 transition-all active:scale-95"
+                       >
+                         View Full Audit Trail
+                       </button>
+                    </div>
                 </div>
               </div>
 
