@@ -110,16 +110,16 @@ const CertificationPage = () => {
                     {/* --- Frame Design with Click to Zoom --- */}
                     <div 
                       onClick={() => setSelectedImage(cert.image)}
-                      className="relative bg-gray-50 rounded-lg border-2 border-gray-100 p-4 shadow-sm group hover:shadow-xl hover:border-[#2E7D32]/30 transition-all duration-500 mb-8 cursor-zoom-in min-h-[350px] flex items-center justify-center"
+                      className="relative aspect-[3/4] bg-gray-50 rounded-lg border-2 border-gray-100 p-4 shadow-sm group hover:shadow-xl hover:border-[#2E7D32]/30 transition-all duration-500 mb-8 cursor-zoom-in"
                     >
-                      <div className="w-full bg-white overflow-hidden rounded shadow-inner flex items-center justify-center p-3">
+                      <div className="w-full h-full bg-white overflow-hidden rounded shadow-inner flex items-center justify-center p-3">
                         <LazyImage 
                           src={cert.image} 
                           alt={cert.title} 
-                          className="w-full"
+                          className="w-full h-full"
                           aspectRatio="auto"
                           objectFit="contain"
-                          fullHeight={false}
+                          fullHeight={true}
                         />
                       </div>
                       {/* Zoom Overlay */}
