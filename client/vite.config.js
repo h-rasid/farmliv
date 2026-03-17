@@ -33,5 +33,14 @@ export default defineConfig({
   build: {
     // Build folder ka naam 'dist' hi rehne dein kyunki Hostinger ise asani se pehchanta hai
     outDir: 'dist',
+    /* ⭐ Performance Optimization: Large libraries ko separate chunks mein divide kiya gaya hai taaki initial load fast ho */
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-ui': ['framer-motion', 'lucide-react'],
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+        }
+      }
+    }
   }
 })

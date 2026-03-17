@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-const LazyImage = ({ src, alt, className, imgClassName = '', priority = false, aspectRatio = '16/9', objectFit = null, fullHeight = true }) => {
+const LazyImage = ({ 
+  src, 
+  alt, 
+  className, 
+  imgClassName = '', 
+  priority = false, 
+  aspectRatio = '16/9', 
+  objectFit = null, 
+  fullHeight = true,
+  maxWidth = null // ⭐ Allow components to override resolution
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
   const [error, setError] = useState(false); 
@@ -51,11 +61,15 @@ const LazyImage = ({ src, alt, className, imgClassName = '', priority = false, a
       // Advanced Optimization: Automatic format, dynamic quality (eco for savings), and responsive width
       // c_limit ensures we don't upscale, but downscale for large originals
       let params = 'f_auto,q_auto:eco,c_limit';
-      if (priority) {
+      
+      if (maxWidth) {
+        params += `,w_${maxWidth}`;
+      } else if (priority) {
         // High quality but capped at 1280px for faster LCP (Most mobile/tablet benchmarks)
-        params = 'f_auto,q_auto:eco,c_limit,w_1280'; 
+        params += ',w_1280'; 
       } else {
-        params = 'f_auto,q_auto:eco,c_limit,w_800'; 
+        // Lower default for standard images to save bandwidth
+        params += ',w_800'; 
       }
       
       return url.replace('/upload/', `/upload/${params}/`);

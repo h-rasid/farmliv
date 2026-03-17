@@ -49,3 +49,16 @@
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule . /index.html [L]
 </IfModule>
+
+# ⭐ Aggressive Caching for Performance (LCP Improvement)
+<IfModule mod_headers.c>
+  # Hashed assets (Vite index-HASH.js) should be immutable
+  <FilesMatch "\.(js|css|webp|png|jpg|jpeg|gif|ico|woff2|woff|ttf|otf)$">
+    Header set Cache-Control "max-age=31536000, public, immutable"
+  </FilesMatch>
+  
+  # HTML should not be cached to ensure users get latest JS/CSS hashes
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
