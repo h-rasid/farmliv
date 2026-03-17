@@ -46,6 +46,9 @@ app.use(cors({
 
 app.use(express.json());
 
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
 // Serve static files from 'dist' (Farmliv Production)
 app.use(express.static(path.join(__dirname, '../client/dist'), {
   maxAge: '7d', // Base index.html cache
