@@ -452,10 +452,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                   onClick={handleNotifClick}
                   className="relative cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-all"
                 >
-                  <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${notifications.some(n => n.is_seen === 0) ? 'animate-pulse' : ''}`} />
-                  {notifications.filter(n => n.is_seen === 0).length > 0 && (
+                  <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${(crmBadges.leads + crmBadges.enquiries) > 0 ? 'animate-pulse' : ''}`} />
+                  {(crmBadges.leads + crmBadges.enquiries) > 0 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white shadow-lg animate-bounce">
-                      {notifications.filter(n => n.is_seen === 0).length}
+                      {crmBadges.leads + crmBadges.enquiries}
                     </span>
                   )}
                 </div>
@@ -474,14 +474,14 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                           <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-2">
                             <Bell size={14} className="text-[#2E7D32]" /> System Directives
                           </span>
-                          {notifications.filter(n => n.is_seen === 0).length > 0 && (
+                          {(crmBadges.leads + crmBadges.enquiries) > 0 && (
                             <span className="text-[8px] font-bold text-[#2E7D32] uppercase tracking-tighter mt-1">
-                              {notifications.filter(n => n.is_seen === 0).length} UNREAD TASKS
+                              {crmBadges.leads + crmBadges.enquiries} UNREAD TASKS
                             </span>
                           )}
                         </div>
                         <div className="flex items-center gap-2">
-                          {notifications.filter(n => n.is_seen === 0).length > 0 && (
+                          {(crmBadges.leads + crmBadges.enquiries) > 0 && (
                             <button 
                               onClick={markAllSeen}
                               className="text-[8px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline"
