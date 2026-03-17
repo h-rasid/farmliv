@@ -1159,12 +1159,20 @@ app.get('/api/admin/stats', async (req, res) => {
 });
 
 app.post('/api/admin/mark-seen', async (req, res) => {
-  const { type } = req.body; // 'leads' or 'enquiries'
+  const { type, id } = req.body; // 'leads' or 'enquiries', optional id
   try {
     if (type === 'leads') {
-      await pool.query("UPDATE leads SET is_seen = 1 WHERE is_seen = 0");
+      if (id) {
+        await pool.query("UPDATE leads SET is_seen = 1 WHERE id = ?", [id]);
+      } else {
+        await pool.query("UPDATE leads SET is_seen = 1 WHERE is_seen = 0");
+      }
     } else if (type === 'enquiries') {
-      await pool.query("UPDATE quick_enquiries SET is_seen = 1 WHERE is_seen = 0");
+      if (id) {
+        await pool.query("UPDATE quick_enquiries SET is_seen = 1 WHERE id = ?", [id]);
+      } else {
+        await pool.query("UPDATE quick_enquiries SET is_seen = 1 WHERE is_seen = 0");
+      }
     }
     return res.json({ success: true });
   } catch (err) {

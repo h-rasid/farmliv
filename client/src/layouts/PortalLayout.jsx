@@ -63,11 +63,13 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         }
 
-        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.is_seen === 0).slice(0, 3) : [];
-        pendingLeads.forEach(lead => {
+        const recentLeads = Array.isArray(leadsRes.data) ? leadsRes.data.slice(0, 5) : [];
+        recentLeads.forEach(lead => {
           alerts.push({
             id: `lead-${lead.id}`,
+            rawId: lead.id,
             type: 'lead',
+            is_seen: lead.is_seen,
             title: 'New Quote Request',
             message: `${lead.customer_name || 'Individual Prospect'} requested a quote.`,
             time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -78,11 +80,13 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         });
 
-        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.is_seen === 0).slice(0, 3) : [];
-        pendingEnq.forEach(enq => {
+        const recentEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.slice(0, 5) : [];
+        recentEnq.forEach(enq => {
           alerts.push({
             id: `enq-${enq.id}`,
+            rawId: enq.id,
             type: 'enquiry',
+            is_seen: enq.is_seen,
             title: 'New Quick Enquiry',
             message: `${enq.customer_name || 'Unknown Prospect'} sent a new enquiry from ${enq.location || 'N/A'}.`,
             time: new Date(enq.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -162,12 +166,28 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     }
   };
 
-  const handleNotifClick = () => {
-    const nextState = !showNotifPanel;
-    setShowNotifPanel(nextState);
-    if (nextState && role === 'admin') {
-      markAllSeen();
+  const handleMarkIndividualSeen = async (notif) => {
+    if (notif.is_seen === 1) return;
+    try {
+      // Optimistic update
+      setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, is_seen: 1 } : n));
+      
+      const type = notif.type === 'lead' ? 'leads' : 'enquiries';
+      await API.post('admin/mark-seen', { type, id: notif.rawId });
+      
+      // Update badge counts locally
+      setCrmBadges(prev => ({
+        ...prev,
+        [type]: Math.max(0, prev[type] - 1)
+      }));
+    } catch (err) {
+      console.error("Failed to mark individual notification seen:", err);
     }
+  };
+
+  const handleNotifClick = () => {
+    setShowNotifPanel(!showNotifPanel);
+    // REMOVED: No longer marking all seen on panel open
   };
 
   useEffect(() => {
@@ -432,10 +452,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                   onClick={handleNotifClick}
                   className="relative cursor-pointer group p-2 hover:bg-slate-50 rounded-xl transition-all"
                 >
-                  <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${notifications.length > 0 ? 'animate-pulse' : ''}`} />
-                  {notifications.length > 0 && (
+                  <Bell size={20} className={`text-slate-400 group-hover:text-[#134E4A] transition-colors ${notifications.some(n => n.is_seen === 0) ? 'animate-pulse' : ''}`} />
+                  {notifications.filter(n => n.is_seen === 0).length > 0 && (
                     <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-600 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white shadow-lg animate-bounce">
-                      {notifications.length}
+                      {notifications.filter(n => n.is_seen === 0).length}
                     </span>
                   )}
                 </div>
@@ -450,15 +470,32 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                       className="absolute right-0 mt-4 w-96 bg-white rounded-[2rem] border border-slate-100 shadow-2xl z-[100] overflow-hidden"
                     >
                       <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                        <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-2">
-                          <Bell size={14} className="text-[#2E7D32]" /> System Directives
-                        </span>
-                        <button 
-                          onClick={() => setShowNotifPanel(false)}
-                          className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all"
-                        >
-                          <X size={14} />
-                        </button>
+                        <div className="flex flex-col">
+                          <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-2">
+                            <Bell size={14} className="text-[#2E7D32]" /> System Directives
+                          </span>
+                          {notifications.filter(n => n.is_seen === 0).length > 0 && (
+                            <span className="text-[8px] font-bold text-[#2E7D32] uppercase tracking-tighter mt-1">
+                              {notifications.filter(n => n.is_seen === 0).length} UNREAD TASKS
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {notifications.filter(n => n.is_seen === 0).length > 0 && (
+                            <button 
+                              onClick={markAllSeen}
+                              className="text-[8px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline"
+                            >
+                              Mark All
+                            </button>
+                          )}
+                          <button 
+                            onClick={() => setShowNotifPanel(false)}
+                            className="p-2 hover:bg-white rounded-xl text-slate-400 transition-all"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
                       </div>
 
                       <div className="max-h-[450px] overflow-y-auto custom-scrollbar p-2">
@@ -470,16 +507,22 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                         ) : notifications.length > 0 ? (
                           <div className="space-y-1">
                             {notifications.map((notif) => (
-                              <div 
-                                key={notif.id}
-                                onClick={() => {
-                                  if (notif.path) {
-                                    navigate(notif.path);
-                                    setShowNotifPanel(false);
-                                  }
-                                }}
-                                className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-all cursor-pointer border border-transparent hover:border-slate-100"
-                              >
+                                <div 
+                                  key={notif.id}
+                                  onClick={() => {
+                                    if (notif.type !== 'activity') {
+                                      handleMarkIndividualSeen(notif);
+                                    }
+                                    if (notif.path) {
+                                      navigate(notif.path);
+                                      setShowNotifPanel(false);
+                                    }
+                                  }}
+                                  className={`group flex items-start gap-4 p-4 rounded-2xl transition-all cursor-pointer border border-transparent hover:border-slate-100 ${notif.is_seen === 0 ? 'bg-emerald-50/40 hover:bg-emerald-100/40 relative' : 'hover:bg-slate-50'}`}
+                                >
+                                  {notif.is_seen === 0 && (
+                                    <div className="absolute top-4 right-4 w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                                  )}
                                 <div className={`p-3 rounded-xl ${notif.bg} ${notif.color} group-hover:scale-110 transition-transform`}>
                                   <notif.icon size={16} />
                                 </div>
