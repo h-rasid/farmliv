@@ -367,6 +367,10 @@ const transporter = nodemailer.createTransport({
           await connection.query('INSERT INTO settings (gstNumber) VALUES ("")');
         }
 
+        // Initialize Notification Seen Flags
+        await pool.query("ALTER TABLE leads ADD COLUMN IF NOT EXISTS is_seen TINYINT(1) DEFAULT 0");
+        await pool.query("ALTER TABLE quick_enquiries ADD COLUMN IF NOT EXISTS is_seen TINYINT(1) DEFAULT 0");
+
         connection.release();
     } catch (err) {
         console.error('❌ Database Initialization Error:', err.message);
@@ -1138,8 +1142,8 @@ app.get('/api/admin/stats', async (req, res) => {
         (SELECT COALESCE(SUM(final_price), 0) FROM sales) as totalRevenue,
         (SELECT COUNT(*) FROM sales) as totalOrders,
         (SELECT COUNT(*) FROM products WHERE stock <= 10) as lowStockAlerts,
-        (SELECT COUNT(*) FROM leads WHERE status IN ('New', 'Pending')) as pendingLeadsCount,
-        (SELECT COUNT(*) FROM quick_enquiries WHERE status = 'Pending') as pendingEnquiriesCount,
+        (SELECT COUNT(*) FROM leads WHERE is_seen = 0) as pendingLeadsCount,
+        (SELECT COUNT(*) FROM quick_enquiries WHERE is_seen = 0) as pendingEnquiriesCount,
         (SELECT 
             CASE 
               WHEN (SELECT COUNT(*) FROM leads) = 0 THEN 0 
@@ -1147,12 +1151,25 @@ app.get('/api/admin/stats', async (req, res) => {
             END
         ) as conversionRate
     `);
-    // Debug: log stats result
-    console.log("Admin Stats Result:", stats);
     return res.json(stats || {});
   } catch (err) {
     console.error("Admin stats error:", err);
     return res.status(500).json({ error: "Analytics Offline: " + err.message });
+  }
+});
+
+app.post('/api/admin/mark-seen', async (req, res) => {
+  const { type } = req.body; // 'leads' or 'enquiries'
+  try {
+    if (type === 'leads') {
+      await pool.query("UPDATE leads SET is_seen = 1 WHERE is_seen = 0");
+    } else if (type === 'enquiries') {
+      await pool.query("UPDATE quick_enquiries SET is_seen = 1 WHERE is_seen = 0");
+    }
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Mark seen error:", err);
+    return res.status(500).json({ error: "Failed to mark as seen" });
   }
 });
 

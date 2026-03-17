@@ -24,9 +24,18 @@ const InquiriesManagementPage = () => {
   useEffect(() => { 
     fetchLeads();
     fetchStaff();
+    markSeen();
     const interval = setInterval(fetchLeads, 5000); // 5s realtime sync (Admin Directive)
     return () => clearInterval(interval);
   }, []);
+
+  const markSeen = async () => {
+    try {
+      await axios.post(`${API_BASE}/api/admin/mark-seen`, { type: 'leads' });
+    } catch (err) {
+      console.error("Mark seen error:", err);
+    }
+  };
 
   const fetchLeads = async () => {
     try {

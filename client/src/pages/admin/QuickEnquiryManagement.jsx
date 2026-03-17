@@ -17,9 +17,18 @@ const QuickEnquiryManagement = () => {
 
   useEffect(() => {
     fetchData();
+    markSeen();
     const interval = setInterval(fetchData, 5000); // Red dot sync polling
     return () => clearInterval(interval);
   }, []);
+
+  const markSeen = async () => {
+    try {
+      await API.post('/admin/mark-seen', { type: 'enquiries' });
+    } catch (err) {
+      console.error("Mark seen error:", err);
+    }
+  };
 
   const fetchData = async () => {
     try {
