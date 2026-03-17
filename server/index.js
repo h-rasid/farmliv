@@ -1147,9 +1147,12 @@ app.get('/api/admin/stats', async (req, res) => {
             END
         ) as conversionRate
     `);
-    return res.json(stats);
+    // Debug: log stats result
+    console.log("Admin Stats Result:", stats);
+    return res.json(stats || {});
   } catch (err) {
-    return res.status(500).json({ error: "Analytics Offline" });
+    console.error("Admin stats error:", err);
+    return res.status(500).json({ error: "Analytics Offline: " + err.message });
   }
 });
 
@@ -1214,11 +1217,10 @@ app.get('/api/admin/activities', async (req, res) => {
     // Debug: check if table exists
     const [tables] = await pool.query("SHOW TABLES LIKE 'activities'");
     if (tables.length === 0) {
-      return res.status(200).json([{ action: "Activities Hub Initializing...", staff_user: "System", time: new Date().toISOString() }]);
+      return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
     }
 
-    const [rows] = await pool.query('SELECT action, staff_user, created_at FROM activities ORDER BY id DESC LIMIT 50');
-    // Map staff_user to user for frontend compatibility if needed, or update frontend
+    const [rows] = await pool.query('SELECT action, staff_user as user, created_at FROM activities ORDER BY id DESC LIMIT 50');
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);
