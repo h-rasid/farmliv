@@ -71,8 +71,8 @@ const HeroCarousel = () => {
   };
 
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden bg-black contain-layout touch-pan-y pointer-events-auto">
-      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden bg-black contain-layout content-visibility-auto touch-pan-y pointer-events-auto">
+      <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={currentSlide}
           custom={direction}
