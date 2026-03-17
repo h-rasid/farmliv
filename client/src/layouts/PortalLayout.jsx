@@ -63,13 +63,13 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         }
 
-        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.status === 'Pending').slice(0, 3) : [];
+        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.is_seen === 0).slice(0, 3) : [];
         pendingLeads.forEach(lead => {
           alerts.push({
             id: `lead-${lead.id}`,
             type: 'lead',
             title: 'New Quote Request',
-            message: `${lead.customer_name} from ${lead.company || 'Individual'} requested a quote.`,
+            message: `${lead.customer_name || 'Individual Prospect'} requested a quote.`,
             time: new Date(lead.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             icon: Calculator,
             color: 'text-blue-500',
@@ -78,13 +78,13 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         });
 
-        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.status === 'Pending').slice(0, 3) : [];
+        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.is_seen === 0).slice(0, 3) : [];
         pendingEnq.forEach(enq => {
           alerts.push({
             id: `enq-${enq.id}`,
             type: 'enquiry',
             title: 'New Quick Enquiry',
-            message: `${enq.customer_name} sent a new enquiry from ${enq.location || 'N/A'}.`,
+            message: `${enq.customer_name || 'Unknown Prospect'} sent a new enquiry from ${enq.location || 'N/A'}.`,
             time: new Date(enq.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             icon: Zap,
             color: 'text-amber-500',
