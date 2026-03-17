@@ -258,11 +258,11 @@ const SalesDashboard = () => {
                <div className="w-full grid grid-cols-2 gap-4">
                   <div className="flex flex-col p-4 bg-slate-50 rounded-2xl">
                      <span className="text-[10px] font-black text-slate-400 uppercase mb-1">New Leads</span>
-                     <span className="text-xl font-black text-slate-900">120</span>
+                     <span className="text-xl font-black text-slate-900">{stats.newLeads}</span>
                   </div>
                   <div className="flex flex-col p-4 bg-slate-50 rounded-2xl">
                      <span className="text-[10px] font-black text-slate-400 uppercase mb-1">Contacted</span>
-                     <span className="text-xl font-black text-slate-900">80</span>
+                     <span className="text-xl font-black text-slate-900">{stats.contactedEnquiries || 0}</span>
                   </div>
                </div>
             </div>

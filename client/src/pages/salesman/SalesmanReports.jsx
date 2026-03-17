@@ -27,37 +27,28 @@ const SalesmanReports = () => {
     monthlyTrend: []
   });
 
-  useEffect(() => {
-     // Simulated high-density telemetry data
-     setData({
-        weeklySales: [
-          { day: 'Mon', sales: 4500, target: 5000 },
-          { day: 'Tue', sales: 7200, target: 5000 },
-          { day: 'Wed', sales: 3100, target: 5000 },
-          { day: 'Thu', sales: 8400, target: 5000 },
-          { day: 'Fri', sales: 5600, target: 5000 },
-          { day: 'Sat', sales: 9800, target: 5000 },
-          { day: 'Sun', sales: 2400, target: 5000 },
-        ],
-        monthlyTrend: [
-          { month: 'Jan', value: 45000 },
-          { month: 'Feb', value: 52000 },
-          { month: 'Mar', value: 48000 },
-          { month: 'Apr', value: 61000 },
-        ],
-        categoryDistribution: [
-          { name: 'Seeds', value: 400 },
-          { name: 'Hardware', value: 300 },
-          { name: 'Chemicals', value: 300 },
-        ],
-        performanceVitals: {
-          conversionRate: 68.4,
-          avgOrderValue: 14200,
-          customerGrowth: 15.2,
-          reachOuts: 184
-        }
-     });
+  const fetchReports = useCallback(async () => {
+     try {
+       const userStr = localStorage.getItem('farmliv_salesman');
+       if (!userStr) return;
+       const user = JSON.parse(userStr);
+       const res = await API.get(`/salesman/${user.id}/reports`);
+       if (res.data) {
+          setData({
+             weeklySales: res.data.weeklySales || [],
+             categoryDistribution: res.data.categoryDistribution || [],
+             performanceVitals: res.data.performanceVitals || { conversionRate: 0, avgOrderValue: 0, customerGrowth: 0, reachOuts: 0 },
+             monthlyTrend: res.data.monthlyTrend || []
+          });
+       }
+     } catch (err) {
+       console.error("Telemetry Sync Failed:", err.message);
+     }
   }, []);
+
+  useEffect(() => {
+     fetchReports();
+  }, [fetchReports]);
 
   const COLORS = ['#10b981', '#3b82f6', '#f59e0b'];
 

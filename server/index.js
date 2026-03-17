@@ -1290,9 +1290,10 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
         (SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE salesman_id = ? AND DATE(created_at) = CURDATE()) as todaySales,
         (SELECT COUNT(*) FROM customers WHERE assigned_salesman_id = ?) as totalCustomers,
         (SELECT COUNT(*) FROM leads WHERE assigned_to = ? AND status = 'assigned') as newLeads,
+        (SELECT COUNT(*) FROM quick_enquiries WHERE assigned_to = ? AND status != 'Pending') as contactedEnquiries,
         (SELECT COUNT(*) FROM tasks WHERE assigned_to = ? AND status = 'Pending') as pendingFollowups,
         (SELECT COALESCE(MAX(target_amount), 50000) FROM sales_targets WHERE salesman_id = ? ORDER BY id DESC LIMIT 1) as monthlyTarget
-    `, [salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId]);
+    `, [salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId]);
 
     // Calculate achievement %
     const [[achievement]] = await pool.query(`
@@ -1334,6 +1335,75 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ error: "Sales vitals offline" });
+  }
+});
+
+app.get('/api/salesman/:id/reports', async (req, res) => {
+  try {
+    const salesmanId = req.params.id;
+
+    // 1. Weekly Sales (Last 7 Days)
+    const [weeklySales] = await pool.query(`
+      SELECT DATE_FORMAT(dates.d, '%a') as day, COALESCE(SUM(orders.total_amount), 0) as sales, 5000 as target
+      FROM (
+        SELECT CURDATE() as d UNION SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) UNION SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) UNION SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) UNION 
+        SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+      ) as dates
+      LEFT JOIN orders ON DATE(orders.created_at) = dates.d AND orders.salesman_id = ?
+      GROUP BY dates.d
+      ORDER BY dates.d ASC
+    `, [salesmanId]);
+
+    // 2. Category Distribution
+    const [categoryDistribution] = await pool.query(`
+      SELECT p.category as name, COUNT(oi.id) as value
+      FROM order_items oi
+      JOIN products p ON oi.product_id = p.id
+      JOIN orders o ON oi.order_id = o.id
+      WHERE o.salesman_id = ?
+      GROUP BY p.category
+    `, [salesmanId]);
+
+    // 3. Performance Vitals
+    const [[vitals]] = await pool.query(`
+      SELECT 
+        (SELECT COUNT(*) FROM leads WHERE assigned_to = ?) as totalLeads,
+        (SELECT COUNT(*) FROM leads WHERE assigned_to = ? AND status = 'Converted') as convertedLeads,
+        (SELECT COALESCE(AVG(total_amount), 0) FROM orders WHERE salesman_id = ?) as avgOrderValue,
+        (SELECT COUNT(*) FROM quick_enquiries WHERE assigned_to = ? AND status != 'Pending') as reachOuts
+      `, [salesmanId, salesmanId, salesmanId, salesmanId]);
+
+    const conversionRate = vitals.totalLeads > 0 ? Math.round((vitals.convertedLeads / vitals.totalLeads) * 100) : 0;
+
+    // 4. Monthly Trend (Last 6 Months)
+    const [monthlyTrend] = await pool.query(`
+      SELECT DATE_FORMAT(created_at, '%b') as month, SUM(total_amount) as value
+      FROM orders
+      WHERE salesman_id = ? AND created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+      GROUP BY MONTH(created_at)
+      ORDER BY created_at ASC
+    `, [salesmanId]);
+
+    return res.json({
+      weeklySales,
+      categoryDistribution: categoryDistribution.length > 0 ? categoryDistribution : [
+        { name: 'Seeds', value: 0 },
+        { name: 'Hardware', value: 0 },
+        { name: 'Chemicals', value: 0 }
+      ],
+      performanceVitals: {
+        conversionRate,
+        avgOrderValue: vitals.avgOrderValue || 0,
+        customerGrowth: 0, // Simplified for now
+        reachOuts: vitals.reachOuts || 0
+      },
+      monthlyTrend
+    });
+  } catch (err) {
+    console.error("Salesman reports error:", err);
+    return res.status(500).json({ error: "Reports offline" });
   }
 });
 

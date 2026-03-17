@@ -110,7 +110,7 @@ const SalesCustomersPage = () => {
                   </div>
                   <div className="flex flex-col min-w-0">
                      <span className="text-base font-black text-slate-900 uppercase tracking-tighter italic truncate">{customer.name}</span>
-                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">{customer.company || "Independent Node"}</span>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">{customer.company || "Individual Farmer"}</span>
                   </div>
                </div>
 
@@ -118,7 +118,7 @@ const SalesCustomersPage = () => {
                <div className={`flex flex-col gap-3 ${viewMode === 'list' ? 'flex-2 hidden md:flex' : 'flex-1 border-t border-slate-50 pt-6 mt-2'}`}>
                   <div className="flex items-center gap-2 text-slate-500">
                      <MapPin size={14} className="shrink-0" />
-                     <span className="text-[10px] font-bold uppercase tracking-tight truncate">{customer.location || "Assam Distribution Hub"}</span>
+                     <span className="text-[10px] font-bold uppercase tracking-tight truncate">{customer.location || "Location Not Specified"}</span>
                   </div>
                   <div className="flex items-center gap-2 text-slate-500">
                      <ShieldCheck size={14} className="shrink-0 text-emerald-500" />
