@@ -26,10 +26,12 @@ const ProductsPage = () => {
         
         // Backend se aane wale data ko handle karna (Array ensure karna)
         const allProducts = Array.isArray(response.data) ? response.data : [];
+        console.log(`[ProductsPage] Success: Loaded ${allProducts.length} products.`);
         setProducts(allProducts);
 
         // ⭐ SEO Legacy Redirect: Handle URLs like /products/mulching-film indexed by Google
-        if (categoryId) {
+        if (categoryId && typeof categoryId === 'string' && categoryId.length > 0) {
+            console.log(`[ProductsPage] Check SEO Redirect for slug: "${categoryId}"`);
             const decodedParam = decodeURIComponent(categoryId).toLowerCase().replace(/-/g, ' ');
             const knownCategories = ['seeds', 'fertilizers', 'pesticides', 'equipment', 'organic'];
             
@@ -37,16 +39,17 @@ const ProductsPage = () => {
             const matchedProduct = allProducts.find(p => p.name.toLowerCase() === decodedParam || p.name.toLowerCase().includes(decodedParam));
             
             if (!knownCategories.includes(decodedParam) && matchedProduct) {
-                console.log(`Smart Redirect: Routing legacy slug '${categoryId}' to product ID ${matchedProduct.id}`);
+                console.log(`[ProductsPage] Smart Redirect: Routing legacy slug '${categoryId}' to product ID ${matchedProduct.id}`);
                 navigate(`/product/${matchedProduct.id}`, { replace: true });
                 return;
             } else {
                 // Otherwise, treat it as a search/category filter
+                console.log(`[ProductsPage] Setting search filter: "${decodedParam}"`);
                 setSearchTerm(decodedParam);
             }
         }
       } catch (error) {
-        console.error("Data fetch error:", error);
+        console.error("[ProductsPage] Data fetch error:", error);
       } finally {
         setLoading(false);
       }
@@ -89,6 +92,7 @@ const ProductsPage = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input 
                 type="text"
+                value={searchTerm}
                 placeholder="Find a product..."
                 className="w-full pl-9 pr-4 py-2 rounded-lg border-none focus:ring-1 focus:ring-[#2E7D32] text-sm bg-white shadow-sm"
                 onChange={(e) => setSearchTerm(e.target.value)}
