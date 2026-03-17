@@ -1379,12 +1379,19 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
       ORDER BY id DESC LIMIT 5
     `);
 
-    const targetNum = parseFloat(stats?.monthlyTarget) || 50000;
-    const currentNum = parseFloat(achievement?.currentSales) || 0;
+    // Safe fallbacks for empty query results
+    const safeStats = stats || {
+        todayOrders: 0, todaySales: 0, totalCustomers: 0,
+        newLeads: 0, contactedEnquiries: 0, pendingFollowups: 0, monthlyTarget: 50000
+    };
+    const safeAchievement = achievement || { currentSales: 0 };
+
+    const targetNum = parseFloat(safeStats.monthlyTarget) || 50000;
+    const currentNum = parseFloat(safeAchievement.currentSales) || 0;
     const achievementPercent = Math.min(Math.round((currentNum / targetNum) * 100), 100);
 
     return res.json({
-      ...stats,
+      ...safeStats,
       currentSales: currentNum,
       targetAchievement: achievementPercent,
       weeklyTrend: weeklyTrend || [],
