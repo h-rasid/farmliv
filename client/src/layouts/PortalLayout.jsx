@@ -4,7 +4,7 @@ import API from '@/utils/axios';
 import { 
   LayoutDashboard, Package, Users, LogOut, 
   Menu, X, Bell, User as UserIcon, Settings, Layers,
-  BarChart3, MessageSquare, FileText, History, HelpCircle,
+  BarChart, MessageSquare, FileText, History, HelpCircle,
   Database, TrendingUp, ShoppingBag, Boxes, UserCircle,
   Target, ShoppingCart, CreditCard, CheckCircle2, MapPin,
   ChevronRight, ChevronDown, Calculator, Megaphone, ShieldCheck, 
