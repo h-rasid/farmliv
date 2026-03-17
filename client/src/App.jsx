@@ -145,19 +145,23 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/billing/invoices" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
             <Route path="/admin/billing/payments" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
 
-            <Route path="/admin/marketing" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/marketing/campaigns" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/marketing/promotions" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
+            <Route path="/admin/reports/sales" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
+            <Route path="/admin/reports/inventory" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
+            
+            <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><AdminSalesPerformance /></ProtectedRoute>} />
+            
+            <Route path="/admin/staff" element={<ProtectedRoute allowedRole="admin"><StaffManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/staff/performance" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
 
             <Route 
                 path="/admin/quick-enquiries" 
                 element={<ProtectedRoute allowedRole="admin"><QuickEnquiryManagement /></ProtectedRoute>} 
             />
 
-            <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-            <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><AdminSalesPerformance /></ProtectedRoute>} />
-            <Route path="/admin/staff" element={<ProtectedRoute allowedRole="admin"><StaffManagementPage /></ProtectedRoute>} />
             <Route path="/admin/settings" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
+            <Route path="/admin/settings/roles" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
+            <Route path="/admin/settings/access" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
 
             {/* SALESMAN PROTECTED ROUTES */}
             <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />

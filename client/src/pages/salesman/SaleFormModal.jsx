@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '@/utils/axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, CheckCircle2, Receipt, CreditCard, 
@@ -26,7 +26,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
       const cleanUserId = JSON.parse(localStorage.getItem('farmliv_user')).id.toString().split(':')[0];
       
       // 1. Record the Sale
-      await axios.post(`${API_BASE}/api/sales`, {
+      await API.post('/sales', {
         lead_id: leadData.id,
         salesman_id: cleanUserId,
         final_price: formData.final_price,
@@ -35,7 +35,7 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
       });
 
       // 2. Update Lead Status to 'converted'
-      await axios.put(`${API_BASE}/api/leads/${leadData.id}/status`, {
+      await API.put(`/leads/${leadData.id}/status`, {
         status: 'converted',
         changed_by: cleanUserId
       });

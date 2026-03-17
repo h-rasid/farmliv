@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '@/utils/axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,7 +29,7 @@ const ProductManagement = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/api/products`);
+      const res = await API.get('/products');
       setProducts(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       toast({ variant: "destructive", title: "Sync Failed" });
@@ -65,7 +65,7 @@ const ProductManagement = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Purge this product permanently?")) return;
     try {
-      await axios.delete(`${API_BASE}/api/products/${id}`);
+      await API.delete(`/products/${id}`);
       setProducts(products.filter(p => p.id !== id));
       toast({ title: "Product Purged Successfully" });
     } catch (err) { 
@@ -101,10 +101,10 @@ const ProductManagement = () => {
     try {
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       if (editingProd) {
-        await axios.put(`${API_BASE}/api/products/${editingProd.id}`, data, config);
+        await API.put(`/products/${editingProd.id}`, data, config);
         toast({ title: "Product Updated Successfully" });
       } else {
-        await axios.post(`${API_BASE}/api/products`, data, config);
+        await API.post('/products', data, config);
         toast({ title: "New Product Deployed Ready" });
       }
       closeModal();

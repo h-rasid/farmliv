@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '@/utils/axios';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion } from 'framer-motion';
 import { TrendingUp, DollarSign, Package, BarChart3, Download, Clock } from 'lucide-react';
-
-import { API_BASE } from '@/utils/config';
 
 const AdminSalesPerformance = () => {
   const [salesData, setSalesData] = useState([]);
@@ -15,7 +13,7 @@ const AdminSalesPerformance = () => {
     const fetchPerformanceData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API_BASE}/api/sales`);
+        const res = await API.get('/sales');
         
         // Defensive Check: Ensure data is an array
         const data = Array.isArray(res.data) ? res.data : [];

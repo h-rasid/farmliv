@@ -44,7 +44,7 @@ const OrderManagementPage = () => {
 
   const handleGenerateInvoice = async (order) => {
     try {
-      const res = await API.post('/api/billing/invoices', {
+      const res = await API.post('/billing/invoices', {
         order_id: order.id,
         customer_id: order.customer_id,
         subtotal: order.total_amount / 1.18, 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '@/utils/axios';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -31,7 +31,7 @@ const CategoryManagement = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/api/categories`);
+      const res = await API.get('/categories');
       setCategories(res.data);
     } catch (err) {
       toast({ variant: "destructive", title: "Sync Failed" });
@@ -54,10 +54,10 @@ const CategoryManagement = () => {
 
     try {
       if (editingCat) {
-        await axios.put(`${API_BASE}/api/categories/${editingCat.id}`, data);
+        await API.put(`/categories/${editingCat.id}`, data);
         toast({ title: "Category Updated" });
       } else {
-        await axios.post(`${API_BASE}/api/categories`, data);
+        await API.post('/categories', data);
         toast({ title: "New Category Deployed" });
       }
       closeModal();
@@ -70,7 +70,7 @@ const CategoryManagement = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Purge category and its sub-categories?")) return;
     try {
-      await axios.delete(`${API_BASE}/api/categories/${id}`);
+      await API.delete(`/categories/${id}`);
       setCategories(categories.filter(c => c.id !== id));
       toast({ title: "Category Purged" });
     } catch (err) { toast({ variant: "destructive", title: "Delete Error" }); }

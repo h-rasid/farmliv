@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '@/utils/axios';
 import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -31,7 +31,7 @@ const InquiriesManagementPage = () => {
 
   const markSeen = async () => {
     try {
-      await axios.post(`${API_BASE}/api/admin/mark-seen`, { type: 'leads' });
+      await API.post('/admin/mark-seen', { type: 'leads' });
     } catch (err) {
       console.error("Mark seen error:", err);
     }
@@ -40,7 +40,7 @@ const InquiriesManagementPage = () => {
   const fetchLeads = async (isQuiet = false) => {
     try {
       if (!isQuiet) setLoading(true);
-      const res = await axios.get(`${API_BASE}/api/leads`);
+      const res = await API.get('/leads');
       setLeads(res.data);
     } catch (err) {
       if (!isQuiet) toast({ variant: "destructive", title: "Sync Offline" });
@@ -57,9 +57,11 @@ const InquiriesManagementPage = () => {
 
   const fetchStaff = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/api/staff`);
+      const res = await API.get('/staff');
       setStaff(res.data);
-    } catch (err) { console.log("Staff sync offline"); }
+    } catch (err) {
+      console.error("Staff fetch error:", err);
+    }
   };
 
   const exportToPDF = () => {
