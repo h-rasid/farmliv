@@ -13,39 +13,50 @@ const ProductsPage = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        console.log(`Fetching products from: ${API_BASE}/api/products`);
-        const response = await API.get('/products');
         
-        // Backend se aane wale data ko handle karna (Array ensure karna)
-        const allProducts = Array.isArray(response.data) ? response.data : [];
-        console.log(`[ProductsPage] Success: Loaded ${allProducts.length} products.`);
+        // Parallel fetch for speed
+        const [prodRes, catRes] = await Promise.all([
+            API.get('/products'),
+            API.get('/categories').catch(() => ({ data: [] }))
+        ]);
+        
+        const allProducts = Array.isArray(prodRes.data) ? prodRes.data : [];
+        const allCategories = Array.isArray(catRes.data) ? catRes.data : [];
+        
+        console.log(`[ProductsPage] Success: Loaded ${allProducts.length} products and ${allCategories.length} categories.`);
         setProducts(allProducts);
+        setCategories(allCategories);
 
         // ⭐ SEO Legacy Redirect: Handle URLs like /products/mulching-film indexed by Google
         if (categoryId && typeof categoryId === 'string' && categoryId.length > 0) {
             console.log(`[ProductsPage] Check SEO Redirect for slug: "${categoryId}"`);
-            const decodedParam = decodeURIComponent(categoryId).toLowerCase().replace(/-/g, ' ');
-            const knownCategories = ['seeds', 'fertilizers', 'pesticides', 'equipment', 'organic'];
+            const slug = categoryId.toLowerCase();
+            const spaceSlug = slug.replace(/-/g, ' ');
             
-            // Checking if the URL param resembles an exact product name rather than a category
-            const matchedProduct = allProducts.find(p => p.name.toLowerCase() === decodedParam || p.name.toLowerCase().includes(decodedParam));
+            const knownCategoryIds = allCategories.map(c => String(c.id).toLowerCase());
+            const matchedProduct = allProducts.find(p => 
+                p.name.toLowerCase() === spaceSlug || 
+                p.name.toLowerCase() === slug ||
+                p.name.toLowerCase().includes(spaceSlug)
+            );
             
-            if (!knownCategories.includes(decodedParam) && matchedProduct) {
+            if (!knownCategoryIds.includes(slug) && matchedProduct) {
                 console.log(`[ProductsPage] Smart Redirect: Routing legacy slug '${categoryId}' to product ID ${matchedProduct.id}`);
                 navigate(`/product/${matchedProduct.id}`, { replace: true });
                 return;
             } else {
                 // Otherwise, treat it as a search/category filter
-                console.log(`[ProductsPage] Setting search filter: "${decodedParam}"`);
-                setSearchTerm(decodedParam);
+                console.log(`[ProductsPage] Setting search filter: "${spaceSlug}"`);
+                setSearchTerm(spaceSlug);
             }
         }
       } catch (error) {
@@ -54,13 +65,24 @@ const ProductsPage = () => {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchData();
   }, [API_BASE, categoryId, navigate]);
 
-  const filteredProducts = products.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (p.category && p.category.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  // Robust filtering (hyphen and space agnostic)
+  const filteredProducts = products.filter(p => {
+    const term = searchTerm.toLowerCase().trim();
+    if (!term) return true;
+    
+    const searchTargets = [
+        p.name,
+        p.category,
+        p.description,
+        (p.category || '').replace(/-/g, ' '), // allow "weed-control" to match "weed control"
+        (p.name || '').replace(/ /g, '-')     // allow "mulching film" to match "mulching-film"
+    ].map(t => (t || '').toLowerCase());
+    
+    return searchTargets.some(target => target.includes(term) || term.includes(target));
+  });
 
   return (
     <div className="min-h-screen bg-white">
