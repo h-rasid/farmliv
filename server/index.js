@@ -1463,7 +1463,13 @@ app.get('/api/payments', async (req, res) => {
 
 app.get('/api/salesman/:id/leads', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM leads WHERE assigned_to = ? ORDER BY id DESC', [req.params.id]);
+    const [rows] = await pool.query(`
+      SELECT l.*, p.name as product_name
+      FROM leads l
+      LEFT JOIN products p ON l.product_id = p.id
+      WHERE l.assigned_to = ?
+      ORDER BY l.id DESC
+    `, [req.params.id]);
     return res.json(rows);
   } catch (err) {
     return res.status(500).json({ error: "Lead retrieval failed" });
