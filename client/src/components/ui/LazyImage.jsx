@@ -9,7 +9,8 @@ const LazyImage = ({
   aspectRatio = '16/9', 
   objectFit = null, 
   fullHeight = true,
-  maxWidth = null // ⭐ Allow components to override resolution
+  maxWidth = null, // ⭐ Allow components to override resolution
+  sizes = "100vw"  // ⭐ Default to full width, but allow overrides
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -51,24 +52,20 @@ const LazyImage = ({
     return () => observer.disconnect();
   }, [priority]);
 
-  // ⭐ Helper to inject Cloudinary optimization parameters
-  const getOptimizedUrl = (url) => {
+  const getOptimizedUrl = (url, width) => {
     if (!url || typeof url !== 'string') return url;
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       // Avoid double injection
       if (url.includes('f_auto') || url.includes('q_auto')) return url;
       
-      // Advanced Optimization: Automatic format, dynamic quality (eco for savings), and responsive width
-      // c_limit ensures we don't upscale, but downscale for large originals
       let params = 'f_auto,q_auto:eco,c_limit';
-      
-      if (maxWidth) {
+      if (width) {
+        params += `,w_${width}`;
+      } else if (maxWidth) {
         params += `,w_${maxWidth}`;
       } else if (priority) {
-        // High quality but capped at 1280px for faster LCP (Most mobile/tablet benchmarks)
         params += ',w_1280'; 
       } else {
-        // Lower default for standard images to save bandwidth
         params += ',w_800'; 
       }
       
@@ -77,7 +74,17 @@ const LazyImage = ({
     return url;
   };
 
+  // ⭐ Generate srcSet for responsive images
+  const generateSrcSet = (url) => {
+    if (!url || !url.includes('cloudinary.com')) return null;
+    const widths = [320, 640, 828, 1080, 1280, 1920];
+    return widths
+      .map(w => `${getOptimizedUrl(url, w)} ${w}w`)
+      .join(', ');
+  };
+
   const optimizedSrc = getOptimizedUrl(src);
+  const srcSet = generateSrcSet(src);
 
   return (
     <div 
@@ -106,6 +113,8 @@ const LazyImage = ({
         <img
           key={optimizedSrc}
           src={optimizedSrc}
+          srcSet={srcSet}
+          sizes={sizes}
           alt={alt}
           /* ⭐ 'eager' priority images ke liye, 'lazy' baaki ke liye */
           loading={priority ? 'eager' : 'lazy'}
