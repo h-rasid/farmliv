@@ -135,6 +135,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/customers" element={<ProtectedRoute allowedRole="admin"><CustomerManagementPage /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute allowedRole="admin"><OrderManagementPage /></ProtectedRoute>} />
             <Route path="/admin/inventory" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
+            <Route path="/admin/inventory/warehouse" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
             <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
             <Route path="/admin/quote" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
@@ -143,6 +144,10 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/billing" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
             <Route path="/admin/billing/invoices" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
             <Route path="/admin/billing/payments" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
+
+            <Route path="/admin/marketing" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/marketing/campaigns" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/marketing/promotions" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
 
             <Route 
                 path="/admin/quick-enquiries" 
