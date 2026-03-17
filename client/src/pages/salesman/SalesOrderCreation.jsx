@@ -28,8 +28,8 @@ const SalesOrderCreation = () => {
       if (!userStr) return;
       const user = JSON.parse(userStr);
       const [custRes, prodRes] = await Promise.all([
-        API.get(`/salesman/${user.id}/customers`),
-        API.get('/products')
+        API.get(`salesman/${user.id}/customers`),
+        API.get('products')
       ]);
       setCustomers(custRes.data);
       setProducts(prodRes.data);
@@ -86,7 +86,7 @@ const SalesOrderCreation = () => {
         }))
       };
 
-      await API.post('/orders', orderData);
+      await API.post('orders', orderData);
       toast({ title: "Transaction Synchronized", description: "Order identity recorded in mainframe." });
       navigate('/salesman-portal');
     } catch (err) {

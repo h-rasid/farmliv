@@ -117,8 +117,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         const salesman = JSON.parse(userStr);
 
         const [leadsRes, statsRes] = await Promise.all([
-          API.get(`/salesman/${salesman.id}/leads`),
-          API.get(`/salesman/${salesman.id}/dashboard-stats`)
+          API.get(`salesman/${salesman.id}/leads`),
+          API.get(`salesman/${salesman.id}/dashboard-stats`)
         ]);
 
         const alerts = [];

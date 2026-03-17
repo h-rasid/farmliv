@@ -20,7 +20,7 @@ const TaskManagementPage = () => {
       const userStr = localStorage.getItem('farmliv_salesman');
       if (!userStr) return;
       const user = JSON.parse(userStr);
-      const res = await API.get(`/salesman/${user.id}/tasks`);
+      const res = await API.get(`salesman/${user.id}/tasks`);
       setTasks(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Directive Sync Failed");
@@ -35,7 +35,7 @@ const TaskManagementPage = () => {
 
   const handleCompleteTask = async (id) => {
     try {
-      await API.put(`/tasks/${id}/status`, { status: 'completed' });
+      await API.put(`tasks/${id}/status`, { status: 'completed' });
       setTasks(prev => (Array.isArray(prev) ? prev : []).map(t => t.id === id ? { ...t, status: 'completed' } : t));
       toast({ title: "Objective Secured", description: "Protocol goal achieved and synchronized." });
     } catch (err) {

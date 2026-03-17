@@ -23,7 +23,7 @@ const VisitManagementPage = () => {
       const userStr = localStorage.getItem('farmliv_salesman');
       if (!userStr) return;
       const user = JSON.parse(userStr);
-      const res = await API.get(`/salesman/${user.id}/customers`);
+      const res = await API.get(`salesman/${user.id}/customers`);
       setCustomers(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Node Retrieval Offline");
@@ -62,7 +62,7 @@ const VisitManagementPage = () => {
         status: 'completed'
       };
 
-      await API.post('/field-visits', visitData);
+      await API.post('field-visits', visitData);
       
       setActiveVisit(null);
       setVisitNotes('');
