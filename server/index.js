@@ -452,7 +452,7 @@ const safeQuery = async (query, params = [], mockKey = null) => {
 
 const logActivity = async (action, user = 'Admin') => {
   try {
-    await pool.query('INSERT INTO activities (action, user) VALUES (?, ?)', [action, user]);
+    await pool.query('INSERT INTO activities (action, staff_user) VALUES (?, ?)', [action, user]);
   } catch (err) {
     console.warn("Activity logging failed (expected if offline):", err.message);
   }
@@ -463,13 +463,15 @@ const logActivity = async (action, user = 'Admin') => {
 app.get('/api/debug/schema', async (req, res) => {
   try {
     const [tables] = await pool.query("SHOW TABLES");
-    const schema = {};
+    const result = { schema: {}, counts: {} };
     for (const table of tables) {
       const tableName = Object.values(table)[0];
+      const [[{ count }]] = await pool.query(`SELECT COUNT(*) as count FROM ${tableName}`);
       const [columns] = await pool.query(`DESCRIBE ${tableName}`);
-      schema[tableName] = columns;
+      result.schema[tableName] = columns;
+      result.counts[tableName] = count;
     }
-    return res.json(schema);
+    return res.json(result);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -1214,10 +1216,11 @@ app.get('/api/admin/activities', async (req, res) => {
     // Debug: check if table exists
     const [tables] = await pool.query("SHOW TABLES LIKE 'activities'");
     if (tables.length === 0) {
-      return res.status(200).json([{ action: "Activities Hub Initializing...", user: "System", time: new Date().toISOString() }]);
+      return res.status(200).json([{ action: "Activities Hub Initializing...", staff_user: "System", time: new Date().toISOString() }]);
     }
 
-    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 50');
+    const [rows] = await pool.query('SELECT action, staff_user, created_at FROM activities ORDER BY id DESC LIMIT 50');
+    // Map staff_user to user for frontend compatibility if needed, or update frontend
     return res.json(rows);
   } catch (err) {
     console.error("Activities Hub Error:", err);
