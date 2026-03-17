@@ -132,7 +132,7 @@ const SalesEnquiriesPage = () => {
                     <div className="flex justify-between items-start relative z-10">
                        <div className="flex flex-col">
                           <span className="text-base font-black text-slate-900 uppercase tracking-tighter italic truncate">{enq.customer_name}</span>
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">{enq.company || "Independent Entity"}</span>
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">{enq.company || "Individual"}</span>
                        </div>
                        <div className={`px-3 py-1.5 rounded-xl border text-[8px] font-black uppercase tracking-widest ${getStatusColor(enq.status)}`}>
                           {enq.status}
@@ -145,7 +145,7 @@ const SalesEnquiriesPage = () => {
                           <span className="text-[9px] font-black uppercase tracking-widest">Protocol Directives</span>
                        </div>
                        <p className="text-[11px] font-bold text-slate-600 italic leading-relaxed line-clamp-3">
-                          "{enq.notes || "No specific strategic requirements provided by the node."}"
+                          "{enq.notes || "No specific requirements provided."}"
                        </p>
                     </div>
 
