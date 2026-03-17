@@ -25,15 +25,24 @@ const Footer = () => {
                 rel="noopener noreferrer" 
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 title="Follow Farmliv Industries on Facebook"
+                aria-label="Follow Farmliv Industries on Facebook"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-5 h-5" aria-hidden="true" />
               </a>
 
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Twitter">
-                <Twitter className="w-5 h-5" />
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                aria-label="Twitter"
+              >
+                <Twitter className="w-5 h-5" aria-hidden="true" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-5 h-5" />
+              <a 
+                href="#" 
+                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" aria-hidden="true" />
               </a>
 
               {/* ⭐ UPDATED: SEO Friendly Instagram Link */}
@@ -43,8 +52,9 @@ const Footer = () => {
                 rel="noopener noreferrer" 
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 title="Follow Farmliv Industries on Instagram"
+                aria-label="Follow Farmliv Industries on Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
           </div>
