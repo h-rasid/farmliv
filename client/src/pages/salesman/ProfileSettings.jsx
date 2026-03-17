@@ -195,6 +195,4 @@ const ProfileSettings = () => {
     </PortalLayout>
   );
 };
-
 export default ProfileSettings;
-s;
