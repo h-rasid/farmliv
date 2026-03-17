@@ -128,3 +128,9 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+/* Force Certificate Containment */
+.certificate-img {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+}
