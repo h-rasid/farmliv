@@ -14,14 +14,6 @@
   <link rel="preconnect" href="https://res.cloudinary.com" />
   <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
-  <!-- LCP Preload: Hero Background & Fonts -->
-  <link rel="preload" as="image" href="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,w_800/v1771483790/Shadenet8_tl6o5n.webp" fetchpriority="high" />
-  <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v22/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://fonts.gstatic.com/s/playfairdisplay/v37/6nuEX8CF_9PEpE-ZpWv_9l4V0W0.woff2" as="font" type="font/woff2" crossorigin />
-
-  <!-- Theme Color for Browser Chrome -->
-  <meta name="theme-color" content="#2E7D32" />
-
   <!-- Non-blocking Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
@@ -43,10 +35,15 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <!-- Anti-cache headers -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <!-- LCP Preload: Responsive Hero Image (Exact Match for LazyImage logic) -->
+  <link rel="preload" as="image" 
+    href="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1080/v1771483790/Shadenet8_tl6o5n.webp" 
+    imagesrcset="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_320/v1771483790/Shadenet8_tl6o5n.webp 320w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_640/v1771483790/Shadenet8_tl6o5n.webp 640w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_828/v1771483790/Shadenet8_tl6o5n.webp 828w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1080/v1771483790/Shadenet8_tl6o5n.webp 1080w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1280/v1771483790/Shadenet8_tl6o5n.webp 1280w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1920/v1771483790/Shadenet8_tl6o5n.webp 1920w" 
+    imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1920px" 
+    fetchpriority="high" />
+
+  <!-- Theme Color for Browser Chrome -->
+  <meta name="theme-color" content="#2E7D32" />
 
   <!-- Critical Path CSS: Brand Identity & UI Stability -->
   <style data-critical="true">
