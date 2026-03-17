@@ -112,7 +112,7 @@ const CertificationPage = () => {
                       onClick={() => setSelectedImage(cert.image)}
                       className="relative aspect-[3/4] bg-gray-50 rounded-lg border-2 border-gray-100 p-4 shadow-sm group hover:shadow-xl hover:border-[#2E7D32]/30 transition-all duration-500 mb-8 cursor-zoom-in"
                     >
-                      <div className="w-full h-full bg-white overflow-hidden rounded shadow-inner flex items-center justify-center p-3">
+                      <div className="w-full h-full bg-white overflow-hidden rounded shadow-inner flex items-center justify-center p-3 relative">
                         <LazyImage 
                           src={cert.image} 
                           alt={cert.title} 
