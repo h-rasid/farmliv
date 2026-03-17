@@ -162,7 +162,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location }) => {
                           ].map((item, idx) => (
                             <li key={idx} className="flex items-center gap-3 text-[11px] font-bold text-gray-700 uppercase tracking-tight">
                               <div className={`p-1.5 rounded-lg bg-white shadow-sm border border-gray-100 ${item.color}`}>
-                                <item.icon className="w-3.5 h-3.5" />
+                                <item.icon className="w-3.5 h-3.5" aria-hidden="true" />
                               </div>
                               <span>{item.text} Standard</span>
                             </li>
@@ -175,7 +175,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location }) => {
                         className="relative z-10 mt-8 p-4 bg-gray-900 rounded-2xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-white hover:bg-emerald-700 group/link transition-all"
                       >
                         <span>View all products</span>
-                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />
+                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" aria-hidden="true" />
                       </Link>
                     </div>
                   </div>
@@ -219,7 +219,7 @@ const MobileNavItem = ({ to, children, icon: Icon, active, onClick }) => (
         p-2.5 rounded-lg transition-colors duration-300
         ${active ? 'bg-[#2E7D32] text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:shadow-sm group-hover:text-[#2E7D32]'}
       `}>
-        <Icon className="w-5 h-5" />
+        <Icon className="w-5 h-5" aria-hidden="true" />
       </div>
       <span className={`text-base font-semibold tracking-tight ${active ? 'font-bold' : ''}`}>
         {children}
@@ -344,7 +344,7 @@ const Header = () => {
                 "
               >
                 <span>Request Quote</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
@@ -409,14 +409,14 @@ const Header = () => {
                   >
                     <div className="flex items-center gap-4 relative z-10">
                       <div className="p-2.5 rounded-lg bg-white/20 text-white backdrop-blur-sm">
-                         <Sparkles className="w-5 h-5" />
+                         <Sparkles className="w-5 h-5" aria-hidden="true" />
                       </div>
                       <div className="flex flex-col">
                         <span className="text-lg font-bold text-white tracking-tight">Request Quote</span>
                         <span className="text-xs text-green-100/80 font-medium">Get a custom price today</span>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-white relative z-10 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 text-white relative z-10 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                   </Link>
 
                   <Link
@@ -425,7 +425,7 @@ const Header = () => {
                     className="flex items-center gap-4 p-4 mt-6 mx-2 rounded-xl text-gray-400 hover:text-[#2E7D32] hover:bg-emerald-50/50 transition-all border border-transparent hover:border-emerald-100 group"
                   >
                     <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-white group-hover:shadow-sm">
-                      <Lock size={16} />
+                      <Lock size={16} aria-hidden="true" />
                     </div>
                     <span className="text-xs font-black uppercase tracking-widest">Internal Staff Portal</span>
                   </Link>
@@ -435,7 +435,7 @@ const Header = () => {
               <div className="p-6 bg-white border-t border-gray-100 shrink-0 safe-area-bottom">
                 <div className="space-y-4">
                   <a href="tel:+919181395595" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
-                    <Phone className="w-4 h-4 text-[#2E7D32]" />
+                    <Phone className="w-4 h-4 text-[#2E7D32]" aria-hidden="true" />
                     <span className="font-semibold text-xs">+91 91813 95595</span>
                   </a>
                 </div>
