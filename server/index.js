@@ -1350,7 +1350,7 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
         (SELECT COUNT(*) FROM leads WHERE assigned_to = ? AND status = 'assigned') as newLeads,
         (SELECT COUNT(*) FROM quick_enquiries WHERE assigned_to = ? AND status != 'Pending') as contactedEnquiries,
         (SELECT COUNT(*) FROM tasks WHERE assigned_to = ? AND status = 'Pending') as pendingFollowups,
-        (SELECT COALESCE(MAX(target_amount), 50000) FROM sales_targets WHERE salesman_id = ? ORDER BY id DESC LIMIT 1) as monthlyTarget
+        (SELECT target_amount FROM sales_targets WHERE salesman_id = ? ORDER BY id DESC LIMIT 1) as monthlyTarget
     `, [salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId]);
 
     const [[achievement]] = await pool.query(`
@@ -1361,7 +1361,7 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
 
     // Weekly Trend (Last 7 Days)
     const [weeklyTrend] = await pool.query(`
-      SELECT DATE_FORMAT(created_at, '%a') as day, COALESCE(SUM(total_amount), 0) as amount
+      SELECT DATE_FORMAT(dates.d, '%a') as day, COALESCE(SUM(orders.total_amount), 0) as amount
       FROM (
         SELECT CURDATE() as d UNION SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) UNION 
         SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) UNION SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) UNION 
@@ -1372,6 +1372,7 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
       GROUP BY dates.d
       ORDER BY dates.d ASC
     `, [salesmanId]);
+
 
     // Recent Activity
     const [recentActivities] = await pool.query(`
@@ -1447,9 +1448,10 @@ app.get('/api/salesman/:id/reports', async (req, res) => {
       SELECT DATE_FORMAT(created_at, '%b') as month, SUM(total_amount) as value
       FROM orders
       WHERE salesman_id = ? AND created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-      GROUP BY MONTH(created_at)
-      ORDER BY created_at ASC
+      GROUP BY YEAR(created_at), MONTH(created_at), DATE_FORMAT(created_at, '%b')
+      ORDER BY YEAR(created_at) ASC, MONTH(created_at) ASC
     `, [salesmanId]);
+
 
     return res.json({
       weeklySales,
