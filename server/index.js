@@ -1325,6 +1325,19 @@ app.put('/api/orders/:id/status', async (req, res) => {
   }
 });
 
+// MISSING ENDPOINT: Update Quick Enquiry Status
+app.put('/api/quick-enquiries/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE quick_enquiries SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Enquiry Status Updated to ${status} (ID: ${req.params.id})`);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Enquiry Status Error:", err);
+    return res.status(500).json({ error: "Enquiry status update failed" });
+  }
+});
+
 
 app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
   try {
@@ -1340,7 +1353,6 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
         (SELECT COALESCE(MAX(target_amount), 50000) FROM sales_targets WHERE salesman_id = ? ORDER BY id DESC LIMIT 1) as monthlyTarget
     `, [salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId, salesmanId]);
 
-    // Calculate achievement %
     const [[achievement]] = await pool.query(`
        SELECT COALESCE(SUM(total_amount), 0) as currentSales 
        FROM orders 
@@ -1367,18 +1379,19 @@ app.get('/api/salesman/:id/dashboard-stats', async (req, res) => {
       ORDER BY id DESC LIMIT 5
     `);
 
-    const targetNum = parseFloat(stats.monthlyTarget) || 50000;
-    const currentNum = parseFloat(achievement.currentSales) || 0;
+    const targetNum = parseFloat(stats?.monthlyTarget) || 50000;
+    const currentNum = parseFloat(achievement?.currentSales) || 0;
     const achievementPercent = Math.min(Math.round((currentNum / targetNum) * 100), 100);
 
     return res.json({
       ...stats,
-      currentSales: achievement.currentSales,
+      currentSales: currentNum,
       targetAchievement: achievementPercent,
-      weeklyTrend,
-      recentActivities
+      weeklyTrend: weeklyTrend || [],
+      recentActivities: recentActivities || []
     });
   } catch (err) {
+    console.error("Dashboard Stats Error:", err);
     return res.status(500).json({ error: "Sales vitals offline" });
   }
 });
