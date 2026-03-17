@@ -63,8 +63,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         }
 
-        const recentLeads = Array.isArray(leadsRes.data) ? leadsRes.data.slice(0, 5) : [];
-        recentLeads.forEach(lead => {
+        const pendingLeads = Array.isArray(leadsRes.data) ? leadsRes.data.filter(l => l.is_seen === 0).slice(0, 5) : [];
+        pendingLeads.forEach(lead => {
           alerts.push({
             id: `lead-${lead.id}`,
             rawId: lead.id,
@@ -80,8 +80,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           });
         });
 
-        const recentEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.slice(0, 5) : [];
-        recentEnq.forEach(enq => {
+        const pendingEnq = Array.isArray(quickEnqRes.data) ? quickEnqRes.data.filter(e => e.is_seen === 0).slice(0, 5) : [];
+        pendingEnq.forEach(enq => {
           alerts.push({
             id: `enq-${enq.id}`,
             rawId: enq.id,
@@ -154,8 +154,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   const markAllSeen = async () => {
     try {
-      // Optimistically clear badges in UI
+      // Optimistically clear UI
       setCrmBadges({ leads: 0, enquiries: 0 });
+      setNotifications(prev => prev.filter(n => n.type === 'activity')); // Keep only activities
+      
       // Call backend to mark both as seen
       await Promise.all([
         API.post('admin/mark-seen', { type: 'leads' }),
@@ -169,8 +171,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const handleMarkIndividualSeen = async (notif) => {
     if (notif.is_seen === 1) return;
     try {
-      // Optimistic update
-      setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, is_seen: 1 } : n));
+      // Optimistic update: Remove from list
+      setNotifications(prev => prev.filter(n => n.id !== notif.id));
       
       const type = notif.type === 'lead' ? 'leads' : 'enquiries';
       await API.post('admin/mark-seen', { type, id: notif.rawId });
@@ -472,11 +474,11 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                       <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                         <div className="flex flex-col">
                           <span className="text-[10px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-2">
-                            <Bell size={14} className="text-[#2E7D32]" /> System Directives
+                            <Bell size={14} className="text-[#2E7D32]" /> Notifications
                           </span>
                           {(crmBadges.leads + crmBadges.enquiries) > 0 && (
                             <span className="text-[8px] font-bold text-[#2E7D32] uppercase tracking-tighter mt-1">
-                              {crmBadges.leads + crmBadges.enquiries} UNREAD TASKS
+                              {crmBadges.leads + crmBadges.enquiries} UNREAD
                             </span>
                           )}
                         </div>
@@ -486,7 +488,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                               onClick={markAllSeen}
                               className="text-[8px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline"
                             >
-                              Mark All
+                              Mark All Notifications
                             </button>
                           )}
                           <button 
