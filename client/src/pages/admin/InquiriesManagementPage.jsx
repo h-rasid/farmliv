@@ -24,6 +24,8 @@ const InquiriesManagementPage = () => {
   useEffect(() => { 
     fetchLeads();
     fetchStaff();
+    const interval = setInterval(fetchLeads, 5000); // 5s realtime sync (Admin Directive)
+    return () => clearInterval(interval);
   }, []);
 
   const fetchLeads = async () => {
@@ -189,10 +191,13 @@ const InquiriesManagementPage = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="min-w-[140px]">
+                  <div className="min-w-[140px] flex items-center gap-3">
                     <span className={`px-4 py-2 rounded-full border text-[9px] font-black uppercase tracking-widest ${getStatusStyle(lead.status)}`}>
                       ● {lead.status}
                     </span>
+                    {(lead.status?.toLowerCase() === 'new' || lead.status?.toLowerCase() === 'pending') && (
+                      <div className="w-2.5 h-2.5 bg-rose-500 rounded-full animate-pulse shadow-lg shadow-rose-500/50" title="Unprocessed Inquiry" />
+                    )}
                   </div>
 
                   <select 

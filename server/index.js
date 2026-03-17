@@ -1123,6 +1123,8 @@ app.get('/api/admin/stats', async (req, res) => {
         (SELECT COALESCE(SUM(final_price), 0) FROM sales) as totalRevenue,
         (SELECT COUNT(*) FROM sales) as totalOrders,
         (SELECT COUNT(*) FROM products WHERE stock <= 10) as lowStockAlerts,
+        (SELECT COUNT(*) FROM leads WHERE status IN ('New', 'Pending')) as pendingLeadsCount,
+        (SELECT COUNT(*) FROM quick_enquiries WHERE status = 'Pending') as pendingEnquiriesCount,
         (SELECT 
             CASE 
               WHEN (SELECT COUNT(*) FROM leads) = 0 THEN 0 

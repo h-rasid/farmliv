@@ -20,11 +20,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   
-  // Notification State
-  const [notifications, setNotifications] = useState([]);
-  const [showNotifPanel, setShowNotifPanel] = useState(false);
-  const [notifLoading, setNotifLoading] = useState(false);
-  const notifRef = useRef(null);
+  // CRM Badge State
+  const [crmBadges, setCrmBadges] = useState({ leads: 0, enquiries: 0 });
 
   const fetchNotifications = async () => {
     setNotifLoading(true);
@@ -36,6 +33,14 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           API.get('leads'),
           API.get('quick-enquiries')
         ]);
+
+        // Update CRM Badges from stats
+        if (statsRes.data) {
+          setCrmBadges({
+            leads: statsRes.data.pendingLeadsCount || 0,
+            enquiries: statsRes.data.pendingEnquiriesCount || 0
+          });
+        }
 
         const alerts = [];
         if (statsRes.data?.lowStockAlerts > 0) {
@@ -133,7 +138,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 10000); // Polling for everyone
+    const interval = setInterval(fetchNotifications, 5000); // Increased polling to 5s for realtime
     return () => clearInterval(interval);
   }, [role]);
 
@@ -168,9 +173,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         },
         { 
           id: 'crm', name: 'CRM & Leads', icon: Target, path: '/admin/leads',
+          badge: (crmBadges.leads + crmBadges.enquiries) || null,
           submenu: [
-            { name: 'Request Quote', path: '/admin/leads' },
-            { name: 'Quick Enquiries', path: '/admin/quick-enquiries' }
+            { name: 'Request Quote', path: '/admin/leads', badge: crmBadges.leads || null },
+            { name: 'Quick Enquiries', path: '/admin/quick-enquiries', badge: crmBadges.enquiries || null }
           ]
         },
         { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/admin/orders' },

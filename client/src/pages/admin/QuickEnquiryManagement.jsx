@@ -17,6 +17,8 @@ const QuickEnquiryManagement = () => {
 
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 5000); // Red dot sync polling
+    return () => clearInterval(interval);
   }, []);
 
   const fetchData = async () => {
@@ -83,9 +85,14 @@ const QuickEnquiryManagement = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 mt-6 lg:mt-0">
-                  <span className={`px-4 py-2 rounded-xl border text-[9px] font-black uppercase tracking-widest ${getStatusStyle(enquiry.status)}`}>
-                    ● {enquiry.status}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-4 py-2 rounded-xl border text-[9px] font-black uppercase tracking-widest ${getStatusStyle(enquiry.status)}`}>
+                      ● {enquiry.status}
+                    </span>
+                    {enquiry.status === 'Pending' && (
+                      <div className="w-2.5 h-2.5 bg-rose-500 rounded-full animate-pulse shadow-lg shadow-rose-500/50" />
+                    )}
+                  </div>
 
                   <select 
                     onChange={(e) => handleAssign(enquiry.id, e.target.value)}
