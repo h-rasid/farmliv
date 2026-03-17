@@ -7,7 +7,7 @@ import {
   Clock, AlertCircle, TrendingUp, Search, Filter,
   Download, Share2, Plus, ArrowUpRight, ArrowDownRight,
   Printer, MoreHorizontal, ChevronRight, Calculator,
-  Zap, Calendar, Building2
+  Zap, Calendar, Building2, History
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -32,9 +32,9 @@ const BillingFinance = () => {
     try {
       setLoading(true);
       const [statsRes, invoicesRes, paymentsRes] = await Promise.all([
-        axios.get('/api/billing/stats'),
-        axios.get('/api/billing/invoices'),
-        axios.get('/api/billing/payments')
+        axios.get('/billing/stats'),
+        axios.get('/billing/invoices'),
+        axios.get('/billing/payments')
       ]);
       
       setStats(statsRes.data);
