@@ -9,8 +9,10 @@ const LazyImage = ({
   aspectRatio = '16/9', 
   objectFit = null, 
   fullHeight = true,
-  maxWidth = null, // ⭐ Allow components to override resolution
-  sizes = "100vw"  // ⭐ Default to full width, but allow overrides
+  maxWidth = null, 
+  sizes = "100vw",
+  width = "1920",  // ⭐ Default aspect ratio hint
+  height = "1080"
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -56,9 +58,8 @@ const LazyImage = ({
     if (!url || typeof url !== 'string') return url;
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       // Avoid double injection
-      if (url.includes('f_auto') || url.includes('q_auto')) return url;
-      
-      let params = 'f_auto,q_auto:low,c_limit';
+      // ⭐ Use c_fill for cover images to handle aspect ratio on server
+      let params = objectFit === 'cover' ? 'f_auto,q_auto:low,c_fill,g_auto' : 'f_auto,q_auto:low,c_limit';
       if (width) {
         params += `,w_${width}`;
       } else if (maxWidth) {
@@ -132,8 +133,8 @@ const LazyImage = ({
           } ${imgClassName}`}
           style={objectFit ? { objectFit, maxHeight: '100%' } : { maxHeight: '100%' }}
           decoding="async" 
-          width="1920"
-          height="1080"
+          width={width}
+          height={height}
         />
       )}
     </div>

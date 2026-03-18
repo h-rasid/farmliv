@@ -101,7 +101,10 @@ const HeroCarousel = () => {
               priority={true}
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1920px"
+              width="1200"
+              height="800"
+              objectFit="cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px"
               className="w-full h-full object-cover pointer-events-none select-none"
             />
             
