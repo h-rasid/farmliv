@@ -6,19 +6,19 @@ import LazyImage from '@/components/ui/LazyImage';
 const slides = [
   {
     id: 1,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet8_tl6o5n.webp',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp',
     title: 'Premium B2B Agricultural Solutions',
     subtitle: 'Trusted by Industry Leaders Worldwide'
   },
   {
     id: 2,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771483749/Polyfilm6_yiinga.webp',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Polyfilm_an9qiy.webp',
     title: 'Quality Products for Modern Farming',
     subtitle: 'ISO Certified Manufacturing Excellence'
   },
   {
     id: 3,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1771484140/weed_mat1_xc5uls.png',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/weedmat_sfqcil.jpg',
     title: 'Innovative Solutions, Reliable Partnership',
     subtitle: 'Supporting Your Agricultural Success'
   }
