@@ -113,7 +113,7 @@ const HeroCarousel = () => {
                   <motion.h1
                     initial={currentSlide === 0 ? false : { y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: currentSlide === 0 ? 0 : 0.2, duration: 0.5, ease: "easeOut" }}
+                    transition={{ delay: currentSlide === 0 ? 0 : 0.2, duration: 0.1, ease: "easeOut" }}
                     className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-['Playfair_Display'] leading-tight tracking-tight text-shadow-lg will-change-transform break-words"
                   >
                     {slides[currentSlide].title}
