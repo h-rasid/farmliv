@@ -9,8 +9,8 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
-  // Hostinger par refresh problem se bachne ke liye base path '/' rakhein
-  base: '/', 
+  // Hostinger par refresh problem se bachne ke liye base path './' rakhein taaki assets relative load hon
+  base: './', 
   resolve: {
     alias: {
       // Ab "@" sahi se "src" folder ko point karega
