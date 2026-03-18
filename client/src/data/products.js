@@ -10,7 +10,7 @@ export const productCategories = [
     id: 'weed-control',
     name: 'Weed Control',
     icon: Sprout,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773240650/weedmat1_meffjq.webp',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg',
     description: 'High quality weed mats for effective suppression and soil health.'
   },
   /* 
