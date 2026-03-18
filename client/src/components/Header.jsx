@@ -420,16 +420,6 @@ const Header = () => {
                     <ArrowRight className="w-4 h-4 text-white relative z-10 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                   </Link>
 
-                  <Link
-                    to="/admin/login"
-                    onClick={() => handleNavigation('/admin/login')}
-                    className="flex items-center gap-4 p-4 mt-6 mx-2 rounded-xl text-gray-400 hover:text-[#2E7D32] hover:bg-emerald-50/50 transition-all border border-transparent hover:border-emerald-100 group"
-                  >
-                    <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-white group-hover:shadow-sm">
-                      <Lock size={16} aria-hidden="true" />
-                    </div>
-                    <span className="text-xs font-black uppercase tracking-widest">Internal Staff Portal</span>
-                  </Link>
                 </div>
               </div>
 

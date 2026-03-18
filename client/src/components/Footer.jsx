@@ -88,18 +88,6 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
-              <li className="pt-2 border-t border-white/10 mt-2">
-                <Link 
-                  to="/admin/login" 
-                  onClick={() => window.scrollTo(0, 0)}
-                  className="flex items-center gap-2 text-green-200/60 hover:text-white transition-all group"
-                >
-                  <Lock size={12} className="group-hover:scale-110 transition-transform" />
-                  <span className="text-[11px] font-black uppercase tracking-widest">
-                    Staff Portal
-                  </span>
-                </Link>
-              </li>
             </ul>
           </div>
 
