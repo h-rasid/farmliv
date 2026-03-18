@@ -70,7 +70,18 @@ const HeroCarousel = () => {
   };
 
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden bg-black touch-pan-y pointer-events-auto">
+    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto bg-slate-900/10">
+      {/* Dynamic Background Layer (Blurred version of current/next slide) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none scale-110">
+        <img 
+          key={`bg-${currentSlide}`}
+          src={slides[currentSlide].image.replace('/upload/', '/upload/e_blur:2000,f_auto,q_auto:low,w_300/')}
+          alt=""
+          className="w-full h-full object-cover opacity-60 transition-opacity duration-1000"
+        />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
+      </div>
+
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
           key={currentSlide}
@@ -94,7 +105,7 @@ const HeroCarousel = () => {
             x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
             opacity: { duration: 0.3 }
           }}
-          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing z-10"
         >
           <div className="relative h-full w-full">
             <LazyImage
@@ -106,7 +117,7 @@ const HeroCarousel = () => {
               height="800"
               objectFit="cover"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px"
-              className="w-full h-full object-cover pointer-events-none select-none"
+              className="w-full h-full object-cover pointer-events-none select-none bg-transparent"
             />
             
             <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/40 to-transparent pointer-events-none" />
