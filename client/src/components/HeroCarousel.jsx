@@ -70,16 +70,19 @@ const HeroCarousel = () => {
   };
 
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto bg-slate-900/10">
-      {/* Dynamic Background Layer (Blurred version of current/next slide) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none scale-110">
-        <img 
-          key={`bg-${currentSlide}`}
-          src={slides[currentSlide].image.replace('/upload/', '/upload/e_blur:2000,f_auto,q_auto:low,w_300/')}
-          alt=""
-          className="w-full h-full object-cover opacity-60 transition-opacity duration-1000"
+    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto bg-[#0a0a0a]">
+      {/* Dynamic Background Layer (Subtle blurred base) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0 transition-opacity duration-1000 opacity-40"
+          style={{
+            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:1000,f_auto,q_auto:low,w_100/')})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'blur(40px) brightness(0.7)'
+          }}
         />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-xl" />
       </div>
 
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -102,8 +105,8 @@ const HeroCarousel = () => {
             }
           }}
           transition={{
-            x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
-            opacity: { duration: 0.3 }
+            x: { type: "tween", duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+            opacity: { duration: 0.4 }
           }}
           className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing z-10"
         >
@@ -113,10 +116,10 @@ const HeroCarousel = () => {
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
               aspectRatio={null}
-              width="1200"
-              height="800"
+              width="1920"
+              height="1080"
               objectFit="cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px"
+              sizes="100vw"
               className="w-full h-full object-cover pointer-events-none select-none bg-transparent"
             />
             
