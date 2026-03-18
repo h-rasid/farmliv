@@ -95,7 +95,7 @@ const LazyImage = ({
       ref={imgRef} 
       /* ⭐ 'will-change-transform' Hardware Acceleration provide karta hai */
       className={`relative overflow-hidden ${priority ? 'bg-transparent' : 'bg-slate-50'} will-change-transform ${className}`}
-      style={{ aspectRatio }} 
+      style={aspectRatio && aspectRatio !== 'none' ? { aspectRatio } : {}} 
     >
       {/* Placeholder Loading Spinner - ONLY for non-priority images to avoid LCP jitter */}
       {!isLoaded && !error && !priority && (

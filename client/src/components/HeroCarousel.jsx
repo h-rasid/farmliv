@@ -101,6 +101,7 @@ const HeroCarousel = () => {
               priority={true}
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
+              aspectRatio={null}
               width="1200"
               height="800"
               objectFit="cover"
