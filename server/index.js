@@ -478,6 +478,85 @@ app.get('/api/debug/schema', async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
+ 
+// --- SEO & DISCOVERY: Robots.txt & Dynamic Sitemap ---
+app.get('/robots.txt', (req, res) => {
+  const robots = `User-agent: *
+Allow: /
+Sitemap: https://farmliv.com/sitemap.xml`;
+  res.header('Content-Type', 'text/plain');
+  res.status(200).send(robots);
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+  const DOMAIN = 'https://farmliv.com';
+  try {
+    // Get Categories & Products
+    const [categories] = await pool.query('SELECT name FROM categories');
+    const [products] = await pool.query('SELECT id FROM products');
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${DOMAIN}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/products</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/certification</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/request-quote</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+
+    // Add Dynamic Categories
+    categories.forEach(cat => {
+      xml += `
+  <url>
+    <loc>${DOMAIN}/products/${encodeURIComponent(cat.name)}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+    });
+
+    // Add Dynamic Products
+    products.forEach(prod => {
+      xml += `
+  <url>
+    <loc>${DOMAIN}/product/${prod.id}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+    });
+
+    xml += '\n</urlset>';
+    
+    res.header('Content-Type', 'application/xml');
+    res.status(200).send(xml);
+  } catch (err) {
+    console.error('Sitemap generation error:', err);
+    res.status(500).send('Error generating sitemap');
+  }
+});
 
 app.get('/api/status', (req, res) => res.json({ 
   status: "Live", 
