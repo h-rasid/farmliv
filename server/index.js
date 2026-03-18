@@ -973,6 +973,68 @@ app.post('/api/leads', async (req, res) => {
   }
 });
 
+app.put('/api/leads/:id/status', async (req, res) => {
+  const { status } = req.body;
+  try {
+    await pool.query('UPDATE leads SET status = ? WHERE id = ?', [status, req.params.id]);
+    await logActivity(`Lead Status Updated: ID ${req.params.id} -> ${status}`);
+    return res.json({ success: true, message: "Lead status synchronized." });
+  } catch (err) {
+    return res.status(500).json({ error: "Lead status update failed" });
+  }
+});
+
+app.put('/api/leads/:id/assign', async (req, res) => {
+  const { staff_id } = req.body;
+  const leadId = req.params.id;
+  try {
+    await pool.query('UPDATE leads SET assigned_to = ?, status = "Contacted" WHERE id = ?', [staff_id, leadId]);
+    
+    // Fetch data safely for notification
+    const [leads] = await pool.query('SELECT * FROM leads WHERE id = ?', [leadId]);
+    const [staffList] = await pool.query('SELECT name, email FROM staff WHERE id = ?', [staff_id]);
+    
+    const lead = leads[0];
+    const staff = staffList[0];
+
+    if (staff && staff.email && lead) {
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: staff.email,
+        subject: `New Lead Assigned: ${lead.customer_name || 'Prospect'}`,
+        html: `<h3>Task Assignment Alert</h3><p>Namaste ${staff.name}, a new inquiry from <strong>${lead.company || 'Individual'}</strong> has been assigned to your pipeline.</p>`
+      };
+      await transporter.sendMail(mailOptions).catch(e => console.log("Email skip: ", e.message));
+    }
+    
+    await logActivity(`Lead ID: ${leadId} Assigned to Staff ID: ${staff_id}`);
+    return res.json({ success: true, message: "Lead assigned and staff notified." });
+  } catch (err) {
+    return res.status(500).json({ error: "Lead assignment failed" });
+  }
+});
+
+app.put('/api/leads/:id/notes', async (req, res) => {
+  const { notes } = req.body;
+  try {
+    await pool.query('UPDATE leads SET notes = ? WHERE id = ?', [notes, req.params.id]);
+    await logActivity(`Technical Note Appended to Lead ID: ${req.params.id}`);
+    return res.json({ success: true });
+  } catch (err) {
+    return res.status(500).json({ error: "Note synchronization failed" });
+  }
+});
+
+app.delete('/api/leads/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM leads WHERE id = ?', [req.params.id]);
+    await logActivity(`Lead Inquiry Purged (ID: ${req.params.id})`);
+    return res.json({ success: true, message: "Inquiry purged from Farmliv Ecosystem" });
+  } catch (err) {
+    return res.status(500).json({ error: "Lead purge protocol failed" });
+  }
+});
+
 app.get('/api/quick-enquiries', async (req, res) => {
   try {
     const rows = await safeQuery('SELECT * FROM quick_enquiries ORDER BY created_at DESC', [], 'quick_enquiries');

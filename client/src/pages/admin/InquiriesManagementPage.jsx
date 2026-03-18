@@ -88,7 +88,7 @@ const InquiriesManagementPage = () => {
 
   const assignLead = async (leadId, executiveId) => {
     try {
-      await axios.put(`${API_BASE}/api/leads/${leadId}/assign`, { staff_id: executiveId });
+      await API.put(`/leads/${leadId}/assign`, { staff_id: executiveId });
       toast({ title: "Lead Assigned" });
       fetchLeads();
     } catch (err) { toast({ variant: "destructive", title: "Assignment Failed" }); }
@@ -96,7 +96,7 @@ const InquiriesManagementPage = () => {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      await axios.put(`${API_BASE}/api/leads/${id}/status`, { status: newStatus });
+      await API.put(`/leads/${id}/status`, { status: newStatus });
       toast({ title: "Status Updated" });
       fetchLeads();
     } catch (err) { toast({ variant: "destructive", title: "Update Error" }); }
@@ -105,7 +105,7 @@ const InquiriesManagementPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Purge this inquiry permanently?")) return;
     try {
-      await axios.delete(`${API_BASE}/api/leads/${id}`);
+      await API.delete(`/leads/${id}`);
       setLeads(prevLeads => prevLeads.filter(l => l.id !== id));
       if (selectedLead?.id === id) setSelectedLead(null);
       toast({ title: "Inquiry Purged" });
@@ -115,7 +115,7 @@ const InquiriesManagementPage = () => {
   const saveNote = async () => {
     if (!noteText) return;
     try {
-      await axios.put(`${API_BASE}/api/leads/${selectedLead.id}/notes`, { notes: noteText });
+      await API.put(`/leads/${selectedLead.id}/notes`, { notes: noteText });
       toast({ title: "Note Saved" });
       setNoteText('');
       fetchLeads();

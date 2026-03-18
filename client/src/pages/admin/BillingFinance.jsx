@@ -32,9 +32,9 @@ const BillingFinance = () => {
     try {
       setLoading(true);
       const [statsRes, invoicesRes, paymentsRes] = await Promise.all([
-        axios.get('/billing/stats'),
-        axios.get('/billing/invoices'),
-        axios.get('/billing/payments')
+        axios.get('/api/billing/stats'),
+        axios.get('/api/billing/invoices'),
+        axios.get('/api/billing/payments')
       ]);
       
       setStats(statsRes.data);
