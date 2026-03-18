@@ -37,10 +37,10 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     try {
       if (role === 'admin') {
         const [activitiesRes, statsRes, leadsRes, quickEnqRes] = await Promise.all([
-          API.get('admin/activities'),
-          API.get('admin/stats'),
-          API.get('leads'),
-          API.get('quick-enquiries')
+          API.get('/admin/activities'),
+          API.get('/admin/stats'),
+          API.get('/leads'),
+          API.get('/quick-enquiries')
         ]);
 
         // Update CRM Badges from stats
@@ -135,8 +135,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         const salesman = JSON.parse(userStr);
 
         const [leadsRes, statsRes] = await Promise.all([
-          API.get(`salesman/${salesman.id}/leads`),
-          API.get(`salesman/${salesman.id}/dashboard-stats`)
+          API.get(`/salesman/${salesman.id}/leads`),
+          API.get(`/salesman/${salesman.id}/dashboard-stats`)
         ]);
 
         const alerts = [];
@@ -183,8 +183,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
       // Call backend
       await Promise.all([
-        API.post('admin/mark-seen', { type: 'leads' }),
-        API.post('admin/mark-seen', { type: 'enquiries' })
+        API.post('/admin/mark-seen', { type: 'leads' }),
+        API.post('/admin/mark-seen', { type: 'enquiries' })
       ]);
       // After backend confirms, clear the lock - DB is now consistent
       seenIds.current.clear();
@@ -202,7 +202,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
       setNotifications(prev => prev.filter(n => n.id !== notif.id));
 
       const type = notif.type === 'lead' ? 'leads' : 'enquiries';
-      await API.post('admin/mark-seen', { type, id: notif.rawId });
+      await API.post('/admin/mark-seen', { type, id: notif.rawId });
 
       // Update badge counts locally
       setCrmBadges(prev => ({

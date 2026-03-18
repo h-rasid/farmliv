@@ -16,6 +16,6 @@ export const API_BASE = isLocalhost
   ? 'http://localhost:5000' 
   : window.location.origin;
 
-export const API_URL = `${API_BASE}/api`;
+export const API_URL = `${API_BASE}/api/`;
 
 export default API_BASE;

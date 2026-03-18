@@ -52,6 +52,13 @@ const AdminDashboard = () => {
     }
   };
 
+  useEffect(() => {
+    fetchGlobalData();
+    // Refresh every 30 seconds for real-time feel
+    const interval = setInterval(fetchGlobalData, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
   const StatCard = ({ title, value, icon: Icon, colorClass, trend = "" }) => (
     <motion.div 
       whileHover={{ y: -5, scale: 1.02 }} 

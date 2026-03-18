@@ -154,17 +154,57 @@ const transporter = nodemailer.createTransport({
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           )
         `);
-        // Helper to add columns safely
+        // Helper to add columns safely (Resilient Version)
         const addColumnIfMissing = async (table, column, definition) => {
-          const [cols] = await connection.query(`SHOW COLUMNS FROM ${table} LIKE ?`, [column]);
-          if (cols.length === 0) {
-            console.log(`🛠️ Self-Healing: Adding ${column} to ${table}`);
-            await connection.query(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+          try {
+            const [cols] = await connection.query(`SHOW COLUMNS FROM ${table} LIKE ?`, [column]);
+            if (cols.length === 0) {
+              console.log(`🛠️ Self-Healing: Adding ${column} to ${table}`);
+              await connection.query(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+            }
+          } catch (err) {
+            console.warn(`⚠️ Column Sync Skip [${table}.${column}]: ${err.message}`);
           }
         };
 
         // --- FARMLIV SCHEMA SYNC ---
         
+        // 0. Core Lead Management (Schema Recovery)
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS leads (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            customer_name VARCHAR(255),
+            phone VARCHAR(20),
+            email VARCHAR(255),
+            company VARCHAR(255),
+            location VARCHAR(255),
+            product_id INT,
+            quantity INT,
+            notes TEXT,
+            status VARCHAR(50) DEFAULT 'Pending',
+            assigned_to INT DEFAULT NULL,
+            is_seen TINYINT(1) DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+          )
+        `);
+
+        await connection.query(`
+          CREATE TABLE IF NOT EXISTS quick_enquiries (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            customer_name VARCHAR(255),
+            phone VARCHAR(20),
+            email VARCHAR(255),
+            company VARCHAR(255),
+            location VARCHAR(255),
+            notes TEXT,
+            status VARCHAR(50) DEFAULT 'Pending',
+            assigned_to INT DEFAULT NULL,
+            is_seen TINYINT(1) DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          )
+        `);
+
         // 1. Customers Table (Farmliv CRM)
         await connection.query(`
           CREATE TABLE IF NOT EXISTS customers (
@@ -367,9 +407,9 @@ const transporter = nodemailer.createTransport({
           await connection.query('INSERT INTO settings (gstNumber) VALUES ("")');
         }
 
-        // Initialize Notification Seen Flags
-        await pool.query("ALTER TABLE leads ADD COLUMN IF NOT EXISTS is_seen TINYINT(1) DEFAULT 0");
-        await pool.query("ALTER TABLE quick_enquiries ADD COLUMN IF NOT EXISTS is_seen TINYINT(1) DEFAULT 0");
+        // Initialize Notification Seen Flags (using safe helper)
+        await addColumnIfMissing('leads', 'is_seen', 'TINYINT(1) DEFAULT 0');
+        await addColumnIfMissing('quick_enquiries', 'is_seen', 'TINYINT(1) DEFAULT 0');
 
         connection.release();
     } catch (err) {
@@ -1232,8 +1272,14 @@ app.get('/api/admin/stats', async (req, res) => {
     `);
     return res.json(stats || {});
   } catch (err) {
-    console.error("Admin stats error:", err);
-    return res.status(500).json({ error: "Analytics Offline: " + err.message });
+    console.error("❌ ADMIN STATS FATAL ERROR:", err);
+    // Return empty stats instead of 500 to keep dashboard alive
+    return res.status(200).json({ 
+      totalProducts: 0, totalCategories: 0, totalInquiries: 0, totalStaff: 0, 
+      totalRevenue: 0, totalOrders: 0, lowStockAlerts: 0, 
+      pendingLeadsCount: 0, pendingEnquiriesCount: 0, conversionRate: 0,
+      error: "Analytics partially offline: " + err.message 
+    });
   }
 });
 
@@ -1318,11 +1364,13 @@ app.get('/api/admin/reports/staff-performance', async (req, res) => {
 
 app.get('/api/admin/activities', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 50');
-    return res.json(rows);
+    const rows = await safeQuery('SELECT action, user, created_at FROM activities ORDER BY id DESC LIMIT 50', [], 'activities');
+    const logData = Array.isArray(rows) ? rows : [];
+    return res.json(logData);
   } catch (err) {
-    console.error("Activities Hub Error:", err);
-    return res.status(500).json({ error: "Activities sync failure: " + err.message });
+    console.error("❌ ACTIVITIES SYNC ERROR:", err);
+    // Return empty array instead of 500 to keep dashboard alive
+    return res.status(200).json([{ action: "Activity log temporarily unavailable", user: "System", created_at: new Date() }]);
   }
 });
 
