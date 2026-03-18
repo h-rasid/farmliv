@@ -94,12 +94,12 @@ const LazyImage = ({
     <div 
       ref={imgRef} 
       /* ⭐ 'will-change-transform' Hardware Acceleration provide karta hai */
-      className={`relative overflow-hidden bg-slate-50 will-change-transform ${className}`}
+      className={`relative overflow-hidden ${priority ? 'bg-transparent' : 'bg-slate-50'} will-change-transform ${className}`}
       style={{ aspectRatio }} 
     >
-      {/* Placeholder Loading Spinner */}
-      {!isLoaded && !error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50 animate-pulse z-10">
+      {/* Placeholder Loading Spinner - ONLY for non-priority images to avoid LCP jitter */}
+      {!isLoaded && !error && !priority && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-50/50 animate-pulse z-10 backdrop-blur-[2px]">
           <div className="w-8 h-8 border-4 border-[#2E7D32]/20 border-t-[#2E7D32] rounded-full animate-spin" />
         </div>
       )}
