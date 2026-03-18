@@ -118,6 +118,8 @@ const LazyImage = ({
           alt={alt}
           /* ⭐ 'eager' priority images ke liye, 'lazy' baaki ke liye */
           loading={priority ? 'eager' : 'lazy'}
+          /* ⭐ 'high' priority images ke liye (LCP optimization) */
+          fetchpriority={priority ? 'high' : 'auto'}
           onLoad={handleLoad}
           onError={handleError}
           /* ⭐ Smooth opacity transition (0.4s) but bypass for priority images to maximize LCP/SpeedIndex scores. */
