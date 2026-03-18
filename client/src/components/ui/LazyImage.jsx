@@ -130,7 +130,7 @@ const LazyImage = ({
           className={`w-full ${fullHeight ? 'h-full' : 'h-auto'} ${
             !priority ? 'transition-opacity duration-400 ease-in-out' : ''
           } ${
-            isLoaded 
+            (isLoaded || priority)
               ? 'opacity-100 scale-100' 
               : 'opacity-0 scale-100'
           } ${imgClassName}`}
