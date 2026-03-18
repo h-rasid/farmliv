@@ -50,16 +50,16 @@ const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 // Serve static files from 'dist' (Farmliv Production)
-app.use(express.static(path.join(__dirname, '../client/dist'), {
-  maxAge: '1d', // Enable root index.html caching for Lighthouse Best Practices
-  index: 'index.html',
-  etag: true
-}));
-
-// ⭐ Aggressive Caching for Assets (Vite Hashed Files)
+// ⭐ Aggressive Caching for Assets (Vite Hashed Files) - Must be BEFORE root dist serving
 app.use('/assets', express.static(path.join(__dirname, '../client/dist/assets'), {
   maxAge: '365d', // 1 Year
   immutable: true,
+  etag: true
+}));
+
+app.use(express.static(path.join(__dirname, '../client/dist'), {
+  maxAge: '1d', // Enable root index.html caching for Lighthouse Best Practices
+  index: 'index.html',
   etag: true
 }));
 
