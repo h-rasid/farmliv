@@ -247,14 +247,15 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
+    const body = document.body;
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
+      body.style.overflow = 'hidden';
+      body.style.position = 'fixed';
+      body.style.width = '100% ';
     } else {
-      document.body.style.overflow = 'unset';
-      document.body.style.position = 'static';
-      document.body.style.width = 'auto';
+      body.style.overflow = 'unset';
+      body.style.position = 'static';
+      body.style.width = 'auto';
     }
   }, [isMobileMenuOpen]);
 

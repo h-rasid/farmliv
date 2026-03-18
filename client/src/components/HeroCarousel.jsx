@@ -94,7 +94,7 @@ const HeroCarousel = () => {
             x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
             opacity: { duration: 0.3 }
           }}
-          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing framer-motion-optimized"
         >
           <div className="relative h-full w-full">
             <LazyImage
