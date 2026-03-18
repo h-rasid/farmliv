@@ -70,8 +70,8 @@ const HeroCarousel = () => {
   };
 
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden bg-black contain-layout content-visibility-auto touch-pan-y pointer-events-auto">
-      <AnimatePresence initial={false} custom={direction} mode="wait">
+    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden bg-black touch-pan-y pointer-events-auto">
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
           key={currentSlide}
           custom={direction}
@@ -94,7 +94,7 @@ const HeroCarousel = () => {
             x: { type: "spring", stiffness: 300, damping: 30, duration: 0.5 },
             opacity: { duration: 0.3 }
           }}
-          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing framer-motion-optimized"
+          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing"
         >
           <div className="relative h-full w-full">
             <LazyImage
