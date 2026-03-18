@@ -22,7 +22,7 @@ const ProductGallery = ({ images, productName }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="w-full h-full"
+            className="w-full h-full framer-motion-optimized"
           >
              <LazyImage
                 src={images[selectedImage]}

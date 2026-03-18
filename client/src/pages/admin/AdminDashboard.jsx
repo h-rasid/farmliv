@@ -55,7 +55,7 @@ const AdminDashboard = () => {
   const StatCard = ({ title, value, icon: Icon, colorClass, trend = "" }) => (
     <motion.div 
       whileHover={{ y: -5, scale: 1.02 }} 
-      className="bg-white rounded-[2rem] p-5 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-xl group overflow-hidden relative"
+      className="bg-white rounded-[2rem] p-5 border border-slate-100 shadow-sm flex flex-col justify-between transition-all hover:shadow-xl group overflow-hidden relative framer-motion-optimized"
     >
       <div className="flex justify-between items-start mb-6 relative z-10">
         <div className={`p-4 rounded-2xl ${colorClass} group-hover:scale-110 transition-transform`}>
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
-              className="space-y-8"
+              className="space-y-8 framer-motion-optimized"
             >
               {/* VITAL PERFORMANCE FLOWS */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

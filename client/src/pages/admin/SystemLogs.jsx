@@ -125,7 +125,7 @@ const SystemLogs = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
-                <AnimatePresence mode='popLayout'>
+                <AnimatePresence mode='wait'>
                   {filteredLogs.length > 0 ? filteredLogs.map((log, i) => (
                     <motion.tr 
                       key={i}
@@ -133,7 +133,7 @@ const SystemLogs = () => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: i * 0.05 }}
-                      className="group hover:bg-slate-50/80 transition-colors"
+                      className="group hover:bg-slate-50/80 transition-colors framer-motion-optimized"
                     >
                       <td className="px-8 py-6 whitespace-nowrap">
                         <div className="flex items-center gap-3">

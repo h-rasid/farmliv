@@ -64,7 +64,7 @@ const SalesDashboard = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5, shadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
-      className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-4 group transition-all"
+      className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col gap-4 group transition-all framer-motion-optimized"
     >
       <div className="flex justify-between items-start">
         <div className={`p-3 rounded-2xl ${colorClass} group-hover:scale-110 transition-transform`}>
@@ -281,7 +281,7 @@ const SalesDashboard = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="flex gap-4 group"
+                      className="flex gap-4 group framer-motion-optimized"
                     >
                        <div className="flex flex-col items-center">
                           <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all shrink-0">

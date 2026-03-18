@@ -102,6 +102,17 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ⭐ Performance Promotions */
+.framer-motion-optimized {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.layout-contained {
+  contain: layout paint;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
