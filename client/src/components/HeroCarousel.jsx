@@ -116,7 +116,7 @@ const HeroCarousel = () => {
               src={slides[currentSlide].image}
               alt={slides[currentSlide].title}
               aspectRatio={null}
-              width="1920"
+              width="1600"
               height="1080"
               objectFit="cover"
               sizes="100vw"
