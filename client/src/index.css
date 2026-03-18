@@ -55,8 +55,8 @@
 
   /* ⭐ Sabhi headings ko Poppins aur normal style mein set kiya gaya hai */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif !important;
-    font-style: normal !important;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
     font-weight: 800; /* Bold & Professional */
   }
 

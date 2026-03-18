@@ -11,15 +11,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://res.cloudinary.com" />
 
+  <!-- Critical Font Preloads (Avoids FOIT/FOUT for Hero) -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLDD4Z1xlFQ.woff2" as="font" type="font/woff2" crossorigin />
+
   <!-- Non-blocking Google Fonts -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap"
     rel="stylesheet"
     media="print"
     onload="this.media='all'"
   />
   <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
   </noscript>
 
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dik8mlsie/image/upload/v1772023954/FARMLIV_-_1_-_Edited_vs802q.png" />
@@ -27,15 +31,11 @@
 
   <base href="/" />
 
-  <!-- Anti-cache headers -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-
-  <!-- LCP Preload: Responsive Hero Image (Strict Match for HeroCarousel/LazyImage logic) -->
+  <!-- LCP Preload: Responsive Hero Image (EXACT MATCH for LazyImage logic) -->
+  <!-- Using c_fill,g_auto as requested by HeroCarousel/LazyImage -->
   <link rel="preload" as="image" 
-    href="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1080/v1773817061/Shadenet_ew7jv2.webp" 
-    imagesrcset="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_320/v1773817061/Shadenet_ew7jv2.webp 320w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_640/v1773817061/Shadenet_ew7jv2.webp 640w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_828/v1773817061/Shadenet_ew7jv2.webp 828w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1080/v1773817061/Shadenet_ew7jv2.webp 1080w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1280/v1773817061/Shadenet_ew7jv2.webp 1280w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:low,c_limit,w_1920/v1773817061/Shadenet_ew7jv2.webp 1920w" 
+    href="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_1080/v1773817061/Shadenet_ew7jv2.webp" 
+    imagesrcset="https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_320/v1773817061/Shadenet_ew7jv2.webp 320w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_640/v1773817061/Shadenet_ew7jv2.webp 640w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_828/v1773817061/Shadenet_ew7jv2.webp 828w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_1080/v1773817061/Shadenet_ew7jv2.webp 1080w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_1280/v1773817061/Shadenet_ew7jv2.webp 1280w, https://res.cloudinary.com/dik8mlsie/image/upload/f_auto,q_auto:best,c_fill,g_auto,w_1920/v1773817061/Shadenet_ew7jv2.webp 1920w" 
     imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1920px" 
     fetchpriority="high" />
 
@@ -71,9 +71,11 @@
     }
     .skeleton-logo { width: 120px; height: 32px; background: #f1f5f9; border-radius: 8px; }
     .skeleton-hero {
-      width: 100%; height: 75vh; background: #000; display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 85vh; background: #000; display: flex; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
     }
+    @media (min-width: 640px) { .skeleton-hero { height: 100vh; } }
+    
     .skeleton-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 1; }
     .skeleton-hero-content { width: 600px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; z-index: 2; position: relative; }
     

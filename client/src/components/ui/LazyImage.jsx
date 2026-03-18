@@ -59,7 +59,10 @@ const LazyImage = ({
     if (url.includes('cloudinary.com') && url.includes('/upload/')) {
       // Avoid double injection
       // ⭐ Use c_fill for cover images to handle aspect ratio on server
-      let params = objectFit === 'cover' ? 'f_auto,q_auto:low,c_fill,g_auto' : 'f_auto,q_auto:low,c_limit';
+      // Aggressive optimization for priority images (LCP)
+      const quality = priority ? 'q_auto:best' : 'q_auto:low';
+      let params = objectFit === 'cover' ? `f_auto,${quality},c_fill,g_auto` : `f_auto,${quality},c_limit`;
+      
       if (width) {
         params += `,w_${width}`;
       } else if (maxWidth) {
