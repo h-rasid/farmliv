@@ -107,25 +107,41 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         });
 
         const recentLogs = Array.isArray(activitiesRes.data) ? activitiesRes.data.slice(0, 5) : [];
-        recentLogs.forEach((log, index) => {
+        recentLogs.forEach((log) => {
           alerts.push({
-            id: `act-${index}-${Date.now()}`,
+            id: `act-${log.id || Math.random()}`,
             type: 'activity',
             title: log.user || 'System',
             message: log.action,
-            time: new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            time: log.created_at ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
             icon: History,
             color: 'text-emerald-500',
             bg: 'bg-emerald-50'
           });
         });
-        // Recalculate badge count based on filtered (not-yet-seen-in-DB) items
         const trueBadgeLeads = Array.isArray(leadsRes.data)
           ? leadsRes.data.filter(l => l.is_seen === 0 && !seenIds.current.has(`lead-${l.id}`)).length
           : 0;
         const trueBadgeEnq = Array.isArray(quickEnqRes.data)
           ? quickEnqRes.data.filter(e => e.is_seen === 0 && !seenIds.current.has(`enq-${e.id}`)).length
           : 0;
+
+        // Sync seenIds with DB: Remove from seenIds if DB now shows it as seen
+        if (Array.isArray(leadsRes.data)) {
+          leadsRes.data.forEach(l => {
+            if (l.is_seen === 1 && seenIds.current.has(`lead-${l.id}`)) {
+              seenIds.current.delete(`lead-${l.id}`);
+            }
+          });
+        }
+        if (Array.isArray(quickEnqRes.data)) {
+          quickEnqRes.data.forEach(e => {
+            if (e.is_seen === 1 && seenIds.current.has(`enq-${e.id}`)) {
+              seenIds.current.delete(`enq-${e.id}`);
+            }
+          });
+        }
+
         setCrmBadges({ leads: trueBadgeLeads, enquiries: trueBadgeEnq });
         setNotifications(alerts);
 
@@ -186,8 +202,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         API.post('/admin/mark-seen', { type: 'leads' }),
         API.post('/admin/mark-seen', { type: 'enquiries' })
       ]);
-      // After backend confirms, clear the lock - DB is now consistent
-      seenIds.current.clear();
+      // seenIds will be cleared by fetchNotifications once DB syncs
     } catch (err) {
       console.error("Failed to sync seen status:", err);
     }
@@ -203,14 +218,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
 
       const type = notif.type === 'lead' ? 'leads' : 'enquiries';
       await API.post('/admin/mark-seen', { type, id: notif.rawId });
-
-      // Update badge counts locally
-      setCrmBadges(prev => ({
-        ...prev,
-        [type]: Math.max(0, prev[type] - 1)
-      }));
-      // After DB confirms, we can remove from lock
-      seenIds.current.delete(notif.id);
+      // seenIds will be cleared by fetchNotifications once DB syncs
     } catch (err) {
       console.error("Failed to mark individual notification seen:", err);
       // On failure, remove from lock so it becomes visible again
@@ -500,6 +508,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                       initial={{ opacity: 0, y: 20, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      onClick={(e) => e.stopPropagation()}
                       className="absolute right-0 mt-4 w-96 bg-white rounded-[2rem] border border-slate-100 shadow-2xl z-[100] overflow-hidden"
                     >
                       <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">

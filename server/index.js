@@ -478,6 +478,10 @@ const MOCK_DATA = {
   payments: [
     { id: 1, order_id: 101, amount: 15400, method: "UPI", status: "Verified", created_at: new Date() },
     { id: 2, order_id: 102, amount: 5000, method: "Cash", status: "Pending", created_at: new Date() }
+  ],
+  leads: [
+    { id: 1, customer_name: "Niloy Das", phone: "9123456789", location: "Guwahati", status: "Pending", created_at: new Date() },
+    { id: 2, customer_name: "Pranjal Ahmed", phone: "9876543210", location: "Jorhat", status: "Pending", created_at: new Date() }
   ]
 };
 
