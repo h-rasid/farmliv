@@ -37,6 +37,19 @@ const HeroCarousel = () => {
     return () => clearInterval(timer);
   }, [currentSlide]);
 
+  // ⭐ Aggressive Preloading of All Slides
+  useEffect(() => {
+    slides.forEach((slide) => {
+      // Preload next-gen quality (eco) at 1080w to match LazyImage priority logic
+      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:eco,w_1080/');
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = preloadUrl;
+      document.head.appendChild(link);
+    });
+  }, []);
+
   const nextSlide = () => {
     setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
