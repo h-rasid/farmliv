@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroCarousel from '@/components/HeroCarousel';
+import SlantedHero from '@/components/SlantedHero';
+
 import AboutSection from '@/components/AboutSection';
 import FeaturedCategories from '@/components/FeaturedCategories';
 import QuoteModal from '@/components/QuoteModal';
@@ -30,7 +32,7 @@ const HomePage = () => {
         <Header />
         
         <main>
-          <HeroCarousel />
+          <SlantedHero />
           <AboutSection />
           <FeaturedCategories />
         </main>
