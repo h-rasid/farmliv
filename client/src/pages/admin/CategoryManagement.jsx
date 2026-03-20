@@ -107,7 +107,12 @@ const CategoryManagement = () => {
               <div key={cat.id} className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm group hover:border-emerald-100 transition-all">
                 <div className="flex justify-between items-start mb-6">
                   <div className="h-20 w-20 rounded-2xl bg-slate-50 overflow-hidden border border-slate-50">
-                    <img src={cat.image ? `${API_BASE}${cat.image}` : '/cat-placeholder.jpg'} className="w-full h-full object-cover" alt="" />
+                    <img 
+                      src={cat.image ? `${API_BASE}${cat.image}` : '/cat-placeholder.jpg'} 
+                      className="w-full h-full object-cover" 
+                      alt="" 
+                      onError={(e) => { e.target.src = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg' }}
+                    />
                   </div>
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
                     <button onClick={() => { setEditingCat(cat); setFormData({...cat, image: null}); setIsModalOpen(true); }} className="p-2 bg-slate-50 rounded-lg text-slate-400 hover:text-emerald-600"><Edit3 size={14}/></button>

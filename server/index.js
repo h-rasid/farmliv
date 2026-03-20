@@ -279,6 +279,9 @@ const transporter = nodemailer.createTransport({
           CREATE TABLE IF NOT EXISTS categories (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) UNIQUE,
+            description TEXT,
+            image TEXT,
+            parent_id INT DEFAULT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
           )
         `);
@@ -375,6 +378,11 @@ const transporter = nodemailer.createTransport({
         await addColumnIfMissing('products', 'hsn', 'VARCHAR(255) DEFAULT NULL');
         await addColumnIfMissing('products', 'status', 'VARCHAR(50) DEFAULT "Active"');
         await addColumnIfMissing('products', 'video', 'TEXT DEFAULT NULL');
+
+        // --- 2.5 Categories Table Self-Healing ---
+        await addColumnIfMissing('categories', 'description', 'TEXT DEFAULT NULL');
+        await addColumnIfMissing('categories', 'image', 'TEXT DEFAULT NULL');
+        await addColumnIfMissing('categories', 'parent_id', 'INT DEFAULT NULL');
 
         // --- 3. Terminology Cleanup (Migration) ---
         await connection.query("UPDATE products SET description = REPLACE(description, 'Node Assets', 'Products')");
@@ -761,13 +769,74 @@ app.get('/api/categories', async (req, res) => {
   }
 });
 
-app.post('/api/categories', async (req, res) => {
-  const { name } = req.body;
+app.post('/api/categories', upload, async (req, res) => {
   try {
-    const [result] = await pool.query('INSERT INTO categories (name) VALUES (?)', [name]);
-    res.status(201).json({ id: result.insertId, name });
+    const { name, description, parent_id } = req.body;
+    let imageUrl = null;
+    if (req.files && req.files['image']) {
+      imageUrl = await processImage(req.files['image'][0]);
+    }
+
+    const [result] = await pool.query(
+      'INSERT INTO categories (name, description, image, parent_id) VALUES (?, ?, ?, ?)',
+      [name, description, imageUrl, parent_id || null]
+    );
+    
+    await logActivity(`New Category Deployed: ${name}`);
+    res.status(201).json({ id: result.insertId, name, success: true });
   } catch (err) {
-    res.status(500).json({ error: "Failed to add category" });
+    console.error("Category creation error:", err);
+    res.status(500).json({ error: "Failed to add category: " + err.message });
+  }
+});
+
+// Update Category (PUT)
+app.put('/api/categories/:id', upload, async (req, res) => {
+  const catId = req.params.id;
+  try {
+    const { name, description, parent_id } = req.body;
+    
+    // Fetch existing
+    const [[existing]] = await pool.query('SELECT image FROM categories WHERE id = ?', [catId]);
+    if (!existing) return res.status(404).json({ error: "Category not found" });
+
+    let imageUrl = existing.image;
+    if (req.files && req.files['image']) {
+      imageUrl = await processImage(req.files['image'][0]);
+    }
+
+    await pool.query(
+      'UPDATE categories SET name=?, description=?, image=?, parent_id=? WHERE id=?',
+      [name, description, imageUrl, parent_id || null, catId]
+    );
+
+    await logActivity(`Category Updated: ${name}`);
+    return res.json({ success: true, message: "Category Synchronized" });
+  } catch (err) {
+    console.error("Category update error:", err);
+    return res.status(500).json({ error: "Category update failed: " + err.message });
+  }
+});
+
+// DELETE Category
+app.delete('/api/categories/:id', async (req, res) => {
+  const catId = req.params.id;
+  try {
+    const [[cat]] = await pool.query('SELECT name FROM categories WHERE id = ?', [catId]);
+    if (!cat) return res.status(404).json({ error: "Category identity not found" });
+
+    // First, handle children (sub-categories) - reset their parent_id or delete them?
+    // User said "Purge category and its sub-categories?" in frontend confirm, so we delete them.
+    await pool.query('DELETE FROM categories WHERE parent_id = ?', [catId]);
+    
+    // Finally delete the main category
+    await pool.query('DELETE FROM categories WHERE id = ?', [catId]);
+
+    await logActivity(`Category Purged: ${cat.name} (ID: ${catId})`);
+    return res.json({ success: true, message: "Category record purged from Farmliv Ecosystem" });
+  } catch (err) {
+    console.error("Category delete error:", err);
+    return res.status(500).json({ error: "Purge protocol failed" });
   }
 });
 
