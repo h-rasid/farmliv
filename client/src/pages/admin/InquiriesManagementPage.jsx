@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, User, Package, MoreVertical, Loader2, MessageCircle, 
@@ -136,7 +136,7 @@ const InquiriesManagementPage = () => {
   });
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1600px] mx-auto p-10 space-y-10 font-sans text-slate-900">
         
         <header className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
@@ -305,7 +305,7 @@ const InquiriesManagementPage = () => {
           )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

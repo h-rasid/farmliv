@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShoppingBag, Search, Plus, Minus, Trash2, 
@@ -95,7 +95,7 @@ const SalesOrderCreation = () => {
   };
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-8 max-w-6xl mx-auto">
         
         {/* WIZARD PROGRESS HEADER */}
@@ -353,7 +353,7 @@ const SalesOrderCreation = () => {
           )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion } from 'framer-motion';
 import { 
   BarChart3, PieChart, TrendingUp, Users, Package, 
@@ -87,7 +87,7 @@ const ReportsAnalytics = () => {
   ];
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1600px] mx-auto p-10 space-y-12 font-sans text-slate-900">
         
         {/* Header Section */}
@@ -173,7 +173,7 @@ const ReportsAnalytics = () => {
         </div>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

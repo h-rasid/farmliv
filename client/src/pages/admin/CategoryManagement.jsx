@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Layers, Plus, Edit3, Trash2, X, Upload, 
@@ -84,7 +84,7 @@ const CategoryManagement = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1400px] mx-auto p-10 space-y-12 font-sans text-slate-900">
         
         {/* Header */}
@@ -185,7 +185,7 @@ const CategoryManagement = () => {
         </AnimatePresence>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

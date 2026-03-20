@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion } from 'framer-motion';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, 
@@ -60,7 +60,7 @@ const SalesmanReports = () => {
   ];
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-8">
         
         {/* HEADER & ANALYTICS PULSE */}
@@ -217,7 +217,7 @@ const SalesmanReports = () => {
         </div>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, Clock, Calendar, AlertCircle, 
@@ -56,7 +56,7 @@ const TaskManagementPage = () => {
   const completionRate = tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-8">
         
         {/* HEADER & STRATEGY PULSE */}
@@ -192,7 +192,7 @@ const TaskManagementPage = () => {
         </div>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

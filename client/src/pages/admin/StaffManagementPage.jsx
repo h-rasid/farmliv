@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   UserPlus, Shield, Trash2, Search, Loader2, Key, 
@@ -74,7 +74,7 @@ const StaffManagementPage = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1600px] mx-auto p-10 space-y-12 font-sans text-slate-900">
         
         {/* Header Section */}
@@ -176,7 +176,7 @@ const StaffManagementPage = () => {
         </div>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

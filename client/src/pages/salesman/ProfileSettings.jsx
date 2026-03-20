@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, Mail, Phone, MapPin, Shield, LogOut, 
@@ -31,7 +31,7 @@ const ProfileSettings = () => {
   if (!user) return null;
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-10 max-w-5xl mx-auto">
         
         {/* COMMAND CENTER HEADER */}
@@ -192,7 +192,7 @@ const ProfileSettings = () => {
         </div>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 export default ProfileSettings;

@@ -110,54 +110,48 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/salesman/login" element={<SalesmanLogin />} />
 
             {/* ADMIN PROTECTED ROUTES */}
-            <Route path="/admin-portal" element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/products" element={<ProtectedRoute allowedRole="admin"><ProductManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/categories" element={<ProtectedRoute allowedRole="admin"><CategoryManagement /></ProtectedRoute>} />
-            <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><InquiriesManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/customers" element={<ProtectedRoute allowedRole="admin"><CustomerManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
-            <Route path="/admin/quote" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
-            <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
-            <Route path="/admin/quote/history" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
-            
-            <Route path="/admin/billing" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
-            <Route path="/admin/billing/invoices" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
-            <Route path="/admin/billing/payments" element={<ProtectedRoute allowedRole="admin"><BillingFinance /></ProtectedRoute>} />
-
-            <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-            <Route path="/admin/reports/sales" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-            
-            <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><AdminSalesPerformance /></ProtectedRoute>} />
-            
-            <Route path="/admin/staff" element={<ProtectedRoute allowedRole="admin"><StaffManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/staff/performance" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-
-            <Route 
-                path="/admin/quick-enquiries" 
-                element={<ProtectedRoute allowedRole="admin"><QuickEnquiryManagement /></ProtectedRoute>} 
-            />
-
-            <Route path="/admin/settings" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
-            <Route path="/admin/settings/roles" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
-            <Route path="/admin/settings/access" element={<ProtectedRoute allowedRole="admin"><AdminSettings /></ProtectedRoute>} />
- 
-            <Route path="/admin/logs" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
-            <Route path="/admin/logs/activity" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
-            <Route path="/admin/logs/security" element={<ProtectedRoute allowedRole="admin"><SystemLogs /></ProtectedRoute>} />
+            <Route element={<ProtectedRoute allowedRole="admin"><PortalLayout role="admin" /></ProtectedRoute>}>
+              <Route path="/admin-portal" element={<AdminDashboard />} />
+              <Route path="/admin/products" element={<ProductManagementPage />} />
+              <Route path="/admin/categories" element={<CategoryManagement />} />
+              <Route path="/admin/leads" element={<InquiriesManagementPage />} />
+              <Route path="/admin/customers" element={<CustomerManagementPage />} />
+              <Route path="/admin/crm" element={<CRMHub />} />
+              <Route path="/admin/quote" element={<QuoteEngine />} />
+              <Route path="/admin/quote/new" element={<QuoteEngine />} />
+              <Route path="/admin/quote/history" element={<QuoteEngine />} />
+              <Route path="/admin/billing" element={<BillingFinance />} />
+              <Route path="/admin/billing/invoices" element={<BillingFinance />} />
+              <Route path="/admin/billing/payments" element={<BillingFinance />} />
+              <Route path="/admin/reports" element={<ReportsAnalytics />} />
+              <Route path="/admin/reports/sales" element={<ReportsAnalytics />} />
+              <Route path="/admin/sales-performance" element={<AdminSalesPerformance />} />
+              <Route path="/admin/staff" element={<StaffManagementPage />} />
+              <Route path="/admin/staff/performance" element={<ReportsAnalytics />} />
+              <Route path="/admin/quick-enquiries" element={<QuickEnquiryManagement />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+              <Route path="/admin/settings/roles" element={<AdminSettings />} />
+              <Route path="/admin/settings/access" element={<AdminSettings />} />
+              <Route path="/admin/logs" element={<SystemLogs />} />
+              <Route path="/admin/logs/activity" element={<SystemLogs />} />
+              <Route path="/admin/logs/security" element={<SystemLogs />} />
+            </Route>
 
             {/* SALESMAN PROTECTED ROUTES */}
-            <Route path="/salesman-portal" element={<ProtectedRoute allowedRole="salesman"><SalesDashboard /></ProtectedRoute>} />
-            <Route path="/salesman/leads" element={<ProtectedRoute allowedRole="salesman"><SalesLeadsPage /></ProtectedRoute>} />
-            <Route path="/salesman/enquiries" element={<ProtectedRoute allowedRole="salesman"><SalesEnquiriesPage /></ProtectedRoute>} />
-            <Route path="/salesman/customers" element={<ProtectedRoute allowedRole="salesman"><SalesCustomersPage /></ProtectedRoute>} />
-            <Route path="/salesman/catalog" element={<ProtectedRoute allowedRole="salesman"><ProductCatalog /></ProtectedRoute>} />
-            <Route path="/salesman/new-order" element={<ProtectedRoute allowedRole="salesman"><SalesOrderCreation /></ProtectedRoute>} />
-            <Route path="/salesman/visits" element={<ProtectedRoute allowedRole="salesman"><VisitManagementPage /></ProtectedRoute>} />
-            <Route path="/salesman/payments" element={<ProtectedRoute allowedRole="salesman"><PaymentCollectionPage /></ProtectedRoute>} />
-            <Route path="/salesman/tasks" element={<ProtectedRoute allowedRole="salesman"><TaskManagementPage /></ProtectedRoute>} />
-            <Route path="/salesman/reports" element={<ProtectedRoute allowedRole="salesman"><SalesmanReports /></ProtectedRoute>} />
-            <Route path="/salesman/history" element={<ProtectedRoute allowedRole="salesman"><SalesHistory /></ProtectedRoute>} />
-            <Route path="/salesman/profile" element={<ProtectedRoute allowedRole="salesman"><ProfileSettings /></ProtectedRoute>} />
+            <Route element={<ProtectedRoute allowedRole="salesman"><PortalLayout role="salesman" /></ProtectedRoute>}>
+              <Route path="/salesman-portal" element={<SalesDashboard />} />
+              <Route path="/salesman/leads" element={<SalesLeadsPage />} />
+              <Route path="/salesman/enquiries" element={<SalesEnquiriesPage />} />
+              <Route path="/salesman/customers" element={<SalesCustomersPage />} />
+              <Route path="/salesman/catalog" element={<ProductCatalog />} />
+              <Route path="/salesman/new-order" element={<SalesOrderCreation />} />
+              <Route path="/salesman/visits" element={<VisitManagementPage />} />
+              <Route path="/salesman/payments" element={<PaymentCollectionPage />} />
+              <Route path="/salesman/tasks" element={<TaskManagementPage />} />
+              <Route path="/salesman/reports" element={<SalesmanReports />} />
+              <Route path="/salesman/history" element={<SalesHistory />} />
+              <Route path="/salesman/profile" element={<ProfileSettings />} />
+            </Route>
 
             {/* CATCH-ALL REDIRECT */}
             <Route path="*" element={<Navigate to="/" replace />} />

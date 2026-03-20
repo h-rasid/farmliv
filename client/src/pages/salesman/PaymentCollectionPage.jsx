@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IndianRupee, CreditCard, Banknote, Smartphone, 
@@ -84,7 +84,7 @@ const PaymentCollectionPage = () => {
   const totalCollected = (Array.isArray(payments) ? payments : []).reduce((acc, curr) => acc + parseFloat(curr?.amount || 0), 0);
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-10">
         
         {/* HEADER SECTION */}
@@ -333,7 +333,7 @@ const PaymentCollectionPage = () => {
            )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

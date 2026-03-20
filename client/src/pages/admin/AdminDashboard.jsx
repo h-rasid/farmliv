@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 import { useNavigate } from 'react-router-dom';
-import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IndianRupee, Database, ShoppingBag, Target, PieChart,
@@ -96,7 +95,7 @@ const AdminDashboard = () => {
   );
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
         {/* HIGH DENSITY 8-POINT MATRIX */}
@@ -377,7 +376,7 @@ const AdminDashboard = () => {
         </AnimatePresence>
         {/* ⭐ Terminate Admin Session button has been removed */}
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

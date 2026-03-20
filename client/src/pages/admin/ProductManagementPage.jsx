@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import PortalLayout from '../../layouts/PortalLayout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit3, Trash2, X, Video, 
@@ -189,7 +187,7 @@ const ProductManagement = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1600px] mx-auto p-10 space-y-12 font-sans text-slate-900">
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-slate-100 pb-10">
@@ -354,7 +352,7 @@ const ProductManagement = () => {
           )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

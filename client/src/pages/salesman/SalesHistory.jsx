@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import API from '@/utils/axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -55,7 +55,7 @@ const SalesHistory = () => {
   }, [searchTerm, filterType, sales]);
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-10">
         
         {/* HEADER SECTION */}
@@ -202,7 +202,7 @@ const SalesHistory = () => {
            )}
         </div>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link, Outlet, useNavigationType } from 'react-router-dom';
 import API from '@/utils/axios';
 import { 
   LayoutDashboard, Package, Users, LogOut, 
@@ -13,12 +13,22 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const PortalLayout = ({ children, role = 'admin' }) => {
+const PortalLayout = ({ role = 'admin' }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const navType = useNavigationType();
+  const scrollRef = useRef(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
+  useEffect(() => {
+    // ⭐ Scroll to top of the content area on NEW navigation (PUSH)
+    // But skip on BACK/FORWARD (POP) to preserve previous scroll position.
+    if (navType !== 'POP' && scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname, navType]);
   
   // CRM Badge State
   const [crmBadges, setCrmBadges] = useState({ leads: 0, enquiries: 0 });
@@ -613,7 +623,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         </header>
 
         {/* VIEWPORT AREA: HIGH DENSITY CANVAS */}
-        <div className="flex-1 overflow-y-auto bg-[#F1F5F9] custom-scrollbar scroll-smooth p-6 md:p-12">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto bg-[#F1F5F9] custom-scrollbar scroll-smooth p-6 md:p-12">
            <AnimatePresence mode="wait">
               <motion.div 
                 key={location.pathname}
@@ -622,7 +632,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className="max-w-[1600px] mx-auto"
               >
-                 {children}
+                 <Outlet />
               </motion.div>
            </AnimatePresence>
         </div>

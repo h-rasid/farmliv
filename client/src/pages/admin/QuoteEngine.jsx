@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calculator, Plus, ShoppingBag, User, Calendar, 
@@ -126,7 +126,7 @@ const QuoteEngine = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
         {/* HEADER SECTION */}
@@ -391,7 +391,7 @@ const QuoteEngine = () => {
           background: #2E7D32;
         }
       `}</style>
-    </PortalLayout>
+    </>
   );
 };
 

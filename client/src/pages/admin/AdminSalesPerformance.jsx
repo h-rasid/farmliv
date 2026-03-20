@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion } from 'framer-motion';
 import { TrendingUp, DollarSign, Package, BarChart3, Download, Clock } from 'lucide-react';
 
@@ -35,7 +35,7 @@ const AdminSalesPerformance = () => {
   }, []);
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1600px] mx-auto space-y-12 p-8">
         {/* Header Section */}
         <div className="flex justify-between items-end border-b pb-10">
@@ -87,7 +87,7 @@ const AdminSalesPerformance = () => {
           </table>
         </div>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

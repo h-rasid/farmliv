@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Package, Search, Filter, IndianRupee, 
@@ -48,7 +48,7 @@ const ProductCatalog = () => {
   });
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-8">
         
         {/* HEADER & INVENTORY PULSE */}
@@ -211,7 +211,7 @@ const ProductCatalog = () => {
            </div>
         )}
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

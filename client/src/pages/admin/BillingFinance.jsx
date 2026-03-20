@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CreditCard, IndianRupee, FileText, CheckCircle2, 
@@ -82,7 +82,7 @@ const BillingFinance = () => {
   );
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
         {/* HEADER SECTION */}
@@ -399,7 +399,7 @@ const BillingFinance = () => {
           )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

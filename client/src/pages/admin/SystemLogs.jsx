@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ScrollText, ShieldCheck, Search, Filter, 
@@ -54,7 +54,7 @@ const SystemLogs = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="space-y-8 font-sans">
         {/* --- Elite Header --- */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
@@ -194,7 +194,7 @@ const SystemLogs = () => {
           </div>
         </div>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

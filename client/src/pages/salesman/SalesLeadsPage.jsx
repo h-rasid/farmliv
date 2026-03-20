@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Phone, Mail, MapPin,
@@ -91,7 +91,7 @@ const SalesLeadsPage = () => {
   };
 
   return (
-    <PortalLayout role="salesman">
+    <>
       <div className="flex flex-col gap-8">
 
         {/* HEADER */}
@@ -390,7 +390,7 @@ const SalesLeadsPage = () => {
         </AnimatePresence>
 
       </div>
-    </PortalLayout>
+    </>
   );
 };
 

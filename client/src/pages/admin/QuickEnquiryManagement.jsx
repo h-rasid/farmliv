@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
-import PortalLayout from '../../layouts/PortalLayout';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mail, Phone, MapPin, Building2, Trash2, 
@@ -71,7 +71,7 @@ const QuickEnquiryManagement = () => {
   };
 
   return (
-    <PortalLayout role="admin">
+    <>
       <div className="max-w-[1450px] mx-auto p-10 space-y-8 font-sans">
         <header className="border-b border-gray-100 pb-8">
           <h1 className="text-3xl font-black italic uppercase tracking-tighter text-gray-900">Inquiry Hub</h1>
@@ -215,7 +215,7 @@ const QuickEnquiryManagement = () => {
           )}
         </AnimatePresence>
       </div>
-    </PortalLayout>
+    </>
   );
 };
 
