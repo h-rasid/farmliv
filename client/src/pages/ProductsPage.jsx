@@ -101,7 +101,7 @@ const ProductsPage = () => {
               <Link to="/" className="hover:text-[#2E7D32] transition-colors">Home</Link> / <span className="text-[#2E7D32] font-semibold">Products</span>
             </nav>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1A1A1A] mb-3 sm:mb-4 font-['Playfair_Display'] leading-tight">
-              Our Products
+              Our Product Category
             </h1>
             <p className="text-sm sm:text-base text-gray-500 max-w-xl leading-relaxed">
               Premium agricultural solutions engineered for modern farming efficiency and sustainable growth.

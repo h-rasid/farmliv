@@ -93,7 +93,7 @@ const Footer = () => {
 
           {/* Products */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold mb-2 sm:mb-4">Our Products</h3>
+            <h3 className="text-lg font-semibold mb-2 sm:mb-4">Our Product Category</h3>
             <ul className="space-y-3">
               <li>
                 <Link to="/products/weed-control" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">

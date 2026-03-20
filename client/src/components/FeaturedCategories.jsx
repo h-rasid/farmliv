@@ -41,7 +41,7 @@ const FeaturedCategories = () => {
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm">Our Products</span>
+            <span className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm">Our Product Category</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6 font-['Playfair_Display']">
             Specialized Agricultural Solutions
