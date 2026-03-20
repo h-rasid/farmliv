@@ -125,11 +125,6 @@ const AdminDashboard = () => {
                   <div className="flex justify-between items-center mb-8">
                     <div>
                       <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Weekly Sales Flow</h3>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Performance Synchronization: Active</p>
-                    </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl">
-                      <TrendingUp size={14} className="text-emerald-500" />
-                      <span className="text-[9px] font-black text-slate-600 uppercase tracking-widest">1us Lag</span>
                     </div>
                   </div>
                   <div className="flex-1 w-full min-h-[300px]">
@@ -158,7 +153,6 @@ const AdminDashboard = () => {
                   <div className="flex justify-between items-center mb-8">
                     <div>
                       <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Monthly Revenue</h3>
-                      <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-black">Fiscal Data Aggregation</p>
                     </div>
                   </div>
                   <div className="flex-1 w-full min-h-[300px] flex items-end gap-2 px-4">
@@ -184,21 +178,9 @@ const AdminDashboard = () => {
                    <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50 font-black uppercase tracking-widest text-[10px] text-slate-800 italic">
                       <Target size={16} className="text-[#2E7D32]" /> Inquiry Funnel
                    </div>
-                   <div className="space-y-2">
-                      {[
-                        { label: 'New Leads', count: 320, color: 'bg-[#134E4A]', w: 'w-full' },
-                        { label: 'Contacted', count: 180, color: 'bg-[#3B82F6]', w: 'w-4/5' },
-                        { label: 'Negotiation', count: 95, color: 'bg-[#818CF8]', w: 'w-3/5' },
-                        { label: 'Converted', count: 50, color: 'bg-[#F59E0B]', w: 'w-2/5' }
-                      ].map((step, i) => (
-                        <div key={i} className="flex items-center gap-4 group">
-                           <div className={`${step.w} h-12 ${step.color} rounded-xl flex items-center justify-between px-6 text-white transition-all group-hover:scale-[1.02] shadow-sm`}>
-                              <span className="text-[10px] font-black uppercase italic tracking-widest">{step.label}</span>
-                              <span className="text-xs font-black">{step.count}</span>
-                           </div>
-                        </div>
-                      ))}
-                   </div>
+                    <div className="py-8 text-center bg-slate-50 rounded-2xl">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No funnel data available</p>
+                    </div>
                 </div>
 
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
@@ -207,21 +189,8 @@ const AdminDashboard = () => {
                          <ShoppingBag size={16} className="text-emerald-500" /> Top Selling Products
                       </span>
                    </div>
-                   <div className="space-y-6">
-                      {[
-                        { name: 'Hybrid Seeds', icon: '🌱' },
-                        { name: 'Organic Fertilizer', icon: '📦' },
-                        { name: 'Drip Irrigation Kits', icon: '🚜' },
-                        { name: 'Tractor Parts', icon: '⚙️' }
-                      ].map((item, i) => (
-                        <div key={i} className="flex justify-between items-center group cursor-pointer">
-                           <div className="flex items-center gap-4">
-                              <div className="w-10 h-10 bg-slate-50 rounded-2xl flex items-center justify-center text-lg">{item.icon}</div>
-                              <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2E7D32] transition-colors">{item.name}</span>
-                           </div>
-                           <ChevronRight size={14} className="text-slate-200 group-hover:text-[#2E7D32] transition-all group-hover:translate-x-1" />
-                        </div>
-                      ))}
+                   <div className="py-12 text-center bg-slate-50 rounded-3xl">
+                      <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No transaction data</p>
                    </div>
                 </div>
 
@@ -276,22 +245,11 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
-                      {[
-                        { id: '#10458', customer: 'Emily Clark', status: 'Pending', color: 'bg-amber-50 text-amber-600' },
-                        { id: '#10457', customer: 'Green Farms', status: 'Completed', color: 'bg-emerald-50 text-emerald-600' },
-                        { id: '#10456', customer: 'Rahul Sharma', status: 'Shipped', color: 'bg-blue-50 text-blue-600' }
-                      ].map((order, i) => (
-                        <tr key={i} className="hover:bg-slate-50/50 transition-colors group">
-                          <td className="px-10 py-6 text-[11px] font-black text-slate-900">{order.id}</td>
-                          <td className="px-10 py-6 text-[11px] font-bold text-slate-600 uppercase italic transition-colors group-hover:text-emerald-600">{order.customer}</td>
-                          <td className="px-10 py-6">
-                            <span className={`px-4 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${order.color}`}>
-                              {order.status}
-                            </span>
-                          </td>
-                          <td className="px-10 py-6 text-right text-[11px] font-black text-slate-900">₹1,250</td>
-                        </tr>
-                      ))}
+                       <tr>
+                         <td colSpan="4" className="py-10 text-center">
+                           <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No recent synchronization data</p>
+                         </td>
+                       </tr>
                     </tbody>
                   </table>
                 </div>

@@ -44,12 +44,7 @@ const InquiriesManagementPage = () => {
       setLeads(res.data);
     } catch (err) {
       if (!isQuiet) toast({ variant: "destructive", title: "Sync Offline" });
-      setLeads([{ 
-        id: 1, customer_name: 'Harunar Rasid', phone: '9876543210', 
-        email: 'rasid@farmliv.com', company: 'Farmliv Industries',
-        location: 'Assam', product_name: 'Mulching Film', status: 'New', 
-        assigned_to: null, notes: 'Interested in bulk buy.' 
-      }]);
+      setLeads([]);
     } finally { 
       if (!isQuiet) setLoading(false); 
     }
@@ -146,8 +141,8 @@ const InquiriesManagementPage = () => {
         
         <header className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight italic">Inquiry Intelligence</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-black">Capture & Conversion Lifecycle</p>
+            <h1 className="text-3xl font-semibold tracking-tight italic">Lead Inquiries</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-black">Manage Customer Inquiries</p>
           </div>
           
           <div className="flex items-center gap-4 w-full max-w-2xl">
@@ -248,9 +243,9 @@ const InquiriesManagementPage = () => {
             <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
               <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl relative overflow-y-auto max-h-[90vh]">
                 <div className="p-6 bg-slate-50 border-b flex justify-between items-center text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                  Lead Synchronized Data <button onClick={() => setSelectedLead(null)} className="p-1 hover:bg-slate-200 rounded-full transition-all"><X size={20}/></button>
+                   Lead Details <button onClick={() => setSelectedLead(null)} className="p-1 hover:bg-slate-200 rounded-full transition-all"><X size={20}/></button>
                 </div>
-                
+
                 <div className="p-10 space-y-8">
                   <div className="grid grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -265,11 +260,11 @@ const InquiriesManagementPage = () => {
                     </div>
                     <div className="space-y-4">
                        <div>
-                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Farmliv Entity</p>
+                         <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Company Detail</p>
                         <p className="text-xs font-bold text-slate-700 mt-1 flex items-center gap-2"><Building2 size={14}/> {selectedLead.company || 'Not Specified'}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Deployment Axis</p>
+                         <p className="text-[9px] uppercase font-black text-slate-400 tracking-widest">Location</p>
                         <p className="text-xs font-bold text-slate-700 mt-1 flex items-center gap-2"><MapPin size={14}/> {selectedLead.location || 'Unknown'}</p>
                       </div>
                     </div>
@@ -288,9 +283,9 @@ const InquiriesManagementPage = () => {
                   </div>
 
                   <div className="p-8 bg-slate-50 rounded-3xl border border-slate-100 space-y-4">
-                    <div className="flex items-center gap-2 text-slate-400"><StickyNote size={18}/><span className="text-[10px] font-black uppercase tracking-widest">Operational Protocols</span></div>
-                    <textarea 
-                      placeholder="Add technical notes..." 
+                     <div className="flex items-center gap-2 text-slate-400"><StickyNote size={18}/><span className="text-[10px] font-black uppercase tracking-widest">Inquiry Notes</span></div>
+                    <textarea
+                      placeholder="Add technical notes..."
                       className="w-full p-4 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-emerald-50 h-24 resize-none"
                       defaultValue={selectedLead.notes}
                       onChange={(e) => setNoteText(e.target.value)}
@@ -301,7 +296,7 @@ const InquiriesManagementPage = () => {
                   </div>
 
                   <div className="flex gap-4">
-                    <button onClick={() => updateStatus(selectedLead.id, 'Converted')} className="flex-1 bg-emerald-600 text-white py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"><CheckCircle2 size={16}/> Establish Closed</button>
+                     <button onClick={() => updateStatus(selectedLead.id, 'Converted')} className="flex-1 bg-emerald-600 text-white py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"><CheckCircle2 size={16}/> Mark as Converted</button>
                     <button onClick={() => handleDelete(selectedLead.id)} className="flex-1 bg-rose-50 text-rose-500 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center gap-2"><Trash2 size={16}/> Purge Inquiry</button>
                   </div>
                 </div>

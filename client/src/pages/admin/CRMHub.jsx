@@ -82,23 +82,23 @@ const CRMHub = () => {
       <div className="max-w-[1450px] mx-auto p-6 md:p-10 space-y-10 font-sans text-slate-900">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
-            <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">CRM Pipeline</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Strategic Opportunity Lifecycle Tracking</p>
+            <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">Lead Pipeline</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Track and manage customer opportunities</p>
           </div>
           <div className="flex gap-4">
              <div className="flex items-center gap-2 px-6 py-4 bg-white border border-slate-100 rounded-[1.5rem] shadow-sm">
                 <Search size={16} className="text-slate-300" />
-                <input type="text" placeholder="Trace Opportunity..." className="bg-transparent border-none outline-none text-[10px] uppercase font-black tracking-widest w-32" />
+                <input type="text" placeholder="Search leads..." className="bg-transparent border-none outline-none text-[10px] uppercase font-black tracking-widest w-32" />
              </div>
              <button className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-600 transition-all">
-                <UserPlus size={16} /> Forge Entry
+                <UserPlus size={16} /> Add New Lead
              </button>
           </div>
         </header>
 
         <div className="flex gap-8 overflow-x-auto pb-10 custom-scrollbar">
-           <Column title="New Intake" leads={pipeline.new} colorClass="text-blue-500" />
-           <Column title="Communication" leads={pipeline.contacted} colorClass="text-amber-500" />
+           <Column title="New Leads" leads={pipeline.new} colorClass="text-blue-500" />
+           <Column title="In Progress" leads={pipeline.contacted} colorClass="text-amber-500" />
            <Column title="Negotiation" leads={pipeline.negotiation} colorClass="text-indigo-500" />
            <Column title="Conversion" leads={pipeline.converted} colorClass="text-emerald-500" />
         </div>

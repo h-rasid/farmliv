@@ -64,7 +64,7 @@ const SystemLogs = () => {
             </div>
             <div>
               <h1 className="text-4xl font-black uppercase italic tracking-tighter text-slate-900">System <span className="text-emerald-500">Audit Logs</span></h1>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-1">Centralized Activity & Security Intelligence</p>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-1">Activity & Security Logs</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -118,9 +118,9 @@ const SystemLogs = () => {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-slate-50/50">
-                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Temporal Stamp</th>
-                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">System User</th>
-                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Protocol / Action</th>
+                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Timestamp</th>
+                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">User</th>
+                  <th className="px-8 py-6 text-left text-[9px] font-black text-slate-400 uppercase tracking-widest">Action</th>
                   <th className="px-8 py-6 text-right text-[9px] font-black text-slate-400 uppercase tracking-widest">Status</th>
                 </tr>
               </thead>
@@ -169,7 +169,7 @@ const SystemLogs = () => {
                           ? 'bg-rose-500 animate-pulse'
                           : 'bg-emerald-500'
                         }`} />
-                          {log.action.toLowerCase().includes('failed') ? 'Critical' : 'Synchronized'}
+                          {log.action.toLowerCase().includes('failed') ? 'Critical' : 'Logged'}
                         </span>
                       </td>
                     </motion.tr>

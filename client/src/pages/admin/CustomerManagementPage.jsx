@@ -24,7 +24,7 @@ const CustomerManagementPage = () => {
       const res = await API.get('/customers');
       setCustomers(res.data);
     } catch (err) {
-      toast({ variant: "destructive", title: "Farmliv Database Sync Failed" });
+      toast({ variant: "destructive", title: "Customer Sync Failed" });
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ const CustomerManagementPage = () => {
       setCustomers(prev => prev.map(c => c.id === id ? { ...c, status: newStatus } : c));
       toast({ title: `Customer ${newStatus.toUpperCase()}` });
     } catch (err) {
-      toast({ variant: "destructive", title: "Status Protocol Failed" });
+      toast({ variant: "destructive", title: "Status Update Failed" });
     }
   };
 
@@ -54,10 +54,10 @@ const CustomerManagementPage = () => {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div>
             <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">Customer Hub</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Managing Global Agri-Network</p>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.2em] font-black">Manage Customer Network</p>
           </div>
           <button className="flex items-center gap-2 px-8 py-4 bg-emerald-600 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-green-900/20">
-            <UserPlus size={16} /> Onboard Customer
+            <UserPlus size={16} /> Add Customer
           </button>
         </header>
 
@@ -93,9 +93,9 @@ const CustomerManagementPage = () => {
               <thead>
                 <tr className="border-b border-slate-50 text-[10px] font-black uppercase text-slate-400 tracking-widest bg-slate-50/50">
                   <th className="py-6 px-8 text-center w-20">Status</th>
-                  <th className="py-6 px-4">Entity Identity</th>
-                  <th className="py-6 px-4">Contact Logic</th>
-                  <th className="py-6 px-4">Network Node</th>
+                  <th className="py-6 px-4">Customer Name</th>
+                  <th className="py-6 px-4">Contact Info</th>
+                  <th className="py-6 px-4">Location</th>
                   <th className="py-6 px-4 text-center">Type</th>
                   <th className="py-6 px-8 text-right">Actions</th>
                 </tr>
@@ -158,7 +158,7 @@ const CustomerManagementPage = () => {
           {filtered.length === 0 && (
             <div className="py-20 text-center">
               <Users size={40} className="mx-auto text-slate-100 mb-4" />
-              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">No Synchronized Network Nodes Found</p>
+              <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">No Customers Found</p>
             </div>
           )}
         </div>

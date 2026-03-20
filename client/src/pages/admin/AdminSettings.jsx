@@ -85,7 +85,7 @@ const AdminSettings = () => {
       });
 
       console.log("Saving to Database:", response.data);
-      alert("✅ Settings updated successfully on Hostinger!");
+      alert("✅ Settings updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);
       alert("❌ Failed to update settings. Please try again.");
@@ -98,15 +98,15 @@ const AdminSettings = () => {
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
         <div className="flex justify-between items-center mb-8 border-b pb-4">
-            <h2 className="text-3xl font-bold text-gray-800">Admin Dashboard Settings</h2>
-            {isUpdating && <span className="text-blue-600 animate-pulse font-medium">Syncing with Server...</span>}
+            <h2 className="text-3xl font-bold text-gray-800">Admin Settings</h2>
+            {isUpdating && <span className="text-emerald-600 animate-pulse font-medium">Syncing...</span>}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* --- Branding Section --- */}
           <section className="space-y-4">
-            <h3 className="text-lg font-semibold text-blue-600">Branding</h3>
+            <h3 className="text-lg font-semibold text-emerald-600">Branding</h3>
             <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border">
                <div className="flex-1">
                   <label className="block text-sm font-medium mb-1">Website Logo</label>
@@ -142,14 +142,14 @@ const AdminSettings = () => {
 
           {/* --- Business & GST --- */}
           <section className="space-y-4">
-            <h3 className="text-lg font-semibold text-blue-600">Business Details</h3>
+            <h3 className="text-lg font-semibold text-emerald-600">Business Details</h3>
             <div>
               <label className="block text-sm font-medium mb-1">GST Number</label>
               <input 
                 type="text" 
                 value={settings.gstNumber || ''}
                 placeholder="22AAAAA0000A1Z5"
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 onChange={(e) => setSettings({...settings, gstNumber: e.target.value})}
               />
             </div>
@@ -159,7 +159,7 @@ const AdminSettings = () => {
                 type="tel" 
                 value={settings.whatsapp || ''}
                 placeholder="+91..."
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 onChange={(e) => setSettings({...settings, whatsapp: e.target.value})}
               />
             </div>
@@ -167,7 +167,7 @@ const AdminSettings = () => {
 
           {/* --- SMTP Email Setup --- */}
           <section className="space-y-4 md:col-span-2 bg-blue-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-blue-600">SMTP Email Setup (Working)</h3>
+            <h3 className="text-lg font-semibold text-emerald-600">SMTP Email Setup</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <input type="text" value={settings.smtpHost || ''} placeholder="SMTP Host" className="p-2 border rounded-md bg-white text-sm" onChange={(e) => setSettings({...settings, smtpHost: e.target.value})} />
               <input type="email" value={settings.smtpUser || ''} placeholder="SMTP User" className="p-2 border rounded-md bg-white text-sm" onChange={(e) => setSettings({...settings, smtpUser: e.target.value})} />
@@ -177,14 +177,14 @@ const AdminSettings = () => {
 
           {/* --- Social Media Links --- */}
           <section className="space-y-4">
-            <h3 className="text-lg font-semibold text-blue-600">Social Media</h3>
+            <h3 className="text-lg font-semibold text-emerald-600">Social Media</h3>
             <input type="text" value={settings.facebook || ''} placeholder="Facebook URL" className="w-full p-2 border rounded-lg text-sm" onChange={(e) => setSettings({...settings, facebook: e.target.value})} />
             <input type="text" value={settings.instagram || ''} placeholder="Instagram URL" className="w-full p-2 border rounded-lg text-sm" onChange={(e) => setSettings({...settings, instagram: e.target.value})} />
           </section>
 
           {/* --- System Status --- */}
           <section className="space-y-4">
-            <h3 className="text-lg font-semibold text-blue-600">System Control</h3>
+            <h3 className="text-lg font-semibold text-emerald-600">System Control</h3>
             <div className="flex items-center justify-between p-4 border-2 border-dashed rounded-lg bg-red-50">
               <div>
                 <span className="font-bold text-red-700">Maintenance Mode</span>
@@ -207,7 +207,7 @@ const AdminSettings = () => {
             onClick={handleSave}
             disabled={isUpdating}
             className={`px-10 py-3 text-white font-bold rounded-xl shadow-lg transform transition active:scale-95 ${
-                isUpdating ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                isUpdating ? 'bg-gray-400 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >
             {isUpdating ? 'Processing...' : 'Update All Settings'}

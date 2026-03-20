@@ -451,10 +451,6 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                <h2 className="text-xl font-black text-slate-900 tracking-tight italic uppercase leading-none">
                   {navLinks.find(l => l.path === location.pathname)?.name || 'Dashboard'}
                </h2>
-               <div className="flex items-center gap-2 mt-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">Operational Pulse: Sync Active</span>
-               </div>
             </div>
           </div>
 
@@ -523,7 +519,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                         {notifLoading && notifications.length === 0 ? (
                           <div className="p-12 flex flex-col items-center gap-4">
                             <div className="w-8 h-8 border-2 border-[#2E7D32] border-t-transparent rounded-full animate-spin" />
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Syncing Pulse...</span>
+                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Checking notifications...</span>
                           </div>
                         ) : notifications.length > 0 ? (
                           <div className="space-y-1">
@@ -564,10 +560,9 @@ const PortalLayout = ({ children, role = 'admin' }) => {
                             <div className="p-4 bg-slate-50 rounded-2xl text-slate-200">
                                <ShieldCheck size={40} />
                             </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Farmliv Protected</span>
-                              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">No active alerts detected</p>
-                            </div>
+                             <div className="flex flex-col gap-1">
+                               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No active alerts</p>
+                             </div>
                           </div>
                         )}
                       </div>

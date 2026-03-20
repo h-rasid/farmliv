@@ -43,8 +43,8 @@ const BillingFinance = () => {
     } catch (err) {
       console.error("Finance Sync Error:", err);
       toast({
-        title: "Resiliency Mode Active",
-        description: "Displaying cached financial nodes due to sync delay.",
+        title: "Sync Error",
+        description: "Displaying cached financial data due to sync delay.",
         variant: "destructive"
       });
     } finally {
@@ -63,7 +63,7 @@ const BillingFinance = () => {
         </div>
         <div className="text-right">
           <span className={`text-[10px] font-black ${trend > 0 ? 'text-emerald-500 bg-emerald-50' : 'text-amber-500 bg-amber-50'} px-3 py-1.5 rounded-full uppercase tracking-widest`}>
-            {trend > 0 ? '+' : ''}{trend}% Vibe
+            {trend > 0 ? '+' : ''}{trend}% Growth
           </span>
         </div>
       </div>
@@ -90,15 +90,15 @@ const BillingFinance = () => {
           <div>
             <h1 className="text-3xl font-black tracking-tighter text-slate-900 italic uppercase">Finance Hub</h1>
             <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.3em] font-black flex items-center gap-2">
-              <Zap size={10} className="text-amber-500 fill-amber-500" /> Fiscal Real-Time Node Aggregation
+              <Zap size={10} className="text-amber-500 fill-amber-500" /> Real-time Financial Tracking
             </p>
           </div>
           <div className="flex gap-4">
              <button className="flex items-center gap-3 px-8 py-5 bg-white border border-slate-100 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:shadow-xl transition-all">
-                <Filter size={16} className="text-[#2E7D32]" /> calibrate Matrix
+                 <Filter size={16} className="text-[#2E7D32]" /> Filter Data
              </button>
              <button className="flex items-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#2E7D32] transition-all shadow-xl shadow-slate-900/10">
-                <Plus size={16} /> generate Invoice
+                 <Plus size={16} /> New Invoice
              </button>
           </div>
         </header>
@@ -167,7 +167,7 @@ const BillingFinance = () => {
                   <div className="bg-white rounded-[3rem] border border-slate-100 shadow-sm overflow-hidden">
                      <div className="p-8 border-b border-slate-50 flex justify-between items-center">
                         <span className="text-[11px] font-black uppercase tracking-widest text-slate-800 italic flex items-center gap-3">
-                           <History size={18} className="text-[#2E7D32]" /> Critical Invoices
+                           <History size={18} className="text-[#2E7D32]" /> Recent Invoices
                         </span>
                         <ChevronRight size={18} className="text-slate-300" />
                      </div>
@@ -175,10 +175,10 @@ const BillingFinance = () => {
                         <table className="w-full text-left">
                            <thead className="bg-slate-50/50">
                               <tr className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                                 <th className="px-10 py-6">Identity</th>
-                                 <th className="px-10 py-6">Entity</th>
-                                 <th className="px-10 py-6 text-right">Magnitude</th>
-                                 <th className="px-10 py-6">State</th>
+                                  <th className="px-10 py-6">Invoice ID</th>
+                                 <th className="px-10 py-6">Customer</th>
+                                 <th className="px-10 py-6 text-right">Amount</th>
+                                 <th className="px-10 py-6">Status</th>
                               </tr>
                            </thead>
                            <tbody className="divide-y divide-slate-50">
@@ -211,7 +211,7 @@ const BillingFinance = () => {
                <div className="space-y-8">
                   <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm relative overflow-hidden">
                      <span className="text-[11px] font-black uppercase tracking-widest text-slate-800 italic flex items-center gap-3 mb-8">
-                        <CreditCard size={18} className="text-[#2E7D32]" /> Payment Stream
+                        <CreditCard size={18} className="text-[#2E7D32]" /> Recent Payments
                      </span>
                      <div className="space-y-6">
                         {payments.slice(0, 4).map((pay) => (
@@ -235,7 +235,7 @@ const BillingFinance = () => {
                         ))}
                      </div>
                      <button className="w-full mt-6 py-4 rounded-2xl bg-slate-50 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 hover:bg-[#2E7D32] hover:text-white transition-all">
-                        Full Stream Audit
+                        View All Transactions
                      </button>
                   </div>
                </div>
@@ -326,7 +326,7 @@ const BillingFinance = () => {
                {/* PAYMENT MATRIX */}
                <div className="bg-white rounded-[3rem] border border-slate-100 shadow-sm overflow-hidden h-fit">
                   <div className="p-8 border-b border-slate-50">
-                     <span className="text-[11px] font-black uppercase tracking-widest text-slate-800 italic">Financial Settlement History</span>
+                     <span className="text-[11px] font-black uppercase tracking-widest text-slate-800 italic">Payment History</span>
                   </div>
                   <div className="p-10 space-y-8">
                      {payments.map(pay => (
@@ -355,13 +355,13 @@ const BillingFinance = () => {
                {/* SETTLEMENT TRACKER */}
                <div className="bg-[#1B5E20] p-12 rounded-[3.5rem] text-white flex flex-col justify-between shadow-2xl shadow-green-900/30 relative overflow-hidden h-full">
                   <div className="relative z-10">
-                     <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-60">Settlement Calibration</span>
-                     <h3 className="text-4xl font-black italic tracking-tighter uppercase mt-4">Farmliv Ledger</h3>
+                      <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-60">Financial Status</span>
+                     <h3 className="text-4xl font-black italic tracking-tighter uppercase mt-4">Ledger Overview</h3>
                      
                      <div className="mt-12 space-y-10">
                         <div className="space-y-4">
                            <div className="flex justify-between items-end">
-                              <span className="text-[11px] font-black uppercase tracking-widest opacity-60 italic">Market Liquidity</span>
+                               <span className="text-[11px] font-black uppercase tracking-widest opacity-60 italic">Revenue Target</span>
                               <span className="text-2xl font-black tracking-tighter italic">₹1.2M <span className="text-[10px] opacity-40">TARGET</span></span>
                            </div>
                            <div className="h-4 bg-white/10 rounded-full overflow-hidden border border-white/5">
@@ -381,8 +381,8 @@ const BillingFinance = () => {
                                  <span className="text-[11px] font-bold">14 Mar 2024</span>
                               </div>
                               <div>
-                                 <span className="text-[8px] font-black uppercase opacity-40 block mb-1">Node Status</span>
-                                 <span className="text-[11px] font-bold text-green-400">ACTIVE</span>
+                                  <span className="text-[8px] font-black uppercase opacity-40 block mb-1">Status</span>
+                                 <span className="text-[11px] font-bold text-green-400">ONLINE</span>
                               </div>
                            </div>
                         </div>

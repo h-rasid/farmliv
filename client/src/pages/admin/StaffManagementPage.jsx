@@ -35,7 +35,7 @@ const StaffManagementPage = () => {
     } catch (err) {
       toast({ variant: "destructive", title: "Sync Failed" });
       // Demo fallback
-      setStaff([{ id: 1, name: 'Harunar Rasid', email: 'admin@farmliv.com', role: 'admin', status: 'active', phone: '9876543210' }]);
+      setStaff([]);
     } finally { setLoading(false); }
   };
 
@@ -80,8 +80,8 @@ const StaffManagementPage = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-slate-100 pb-10">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight uppercase">Force Directory</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Global HR & Activity Intelligence</p>
+            <h1 className="text-3xl font-semibold tracking-tight uppercase">Staff Directory</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Manage Team & Activity</p>
           </div>
           <div className="flex gap-2 p-1 bg-slate-100 rounded-2xl">
             <button onClick={() => setView('directory')} className={`px-6 py-3 rounded-xl text-[10px] font-bold uppercase transition-all ${view === 'directory' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400'}`}>Staff Directory</button>
@@ -96,7 +96,7 @@ const StaffManagementPage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="sticky top-32 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-8">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold uppercase flex items-center gap-3"><UserPlus className="text-emerald-600" size={20}/> Onboard Staff</h3>
-                <p className="text-[10px] text-slate-400 uppercase font-medium">Initialize new Farmliv credentials</p>
+                <p className="text-[10px] text-slate-400 uppercase font-medium">Add new staff credentials</p>
               </div>
 
               <form onSubmit={handleAddStaff} className="space-y-5">
@@ -111,7 +111,7 @@ const StaffManagementPage = () => {
                   </select>
                 </div>
                 <button disabled={isSubmitting} className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-50 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
-                  {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : "Finalize Recruitment"}
+                  {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : "Add Staff Member"}
                 </button>
               </form>
             </motion.div>

@@ -93,7 +93,7 @@ const SalesDashboard = () => {
             <h1 className="text-3xl font-black text-slate-900 tracking-tighter italic uppercase leading-none">Dashboard</h1>
             <div className="flex items-center gap-2 mt-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Operational Pulse: Sync Active</span>
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Live Status</span>
             </div>
           </div>
           
@@ -137,7 +137,7 @@ const SalesDashboard = () => {
                            <TrendingUp size={14} />
                            <span className="text-[10px] font-black uppercase leading-none">+12.5%</span>
                         </div>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Growth Index</span>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Growth</span>
                      </div>
                   </div>
 
@@ -173,7 +173,7 @@ const SalesDashboard = () => {
                <div className="flex justify-between items-center">
                   <div className="flex flex-col">
                      <h3 className="text-lg font-black text-slate-900 tracking-tighter italic uppercase">Weekly Sales</h3>
-                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">7-Day Operational Trend</span>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">7-Day Sales Trend</span>
                   </div>
                   <div className="flex items-center gap-2 p-2 bg-slate-50 rounded-xl">
                      <div className="w-2 h-2 rounded-full bg-emerald-500" />

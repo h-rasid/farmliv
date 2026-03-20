@@ -40,11 +40,7 @@ const QuoteEngine = () => {
       // setQuotes(res.data);
       
       // Temporary mock data for UI visual
-      setQuotes([
-        { id: 'Q-7801', customer: 'Green Valley Farms', date: '2026-03-10', amount: 45000, status: 'Sent' },
-        { id: 'Q-7802', customer: 'Agro Corp', date: '2026-03-11', amount: 120000, status: 'Draft' },
-        { id: 'Q-7803', customer: 'Rahul Sharma', date: '2026-03-12', amount: 8500, status: 'Accepted' },
-      ]);
+      setQuotes([]);
     } catch (err) {
       console.error("Error fetching quotes", err);
     }
@@ -81,7 +77,7 @@ const QuoteEngine = () => {
       toast({ title: "Validation Error", description: "Please add customer name and at least one product.", variant: "destructive" });
       return;
     }
-    toast({ title: "Quote Generated", description: "Farmliv quote has been successfully initialized." });
+    toast({ title: "Quote Generated", description: "The quote has been successfully generated." });
     // Handle submission logic here
   };
 
@@ -139,7 +135,7 @@ const QuoteEngine = () => {
             <h1 className="text-3xl font-black text-slate-900 tracking-tighter italic uppercase leading-none mb-2">
               Quote <span className="text-[#2E7D32]">Engine</span>
             </h1>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Commercial Valuation Node v2.0</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Commercial Quote Management</p>
           </div>
 
           <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
@@ -173,7 +169,7 @@ const QuoteEngine = () => {
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                    <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
                       <User size={18} className="text-[#2E7D32]" />
-                      <span className="font-black uppercase tracking-widest text-[11px] text-slate-800 italic">Target Entity Profile</span>
+                       <span className="font-black uppercase tracking-widest text-[11px] text-slate-800 italic">Customer Profile</span>
                    </div>
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -204,7 +200,7 @@ const QuoteEngine = () => {
                    <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-50">
                       <div className="flex items-center gap-3">
                         <ShoppingBag size={18} className="text-[#2E7D32]" />
-                        <span className="font-black uppercase tracking-widest text-[11px] text-slate-800 italic">Inventory Products</span>
+                         <span className="font-black uppercase tracking-widest text-[11px] text-slate-800 italic">Product List</span>
                       </div>
                       <div className="relative">
                         <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -249,8 +245,8 @@ const QuoteEngine = () => {
                         <FileText className="text-white" size={24} />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-black uppercase tracking-widest text-[11px] text-slate-900 italic">Financial Summary</span>
-                        <span className="text-[8px] font-black text-[#2E7D32] uppercase tracking-[0.2em]">Live Price Engine</span>
+                         <span className="font-black uppercase tracking-widest text-[11px] text-slate-900 italic">Quote Summary</span>
+                         <span className="text-[8px] font-black text-[#2E7D32] uppercase tracking-[0.2em]">Price Calculation</span>
                       </div>
                     </div>
 
@@ -258,7 +254,7 @@ const QuoteEngine = () => {
                       {selectedProducts.length === 0 ? (
                         <div className="h-48 flex flex-col items-center justify-center text-slate-300 space-y-3 grayscale opacity-50">
                           <ShoppingBag size={48} strokeWidth={1} />
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em]">Node Empty</p>
+                           <p className="text-[10px] font-black uppercase tracking-[0.2em]">No items added</p>
                         </div>
                       ) : (
                         selectedProducts.map(item => (
@@ -290,7 +286,7 @@ const QuoteEngine = () => {
                         <span>₹{gst.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between items-center pt-4 text-xl font-black text-slate-900 italic tracking-tighter">
-                        <span className="uppercase text-[11px] font-black not-italic text-slate-400 tracking-widest">Total Valuation</span>
+                         <span className="uppercase text-[11px] font-black not-italic text-slate-400 tracking-widest">Total Amount</span>
                         <div className="flex flex-col items-end">
                           <span>₹{total.toLocaleString()}</span>
                         </div>
@@ -308,7 +304,7 @@ const QuoteEngine = () => {
                         onClick={handleGenerateQuote}
                         className="py-4 bg-[#2E7D32] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center justify-center gap-2 shadow-xl shadow-green-900/10"
                        >
-                         <Send size={14} /> Finalize
+                          <Send size={14} /> Generate
                        </button>
                     </div>
                   </div>
@@ -327,12 +323,12 @@ const QuoteEngine = () => {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                      <th className="px-10 py-8">Identity ID</th>
-                      <th className="px-10 py-8">Entity Name</th>
-                      <th className="px-10 py-8">Timestamp</th>
-                      <th className="px-10 py-8">Valuation</th>
-                      <th className="px-10 py-8">Status Pulse</th>
-                      <th className="px-10 py-8 text-right">Synchronization</th>
+                      <th className="px-10 py-8">Quote ID</th>
+                      <th className="px-10 py-8">Customer</th>
+                      <th className="px-10 py-8">Date</th>
+                      <th className="px-10 py-8">Amount</th>
+                      <th className="px-10 py-8">Status</th>
+                      <th className="px-10 py-8 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">

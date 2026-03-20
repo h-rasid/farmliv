@@ -90,8 +90,8 @@ const CategoryManagement = () => {
         {/* Header */}
         <div className="flex justify-between items-center border-b border-slate-100 pb-10">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight">Category Intelligence</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">B2B Product Tree Management</p>
+            <h1 className="text-3xl font-semibold tracking-tight">Category Management</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Manage Product Categories</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 text-xs font-semibold hover:bg-emerald-700 transition-all shadow-lg active:scale-95">
             <Plus size={18} /> Add Main Category
@@ -169,7 +169,7 @@ const CategoryManagement = () => {
 
                   <div className="flex gap-4">
                     <button type="submit" className="flex-1 bg-slate-900 text-white py-4 rounded-2xl font-semibold uppercase tracking-widest text-[10px] hover:bg-emerald-600 transition-all">
-                      {editingCat ? 'Update Category' : 'Finalize Category'}
+                      {editingCat ? 'Update Category' : 'Add Category'}
                     </button>
                     <button type="button" onClick={closeModal} className="px-6 bg-slate-100 text-slate-600 py-4 rounded-2xl font-semibold uppercase tracking-widest text-[10px]">Cancel</button>
                   </div>
