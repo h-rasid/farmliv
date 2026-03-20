@@ -199,7 +199,7 @@ const AdminDashboard = () => {
                     >
                       <div className="aspect-square bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 group-hover:border-[#2E7D32]/30 transition-all group-hover:shadow-lg relative">
                         <img 
-                          src={cat.image ? `${API_BASE}${cat.image}` : '/cat-placeholder.jpg'} 
+                          src={cat.image ? (cat.image.startsWith('http') ? cat.image : `${API_BASE}${cat.image}`) : '/cat-placeholder.jpg'} 
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                           alt={cat.name}
                           onError={(e) => { e.target.src = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg' }}

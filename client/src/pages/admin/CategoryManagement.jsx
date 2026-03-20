@@ -108,7 +108,7 @@ const CategoryManagement = () => {
                 <div className="flex justify-between items-start mb-6">
                   <div className="h-20 w-20 rounded-2xl bg-slate-50 overflow-hidden border border-slate-50">
                     <img 
-                      src={cat.image ? `${API_BASE}${cat.image}` : '/cat-placeholder.jpg'} 
+                      src={cat.image ? (cat.image.startsWith('http') ? cat.image : `${API_BASE}${cat.image}`) : '/cat-placeholder.jpg'} 
                       className="w-full h-full object-cover" 
                       alt="" 
                       onError={(e) => { e.target.src = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg' }}
