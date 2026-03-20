@@ -22,7 +22,7 @@ const ProductManagement = () => {
   const [newSubName, setNewSubName] = useState('');
 
   const [formData, setFormData] = useState({ 
-    name: '', description: '', category: '', subCategory: '', 
+    name: '', description: '', category: [], subCategory: '', 
     moq: '', gsm: '', durability: '', hsn: '',
     status: 'Active', images: [], video: null 
   });
@@ -52,8 +52,10 @@ const ProductManagement = () => {
   };
 
   const handleQuickAddSub = async () => {
-    if (!newSubName || !formData.category) return;
-    const parentCat = categories.find(c => c.name === formData.category);
+    if (!newSubName || formData.category.length === 0) return;
+    // Use first selected category as parent for simplicity in quick add
+    const parentCatName = formData.category[0];
+    const parentCat = categories.find(c => c.name === parentCatName);
     if (!parentCat) return;
 
     try {
@@ -84,16 +86,39 @@ const ProductManagement = () => {
     }
   };
 
+  const handleCategoryToggle = (catName) => {
+    const current = Array.isArray(formData.category) ? formData.category : [];
+    if (current.includes(catName)) {
+      setFormData({ ...formData, category: current.filter(c => c !== catName), subCategory: '' });
+    } else {
+      setFormData({ ...formData, category: [...current, catName], subCategory: '' });
+    }
+  };
+
   const handleEdit = (prod) => {
+    let parsedCategory = [];
+    try {
+      if (prod.category) {
+        if (typeof prod.category === 'string' && prod.category.startsWith('[')) {
+          parsedCategory = JSON.parse(prod.category);
+        } else {
+          parsedCategory = [prod.category]; // Backward compatibility
+        }
+      }
+    } catch (e) {
+      parsedCategory = [prod.category];
+    }
+
     setEditingProd(prod);
     setFormData({
       ...prod,
+      category: Array.isArray(parsedCategory) ? parsedCategory : [prod.category],
       images: [], 
       video: null
     });
     
     const imagesArray = getSafeImages(prod.images);
-    const existingPreviews = imagesArray.map(img => `${API_BASE}${img}`);
+    const existingPreviews = imagesArray.map(img => img.startsWith('http') ? img : `${API_BASE}${img}`);
     setPreviewUrls(existingPreviews);
     setIsModalOpen(true);
   };
@@ -129,6 +154,8 @@ const ProductManagement = () => {
         formData.images.forEach(img => data.append('images', img));
       } else if (key === 'video' && formData.video) {
         data.append('video', formData.video);
+      } else if (key === 'category') {
+        data.append('category', JSON.stringify(formData.category));
       } else if (formData[key] !== null && key !== 'images' && key !== 'video') {
         data.append(key, formData[key]);
       }
@@ -224,20 +251,28 @@ const ProductManagement = () => {
                        <input type="text" placeholder="Product Name" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-semibold outline-none" value={formData.name || ''} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Main Category</label>
-                      <select className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.category || ''} onChange={(e) => setFormData({...formData, category: e.target.value, subCategory: ''})}>
-                        <option value="">Select Category</option>
+                    {/* MULTI-SELECT CATEGORY UI */}
+                    <div className="space-y-2">
+                      <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Main Categories (Select Multiple)</label>
+                      <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-4 bg-slate-50 border border-slate-100 rounded-xl min-h-[120px]">
                         {categories.filter(c => !c.parent_id).map(cat => (
-                          <option key={cat.id} value={cat.name}>{cat.name}</option>
+                          <label key={cat.id} className="flex items-center gap-2 text-[11px] font-semibold text-slate-600 cursor-pointer hover:text-emerald-600 transition-colors py-1">
+                            <input 
+                              type="checkbox" 
+                              checked={(formData.category || []).includes(cat.name)}
+                              onChange={() => handleCategoryToggle(cat.name)}
+                              className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            {cat.name}
+                          </label>
                         ))}
-                      </select>
+                      </div>
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex justify-between items-center mb-1">
                         <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Sub-Category</label>
-                        {!showQuickAddSub && formData.category && (
+                        {!showQuickAddSub && formData.category.length > 0 && (
                           <button type="button" onClick={() => setShowQuickAddSub(true)} className="text-[9px] text-emerald-600 font-bold hover:underline">+ NEW SUB</button>
                         )}
                       </div>
@@ -257,7 +292,10 @@ const ProductManagement = () => {
                       ) : (
                         <select className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.subCategory || ''} onChange={(e) => setFormData({...formData, subCategory: e.target.value})}>
                           <option value="">Select Sub-Category</option>
-                          {categories.filter(c => c.parent_id === categories.find(p => p.name === formData.category)?.id).map(sub => (
+                          {categories.filter(c => {
+                            const selectedParents = categories.filter(p => (formData.category || []).includes(p.name));
+                            return selectedParents.some(p => p.id === c.parent_id);
+                          }).map(sub => (
                             <option key={sub.id} value={sub.name}>{sub.name}</option>
                           ))}
                         </select>

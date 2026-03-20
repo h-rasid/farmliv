@@ -68,14 +68,24 @@ const ProductsPage = () => {
     fetchData();
   }, [API_BASE, categoryId, navigate]);
 
-  // Robust filtering (hyphen and space agnostic)
+  // Robust filtering (hyphen and space agnostic + multi-category support)
   const filteredProducts = products.filter(p => {
     const term = searchTerm.toLowerCase().trim();
     if (!term) return true;
     
+    // Helper to get categories as array (handles JSON or single string)
+    const getCatArray = (data) => {
+      if (!data) return [];
+      try {
+        if (typeof data === 'string' && data.startsWith('[')) return JSON.parse(data);
+      } catch (e) {}
+      return [data];
+    };
+
+    const productCats = getCatArray(p.category).map(c => String(c).toLowerCase());
+    
     // Check if it's a strict category match first
-    const isCategoryMatch = (p.category || '').toLowerCase() === term || 
-                            (p.category || '').toLowerCase().replace(/ /g, '-') === term;
+    const isCategoryMatch = productCats.some(c => c === term || c.replace(/ /g, '-') === term);
     
     const isSubCategoryMatch = (p.sub_category || '').toLowerCase() === term || 
                                (p.sub_category || '').toLowerCase().replace(/ /g, '-') === term;
@@ -85,11 +95,9 @@ const ProductsPage = () => {
     // Fuzzy search fallback
     const searchTargets = [
         p.name,
-        p.category,
+        ...productCats,
         p.sub_category,
         p.description,
-        (p.category || '').replace(/-/g, ' '), 
-        (p.name || '').replace(/ /g, '-')     
     ].map(t => (t || '').toLowerCase());
     
     return searchTargets.some(target => target.includes(term));

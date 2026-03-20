@@ -936,9 +936,12 @@ app.post('/api/products', upload, async (req, res) => {
       videoUrl = `/uploads/${videoFilename}`;
     }
 
+    // Farmliv Logic: Handle multiple categories if sent as array, else fallback to string
+    const processedCategory = Array.isArray(category) ? JSON.stringify(category) : category;
+
     const [result] = await pool.query(
       'INSERT INTO products (name, description, category, sub_category, moq, gsm, durability, hsn, stock, status, images, video) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl]
+      [name, description, processedCategory, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl]
     );
 
     await logActivity(`New Product Deployed: ${name} (ID: ${result.insertId})`);
@@ -984,10 +987,12 @@ app.put('/api/products/:id', upload, async (req, res) => {
       }
     }
 
-    // Farmliv Mapping Sync: sub_category (DB) vs subCategory (Frontend)
+    // Farmliv Mapping Sync: Handle multiple categories if sent as array
+    const processedCategory = Array.isArray(category) ? JSON.stringify(category) : category;
+
     await pool.query(
       'UPDATE products SET name=?, description=?, category=?, sub_category=?, moq=?, gsm=?, durability=?, hsn=?, stock=?, status=?, images=?, video=? WHERE id=?',
-      [name, description, category, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
+      [name, description, processedCategory, subCategory, moq || 0, gsm, durability, hsn, stock || 0, status || 'Active', JSON.stringify(images), videoUrl, productId]
     );
 
     await logActivity(`Product Updated: ${name} (ID: ${productId})`);
