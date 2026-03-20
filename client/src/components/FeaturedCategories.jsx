@@ -58,7 +58,9 @@ const FeaturedCategories = () => {
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-5 h-5 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm">Our Product Category</span>
+            <span className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm">
+              {loading ? 'Synchronizing Intelligence...' : 'Our Product Category'}
+            </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-[#1A1A1A] mb-6 font-['Playfair_Display']">
             Specialized Agricultural Solutions
@@ -72,10 +74,16 @@ const FeaturedCategories = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          // ⭐ Fix: Removed 'once: true' to ensure categories always show on Back/Forward
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[600px] transition-opacity duration-500 ${loading ? 'opacity-50' : 'opacity-100'}`}
         >
-          {categories.map((category) => (
+          {loading ? (
+            // Basic Loading Skeletons
+            [...Array(4)].map((_, i) => (
+              <div key={i} className="h-[400px] w-full bg-gray-100 animate-pulse rounded-2xl" />
+            ))
+          ) : (
+            categories.map((category) => (
             <motion.div key={category.id} variants={cardVariants} className="will-change-transform">
               <Link to={`/products/${category.name.toLowerCase().replace(/ /g, '-')}`} className="group block relative h-[400px] w-full overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-optimize">
                 {/* Background Image */}
