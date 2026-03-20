@@ -13,10 +13,13 @@ import { API_BASE } from '@/utils/config';
 const ProductManagement = () => {
   const { toast } = useToast();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProd, setEditingProd] = useState(null);
   const [previewUrls, setPreviewUrls] = useState([]);
+  const [showQuickAddSub, setShowQuickAddSub] = useState(false);
+  const [newSubName, setNewSubName] = useState('');
 
   const [formData, setFormData] = useState({ 
     name: '', description: '', category: '', subCategory: '', 
@@ -24,7 +27,10 @@ const ProductManagement = () => {
     status: 'Active', images: [], video: null 
   });
 
-  useEffect(() => { fetchProducts(); }, []);
+  useEffect(() => { 
+    fetchProducts();
+    fetchCategories();
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -34,6 +40,36 @@ const ProductManagement = () => {
     } catch (err) {
       toast({ variant: "destructive", title: "Sync Failed" });
     } finally { setLoading(false); }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await API.get('/categories');
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Failed to fetch categories");
+    }
+  };
+
+  const handleQuickAddSub = async () => {
+    if (!newSubName || !formData.category) return;
+    const parentCat = categories.find(c => c.name === formData.category);
+    if (!parentCat) return;
+
+    try {
+      const res = await API.post('/categories', { 
+        name: newSubName, 
+        parent_id: parentCat.id,
+        description: `Sub-category of ${parentCat.name}`
+      });
+      toast({ title: "Sub-Category Created" });
+      await fetchCategories();
+      setFormData({ ...formData, subCategory: newSubName });
+      setShowQuickAddSub(false);
+      setNewSubName('');
+    } catch (err) {
+      toast({ variant: "destructive", title: "Creation Failed" });
+    }
   };
 
   const getSafeImages = (imgData) => {
@@ -182,12 +218,51 @@ const ProductManagement = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <input type="text" placeholder="Product Name" className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-semibold outline-none" value={formData.name || ''} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
-                    <select className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.category || ''} onChange={(e) => setFormData({...formData, category: e.target.value})}>
-                      <option value="">Category</option><option value="mulch">Mulch Film</option><option value="weed">Weed Mat</option><option value="leno">Leno Bag</option>
-                    </select>
-                    <input type="text" placeholder="Sub-Category" className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.subCategory || ''} onChange={(e) => setFormData({...formData, subCategory: e.target.value})} />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end">
+                    <div className="space-y-1">
+                       <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Product Name</label>
+                       <input type="text" placeholder="Product Name" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-semibold outline-none" value={formData.name || ''} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Main Category</label>
+                      <select className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.category || ''} onChange={(e) => setFormData({...formData, category: e.target.value, subCategory: ''})}>
+                        <option value="">Select Category</option>
+                        {categories.filter(c => !c.parent_id).map(cat => (
+                          <option key={cat.id} value={cat.name}>{cat.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="text-[9px] uppercase font-bold text-slate-400 ml-1">Sub-Category</label>
+                        {!showQuickAddSub && formData.category && (
+                          <button type="button" onClick={() => setShowQuickAddSub(true)} className="text-[9px] text-emerald-600 font-bold hover:underline">+ NEW SUB</button>
+                        )}
+                      </div>
+
+                      {showQuickAddSub ? (
+                        <div className="flex gap-2">
+                          <input 
+                            type="text" 
+                            placeholder="New Sub-Category Name" 
+                            className="flex-1 p-3 bg-white border border-emerald-200 rounded-xl text-xs outline-none" 
+                            value={newSubName} 
+                            onChange={(e) => setNewSubName(e.target.value)} 
+                          />
+                          <button type="button" onClick={handleQuickAddSub} className="p-3 bg-emerald-600 text-white rounded-xl text-[10px]"><Plus size={14}/></button>
+                          <button type="button" onClick={() => setShowQuickAddSub(false)} className="p-3 bg-slate-100 text-slate-400 rounded-xl text-[10px]"><X size={14}/></button>
+                        </div>
+                      ) : (
+                        <select className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs font-medium" value={formData.subCategory || ''} onChange={(e) => setFormData({...formData, subCategory: e.target.value})}>
+                          <option value="">Select Sub-Category</option>
+                          {categories.filter(c => c.parent_id === categories.find(p => p.name === formData.category)?.id).map(sub => (
+                            <option key={sub.id} value={sub.name}>{sub.name}</option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
                   </div>
 
                   {/* ⭐ Optimized Description Box with Enter support */}
