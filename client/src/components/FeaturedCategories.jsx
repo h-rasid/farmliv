@@ -6,6 +6,13 @@ import { API_BASE } from '@/utils/config';
 import API from '@/utils/axios';
 import LazyImage from '@/components/ui/LazyImage';
 
+const FALLBACK_CATEGORIES = [
+  { id: 'f1', name: 'Weed Control', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg', description: 'High quality weed mats for effective suppression.' },
+  { id: 'f2', name: 'Mulch & Films', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Polyfilm_an9qiy.webp', description: 'Agricultural films for moisture retention.' },
+  { id: 'f3', name: 'Greenhouse Materials', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp', description: 'Poly films and covers for greenhouses.' },
+  { id: 'f4', name: 'Water Management', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/pondliner_vscz7q.jpg', description: 'Pond liners and waterproofing solutions.' }
+];
+
 const FeaturedCategories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,19 +20,28 @@ const FeaturedCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        console.log("🔍 Fetching Categories for Home...");
         const res = await API.get('/categories');
-        // Only show main categories (no parent_id)
-        setCategories(res.data.filter(c => !c.parent_id));
+        const mainCats = res.data.filter(c => !c.parent_id);
+        
+        if (mainCats.length > 0) {
+          setCategories(mainCats);
+        } else {
+          console.warn("⚠️ No main categories from API, using fallback.");
+          setCategories(FALLBACK_CATEGORIES);
+        }
       } catch (err) {
-        console.error("Failed to fetch featured categories");
+        console.error("❌ Failed to fetch featured categories, using fallback.");
+        setCategories(FALLBACK_CATEGORIES);
       } finally {
         setLoading(false);
       }
     };
     fetchCategories();
   }, []);
+
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 }, // Changed from 0 to 1 for resilience
     visible: {
       opacity: 1,
       transition: {
@@ -35,7 +51,7 @@ const FeaturedCategories = () => {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 1, y: 0 }, // Changed from opacity: 0 and y: 20
     visible: {
       opacity: 1,
       y: 0,
@@ -47,10 +63,10 @@ const FeaturedCategories = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50 contain-content">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50 overflow-visible" id="categories">
       <div className="max-w-7xl mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 1, y: 0 }} // Changed for visibility
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
@@ -70,7 +86,7 @@ const FeaturedCategories = () => {
 
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial="visible" // Start visible
           whileInView="visible"
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
@@ -114,5 +130,6 @@ const FeaturedCategories = () => {
     </section>
   );
 };
+
 
 export default memo(FeaturedCategories);

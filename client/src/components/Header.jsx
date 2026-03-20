@@ -235,6 +235,13 @@ const MobileNavItem = ({ to, children, icon: Icon, active, onClick }) => (
   </Link>
 );
 
+const HEADER_FALLBACK_CATEGORIES = [
+  { id: 'h1', name: 'Weed Control', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg', description: 'Premium weed mats.' },
+  { id: 'h2', name: 'Mulch & Films', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Polyfilm_an9qiy.webp', description: 'Agricultural films.' },
+  { id: 'h3', name: 'Greenhouse Materials', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp', description: 'Poly coverings.' },
+  { id: 'h4', name: 'Irrigation Systems', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/drip_irrigation_yq9m1z.jpg', description: 'Drip components.' }
+];
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -246,14 +253,22 @@ const Header = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        console.log("🔍 Header: Fetching Categories...");
         const res = await API.get('/categories');
-        setCategories(res.data);
+        if (res.data && res.data.length > 0) {
+          setCategories(res.data);
+        } else {
+          console.warn("⚠️ Header: API empty, using fallback.");
+          setCategories(HEADER_FALLBACK_CATEGORIES);
+        }
       } catch (err) {
-        console.error("Header category fetch failed");
+        console.error("❌ Header: Fetch failed, using fallback.");
+        setCategories(HEADER_FALLBACK_CATEGORIES);
       }
     };
     fetchCategories();
   }, []);
+
 
   useEffect(() => {
     const handleScroll = throttle(() => {
