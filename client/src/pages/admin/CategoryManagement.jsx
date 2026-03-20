@@ -90,8 +90,8 @@ const CategoryManagement = () => {
         {/* Header */}
         <div className="flex justify-between items-center border-b border-slate-100 pb-10">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight">Category Management</h1>
-            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Manage Product Categories</p>
+            <h1 className="text-3xl font-semibold tracking-tight">Product Category</h1>
+            <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest font-medium">Manage Categories & Visual Groups</p>
           </div>
           <button onClick={() => setIsModalOpen(true)} className="bg-slate-900 text-white px-8 py-4 rounded-2xl flex items-center gap-3 text-xs font-semibold hover:bg-emerald-700 transition-all shadow-lg active:scale-95">
             <Plus size={18} /> Add Main Category

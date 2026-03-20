@@ -238,8 +238,8 @@ const PortalLayout = ({ children, role = 'admin' }) => {
     if (role === 'admin') {
       return [
         { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard, path: '/admin-portal' },
-        { id: 'products', name: 'Product Management', icon: Package, path: '/admin/products' },
-        { id: 'categories', name: 'Category Management', icon: Layers, path: '/admin/categories' },
+        { id: 'products', name: 'Products', icon: Package, path: '/admin/products' },
+        { id: 'categories', name: 'Product Category', icon: Layers, path: '/admin/categories' },
         { 
           id: 'quote', name: 'Quote Engine', icon: Calculator, path: '/admin/quote',
           submenu: [

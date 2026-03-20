@@ -23,6 +23,7 @@ const AdminDashboard = () => {
   const [chartData, setChartData] = useState({ weeklySales: [], topProducts: [] });
   const [activities, setActivities] = useState([]);
   const [liveLeads, setLiveLeads] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [staff, setStaff] = useState([]); 
   
   const [notifications, setNotifications] = useState([]);
@@ -43,6 +44,9 @@ const AdminDashboard = () => {
       setChartData(chartRes.data || { weeklySales: [], topProducts: [] });
       
       const logs = await API.get('/admin/activities');
+      const cats = await API.get('/categories');
+      setCategories(Array.isArray(cats.data) ? cats.data : []);
+
       const logData = Array.isArray(logs.data) ? logs.data : [];
       setActivities(logData.slice(0, 5).map((l, i) => ({
         id: i, action: l.action, user: l.user, time: new Date(l.created_at).toLocaleTimeString()
@@ -166,6 +170,59 @@ const AdminDashboard = () => {
                            <span className="text-[8px] font-black text-slate-300 uppercase">{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'][i]}</span>
                         </div>
                      ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. PRODUCT CATEGORIES MATRIX (Visual Section Added) */}
+              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-8">
+                <div className="flex justify-between items-center border-b border-slate-50 pb-6">
+                  <div className="flex items-center gap-3">
+                    <Layers size={18} className="text-[#2E7D32]" />
+                    <h3 className="text-base font-black text-slate-800 uppercase tracking-tight italic">Product Categories</h3>
+                  </div>
+                  <button 
+                    onClick={() => navigate('/admin/categories')}
+                    className="text-[9px] font-black text-[#2E7D32] uppercase tracking-widest hover:underline flex items-center gap-2"
+                  >
+                    Manage Categories <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                  {categories.filter(c => !c.parent_id).slice(0, 12).map(cat => (
+                    <div 
+                      key={cat.id} 
+                      onClick={() => navigate('/admin/products')} // Navigates to products for filtering or management
+                      className="group cursor-pointer space-y-3"
+                    >
+                      <div className="aspect-square bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 group-hover:border-[#2E7D32]/30 transition-all group-hover:shadow-lg relative">
+                        <img 
+                          src={cat.image ? `/uploads/${cat.image.split('\\').pop()}` : '/cat-placeholder.jpg'} 
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                          alt={cat.name}
+                          onError={(e) => { e.target.src = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg' }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      <div className="text-center">
+                        <h4 className="text-[10px] font-black text-slate-800 uppercase tracking-tighter group-hover:text-[#2E7D32] transition-colors">{cat.name}</h4>
+                        <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
+                          {categories.filter(sub => sub.parent_id === cat.id).length} Groups
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Add New Category Shortcut */}
+                  <div 
+                    onClick={() => navigate('/admin/categories')}
+                    className="aspect-square bg-slate-50 rounded-3xl border-2 border-dashed border-slate-100 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#2E7D32] group transition-all"
+                  >
+                    <div className="p-3 bg-white rounded-2xl shadow-sm text-slate-300 group-hover:text-[#2E7D32] transition-colors">
+                      <Plus size={20} />
+                    </div>
+                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest group-hover:text-[#2E7D32]">Add New</span>
                   </div>
                 </div>
               </div>
