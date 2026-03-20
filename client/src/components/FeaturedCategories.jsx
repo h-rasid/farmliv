@@ -116,7 +116,7 @@ const FeaturedCategories = () => {
                 </div>
               </Link>
             </motion.div>
-          ))}
+          )))}
         </motion.div>
       </div>
     </section>
