@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // ⭐ Added useEffect for scroll logic
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,10 +6,6 @@ import QuoteForm from '@/components/QuoteForm';
 import { ClipboardList, ShieldCheck, Zap, Globe, BarChart3 } from 'lucide-react';
 
 const RequestQuotePage = () => {
-  // ⭐ NEW: Force page to move to top when initialized
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
 
   return (
     <>

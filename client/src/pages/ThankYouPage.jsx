@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { CheckCircle2, ArrowLeft, Mail, Phone, Home } from 'lucide-react';
@@ -7,9 +7,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const ThankYouPage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <>
