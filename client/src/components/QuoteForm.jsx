@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import API from '@/utils/axios';
 // ⭐ IMPORT FIXED: Added 'Phone' icon here to fix the "Phone is not defined" error
 import { User, Package, Loader2, MapPin, Building2, Download, MessageSquare, Phone } from 'lucide-react';
@@ -11,6 +11,7 @@ import autoTable from 'jspdf-autotable';
 const QuoteForm = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [dbProducts, setDbProducts] = useState([]);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -180,9 +181,12 @@ const QuoteForm = () => {
 
       await API.post('/leads', payload);
       generatePDF(formData, pName);
-      setLastQuoteData({ ...formData, productName: pName });
-      setShowSuccessModal(true);
-      toast({ title: "Downloading...", description: `Quote generated for ${formData.fullName}` });
+      toast({ title: "Success!", description: "Quote generated and inquiry sent." });
+      
+      // Redirect to thank you page
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 500);
     } catch (err) {
       toast({ variant: "destructive", title: "Sync Error", description: "Backend connection failed." });
     } finally {

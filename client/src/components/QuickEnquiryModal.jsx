@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, User, Phone, Mail, Building2, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import API from '@/utils/axios';
 
 const QuickEnquiryModal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     mobile: '',
@@ -38,9 +40,8 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
         setStatus({ loading: false, success: true, error: null });
         setTimeout(() => {
           onClose();
-          setStatus({ loading: false, success: false, error: null });
-          setFormData({ fullName: '', mobile: '', email: '', companyName: '', location: '', message: '' });
-        }, 3000);
+          navigate('/thank-you');
+        }, 1500);
       }
     } catch (err) {
       setStatus({ loading: false, success: false, error: "Submission failed. Please try again." });

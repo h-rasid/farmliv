@@ -23,6 +23,7 @@ const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
 const CertificationPage = React.lazy(() => import('./pages/CertificationPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
 const RequestQuotePage = React.lazy(() => import('./pages/RequestQuotePage'));
+const ThankYouPage = React.lazy(() => import('./pages/ThankYouPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
 // --- Lazy Load Admin Pages ---
@@ -105,6 +106,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/certification" element={<CertificationPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/request-quote" element={<RequestQuotePage />} />
+            <Route path="/thank-you" element={<ThankYouPage />} />
 
             {/* AUTHENTICATION */}
             <Route path="/admin/login" element={<LoginPage />} />
