@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { API_BASE } from '@/utils/config';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
