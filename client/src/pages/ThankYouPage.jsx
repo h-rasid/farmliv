@@ -42,9 +42,8 @@ const ThankYouPage = () => {
                 Thank <span className="text-[#2E7D32]">You!</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl mx-auto italic leading-relaxed">
-                Your request has been successfully initialized in our global procurement network. 
-                A trade specialist will analyze your requirements and provide a strategic valuation within 24 hours.
+              <p className="text-lg md:text-xl text-gray-500 font-medium max-w-2xl mx-auto italic leading-relaxed uppercase">
+                THANK YOU FOR CONTACTING US! WE WILL GET IN TOUCH WITH YOU SHORTLY
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 py-8 border-y border-gray-200">
