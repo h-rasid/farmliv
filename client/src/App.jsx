@@ -31,7 +31,6 @@ const CategoryManagement = React.lazy(() => import('./pages/admin/CategoryManage
 const StaffManagementPage = React.lazy(() => import('./pages/admin/StaffManagementPage'));
 const InquiriesManagementPage = React.lazy(() => import('./pages/admin/InquiriesManagementPage'));
 const CustomerManagementPage = React.lazy(() => import('./pages/admin/CustomerManagementPage'));
-const OrderManagementPage = React.lazy(() => import('./pages/admin/OrderManagementPage'));
 const AdminSalesPerformance = React.lazy(() => import('./pages/admin/AdminSalesPerformance'));
 const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const ReportsAnalytics = React.lazy(() => import('./pages/admin/ReportsAnalytics')); 
@@ -116,7 +115,6 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/categories" element={<ProtectedRoute allowedRole="admin"><CategoryManagement /></ProtectedRoute>} />
             <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><InquiriesManagementPage /></ProtectedRoute>} />
             <Route path="/admin/customers" element={<ProtectedRoute allowedRole="admin"><CustomerManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/orders" element={<ProtectedRoute allowedRole="admin"><OrderManagementPage /></ProtectedRoute>} />
             <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
             <Route path="/admin/quote" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />

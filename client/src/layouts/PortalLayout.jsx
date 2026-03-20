@@ -255,7 +255,6 @@ const PortalLayout = ({ children, role = 'admin' }) => {
             { name: 'Quick Enquiries', path: '/admin/quick-enquiries', badge: crmBadges.enquiries || null }
           ]
         },
-        { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/admin/orders' },
         { id: 'sales', name: 'Sales Management', icon: TrendingUp, path: '/admin/sales-performance' },
         { id: 'customers', name: 'Customers', icon: Users, path: '/admin/customers' },
         { 

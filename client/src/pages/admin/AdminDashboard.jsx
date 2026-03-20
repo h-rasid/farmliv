@@ -17,7 +17,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({ 
     totalProducts: 0, totalInquiries: 0, totalRevenue: 0, 
-    totalCustomers: 0, totalOrders: 0, lowStockAlerts: 0,
+    totalCustomers: 0, lowStockAlerts: 0,
     conversionRate: 0, totalCategories: 0, totalStaff: 0
   });
   const [chartData, setChartData] = useState({ weeklySales: [], topProducts: [] });
@@ -100,8 +100,6 @@ const AdminDashboard = () => {
           <StatCard title="Total Categories" value={stats.totalCategories} icon={Layers} colorClass="bg-indigo-50 text-indigo-600" />
           <StatCard title="Total Inquiries" value={stats.totalInquiries} icon={MessageSquare} colorClass="bg-purple-50 text-purple-600" />
           <StatCard title="Total Customers" value={stats.totalCustomers} icon={Users} colorClass="bg-orange-50 text-orange-600" />
-          
-          <StatCard title="Total Orders" value={stats.totalOrders} icon={ShoppingBag} colorClass="bg-green-50 text-[#2E7D32]" />
           <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-[#2E7D32]" trend="24" />
           <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" trend="15" />
           <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" trend="8.5" />
@@ -227,33 +225,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* LATEST TRANSACTIONS */}
-              <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-                <div className="p-8 border-b border-slate-50 flex justify-between items-center">
-                   <h3 className="font-black uppercase tracking-widest text-[10px] text-slate-800 italic flex items-center gap-3">
-                      <ShoppingBag size={16} className="text-emerald-500" /> Latest Orders
-                   </h3>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="bg-slate-50/50 text-[9px] font-black uppercase text-slate-400 tracking-widest">
-                        <th className="px-10 py-6">Order ID</th>
-                        <th className="px-10 py-6">Customer</th>
-                        <th className="px-10 py-6">Status</th>
-                        <th className="px-10 py-6 text-right">Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50">
-                       <tr>
-                         <td colSpan="4" className="py-10 text-center">
-                           <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No recent synchronization data</p>
-                         </td>
-                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </motion.div>
           )}
 
