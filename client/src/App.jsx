@@ -14,6 +14,7 @@ import QuickEnquiryTab from './components/QuickEnquiryTab';
 import QuickEnquiryModal from './components/QuickEnquiryModal';
 import HomePage from './pages/HomePage';
 import SystemLogs from './pages/admin/SystemLogs';
+import PortalLayout from './layouts/PortalLayout';
 
 // --- Lazy Load Public Pages ---
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
