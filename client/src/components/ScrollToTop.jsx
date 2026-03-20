@@ -1,12 +1,15 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const navType = useNavigationType();
 
   useEffect(() => {
-    // ⭐ Performance Optimization: Wrap in requestAnimationFrame to prevent forced reflow
-    // during route transitions when DOM might still be updating.
+    // ⭐ Fix: Skip auto-scroll on browser BACK/FORWARD (POP) 
+    // This preserves scroll position when returning from product details.
+    if (navType === 'POP') return;
+
     requestAnimationFrame(() => {
       // Standard window scroll for public pages
       try {
@@ -24,7 +27,7 @@ const ScrollToTop = () => {
         mainContent.scrollTo(0, 0);
       }
     });
-  }, [pathname]);
+  }, [pathname, navType]);
 
   return null;
 }
