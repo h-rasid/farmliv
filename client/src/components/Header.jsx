@@ -6,7 +6,8 @@ import {
   Truck, Shield, Sparkles, Lock 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { productCategories } from '@/data/products';
+import API from '@/utils/axios';
+import { API_BASE } from '@/utils/config';
 import { throttle } from '@/utils/performance';
 import LazyImage from '@/components/ui/LazyImage';
 
