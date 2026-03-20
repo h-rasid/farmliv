@@ -1,14 +1,16 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const navType = useNavigationType();
 
   useEffect(() => {
-    // ⭐ Performance Optimization: Wrap in requestAnimationFrame to prevent forced reflow
-    // during route transitions when DOM might still be updating.
+    // ⭐ Fix: Skip scroll to top if navigation is "Back" (POP)
+    if (navType === 'POP') return;
+
+    // Performance Optimization: Wrap in requestAnimationFrame
     requestAnimationFrame(() => {
-      // Standard window scroll for public pages
       try {
         window.scrollTo({
           top: 0,
@@ -24,7 +26,7 @@ const ScrollToTop = () => {
         mainContent.scrollTo(0, 0);
       }
     });
-  }, [pathname]);
+  }, [pathname, navType]);
 
   return null;
 }
