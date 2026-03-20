@@ -356,10 +356,25 @@ const transporter = nodemailer.createTransport({
           )
         `);
 
-        // Seed some categories if empty
-        const [catRows] = await connection.query('SELECT COUNT(*) as count FROM categories');
-        if (catRows[0].count === 0) {
-          await connection.query("INSERT INTO categories (name) VALUES ('Seeds'), ('Fertilizers'), ('Pesticides'), ('Equipment'), ('Organic')");
+        // Seed specialized categories if missing
+        const [[{ count: weedControlExists }]] = await connection.query("SELECT COUNT(*) as count FROM categories WHERE name = 'Weed Control'");
+        if (weedControlExists === 0) {
+          console.log('🌱 Synchronizing Agricultural Categories...');
+          const initialCats = [
+            { name: 'Weed Control', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg', description: 'High quality weed mats for effective suppression and soil health.' },
+            { name: 'Mulch & Films', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237863/mulchandFilm_kqnw5o.webp', description: 'Agricultural films for moisture retention and weed prevention.' },
+            { name: 'Greenhouse Materials', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237866/Greenhouse_vslztl.webp', description: 'Poly films and covers for greenhouse construction.' },
+            { name: 'Water Management', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/watermanagement_vug6eb.webp', description: 'Pond liners and waterproofing solutions for agriculture.' },
+            { name: 'Harvesting & Storage', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237871/harvesting_c7ptuh.webp', description: 'Plastic crates and containers for produce handling.' },
+            { name: 'Packaging Solutions', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/packaging_qehuu0.webp', description: 'Leno bags, Jumbo bags, and Membrane bags for transport.' },
+            { name: 'Protective Covers', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237864/Protectivecovers_nim7h7.webp', description: 'Heavy-duty tarpaulins for all-weather protection.' },
+            { name: 'Irrigation Systems', image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773237863/irrigation_z934rg.webp', description: 'Efficient drip irrigation pipes and fittings.' }
+          ];
+
+          for (const cat of initialCats) {
+            await connection.query("INSERT IGNORE INTO categories (name, image, description) VALUES (?, ?, ?)", [cat.name, cat.image, cat.description]);
+          }
+          console.log('✅ Categories Synchronized Successfully!');
         }
 
         // Self-Healing: Ensure older leads/enquiries match new Farmliv standards
