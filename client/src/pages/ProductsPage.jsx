@@ -73,15 +73,26 @@ const ProductsPage = () => {
     const term = searchTerm.toLowerCase().trim();
     if (!term) return true;
     
+    // Check if it's a strict category match first
+    const isCategoryMatch = (p.category || '').toLowerCase() === term || 
+                            (p.category || '').toLowerCase().replace(/ /g, '-') === term;
+    
+    const isSubCategoryMatch = (p.sub_category || '').toLowerCase() === term || 
+                               (p.sub_category || '').toLowerCase().replace(/ /g, '-') === term;
+
+    if (isCategoryMatch || isSubCategoryMatch) return true;
+
+    // Fuzzy search fallback
     const searchTargets = [
         p.name,
         p.category,
+        p.sub_category,
         p.description,
-        (p.category || '').replace(/-/g, ' '), // allow "weed-control" to match "weed control"
-        (p.name || '').replace(/ /g, '-')     // allow "mulching film" to match "mulching-film"
+        (p.category || '').replace(/-/g, ' '), 
+        (p.name || '').replace(/ /g, '-')     
     ].map(t => (t || '').toLowerCase());
     
-    return searchTargets.some(target => target.includes(term) || term.includes(target));
+    return searchTargets.some(target => target.includes(term));
   });
 
   return (

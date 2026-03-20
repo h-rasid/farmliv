@@ -1,12 +1,29 @@
-
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { productCategories } from '@/data/products';
+import { API_BASE } from '@/utils/config';
+import API from '@/utils/axios';
 import LazyImage from '@/components/ui/LazyImage';
 
 const FeaturedCategories = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await API.get('/categories');
+        // Only show main categories (no parent_id)
+        setCategories(res.data.filter(c => !c.parent_id));
+      } catch (err) {
+        console.error("Failed to fetch featured categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -58,14 +75,14 @@ const FeaturedCategories = () => {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {productCategories.map((category) => (
+          {categories.map((category) => (
             <motion.div key={category.id} variants={cardVariants} className="will-change-transform">
-              <Link to={`/products/${category.id}`} className="group block relative h-[400px] w-full overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-optimize">
+              <Link to={`/products/${category.name.toLowerCase().replace(/ /g, '-')}`} className="group block relative h-[400px] w-full overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-optimize">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <div className="w-full h-full transition-transform duration-500 group-hover:scale-105">
                      <LazyImage
-                        src={category.image}
+                        src={category.image ? (category.image.startsWith('http') ? category.image : `${API_BASE}${category.image}`) : '/cat-placeholder.jpg'}
                         alt={category.name}
                         className="w-full h-full object-cover"
                       />
@@ -77,11 +94,11 @@ const FeaturedCategories = () => {
                 
                 {/* Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="text-2xl font-bold text-white mb-3 font-['Playfair_Display'] group-hover:text-[#D4AF37] transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-3 font-['Playfair_Display'] group-hover:text-[#D4AF37] transition-colors uppercase tracking-tight">
                     {category.name}
                   </h3>
-                  <p className="text-gray-300 text-sm mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                    {category.description}
+                  <p className="text-gray-300 text-sm mb-6 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 italic">
+                    {category.description || 'Premium agricultural solution engineered by Farmliv Industries.'}
                   </p>
                   
                   <div className="flex items-center gap-2 text-white font-semibold text-sm tracking-wide">

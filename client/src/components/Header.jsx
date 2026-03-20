@@ -64,7 +64,7 @@ const MenuToggle = ({ toggle, isOpen }) => (
   </button>
 );
 
-const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location }) => {
+const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location, categories }) => {
   const handlePageMove = () => {
     setIsProductsOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -119,28 +119,31 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location }) => {
                 animate={{ opacity: 1, y: 0, scale: 1 }} 
                 exit={{ opacity: 0, y: 15, scale: 0.98 }} 
                 transition={{ duration: 0.2, ease: "easeOut" }} 
-                /* ⭐ OPTIMIZED: fixed position with left/right-0 and mx-auto for perfect centering on all screens */
                 className="fixed top-[105px] left-0 right-0 mx-auto w-[94vw] max-w-7xl bg-white/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] rounded-[2.5rem] overflow-hidden border border-white/40 z-50 ring-1 ring-black/5"
               >
                 <div className="p-8 lg:p-12">
                   <div className="grid grid-cols-12 gap-10">
                     {/* LEFT: Category Grid */}
                     <div className="col-span-12 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
-                      {productCategories.map(category => (
+                      {(categories.length > 0 ? categories.filter(c => !c.parent_id) : []).map(category => (
                         <Link 
                           key={category.id} 
-                          to={`/products/${category.id}`} 
+                          to={`/products/${category.name.toLowerCase().replace(/ /g, '-')}`} 
                           className="group/item flex gap-6 p-4 rounded-3xl hover:bg-[#2E7D32]/5 transition-all duration-300" 
                           onClick={handlePageMove}
                         >
                           <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl overflow-hidden shrink-0 shadow-sm group-hover/item:shadow-md transition-all border border-gray-100 bg-white">
-                            <LazyImage src={category.image} alt={category.name} className="w-full h-full object-cover transform group-hover/item:scale-110 transition-transform duration-700" />
+                            <LazyImage 
+                              src={category.image ? (category.image.startsWith('http') ? category.image : `${API_BASE}${category.image}`) : '/cat-placeholder.jpg'} 
+                              alt={category.name} 
+                              className="w-full h-full object-cover transform group-hover/item:scale-110 transition-transform duration-700" 
+                            />
                           </div>
                           <div className="flex flex-col justify-center">
-                            <h3 className="font-bold text-gray-900 group-hover/item:text-[#2E7D32] transition-colors font-['Playfair_Display'] text-base lg:text-lg">
+                            <h3 className="font-bold text-gray-900 group-hover/item:text-[#2E7D32] transition-colors font-['Playfair_Display'] text-base lg:text-lg uppercase">
                               {category.name}
                             </h3>
-                            <p className="text-[11px] lg:text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">{category.description}</p>
+                            <p className="text-[11px] lg:text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed italic">{category.description || 'Premium agricultural solution.'}</p>
                           </div>
                         </Link>
                       ))}
@@ -235,8 +238,21 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await API.get('/categories');
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Header category fetch failed");
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const handleScroll = throttle(() => {
@@ -333,6 +349,7 @@ const Header = () => {
               isProductsOpen={isProductsOpen} 
               setIsProductsOpen={setIsProductsOpen} 
               location={location} 
+              categories={categories}
             />
 
             <div className="hidden lg:flex items-center gap-4">
