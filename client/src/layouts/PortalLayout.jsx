@@ -5,10 +5,10 @@ import {
   LayoutDashboard, Package, Users, LogOut, 
   Menu, X, Bell, User as UserIcon, Settings, Layers,
   BarChart, BarChart3, MessageSquare, FileText, History, HelpCircle,
-  Database, TrendingUp, ShoppingBag, Boxes, UserCircle,
+  Database, TrendingUp, ShoppingBag, UserCircle,
   Target, ShoppingCart, CreditCard, CheckCircle2, MapPin,
   ChevronRight, ChevronDown, Calculator, Megaphone, ShieldCheck, 
-  ScrollText, UserCog, Mail, MessageCircle, Zap, AlertCircle,
+  ScrollText, UserCog, Mail, MessageCircle, Zap,
   Activity, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -52,19 +52,6 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         }
 
         const alerts = [];
-        if (statsRes.data?.lowStockAlerts > 0) {
-          alerts.push({
-            id: 'stock-alert',
-            type: 'alert',
-            title: 'Low Stock Detected',
-            message: `There are ${statsRes.data.lowStockAlerts} products with critically low stock levels.`,
-            time: 'Action Required',
-            icon: AlertCircle,
-            color: 'text-rose-500',
-            bg: 'bg-rose-50',
-            path: '/admin/inventory'
-          });
-        }
 
         // Filter out already-seen IDs (client-side lock)
         const pendingLeads = Array.isArray(leadsRes.data)
@@ -269,13 +256,6 @@ const PortalLayout = ({ children, role = 'admin' }) => {
           ]
         },
         { id: 'orders', name: 'Orders', icon: ShoppingBag, path: '/admin/orders' },
-        { 
-          id: 'inventory', name: 'Inventory', icon: Boxes, path: '/admin/inventory',
-          submenu: [
-            { name: 'Stock Status', path: '/admin/inventory' },
-            { name: 'Warehouse', path: '/admin/inventory/warehouse' }
-          ]
-        },
         { id: 'sales', name: 'Sales Management', icon: TrendingUp, path: '/admin/sales-performance' },
         { id: 'customers', name: 'Customers', icon: Users, path: '/admin/customers' },
         { 
@@ -295,8 +275,7 @@ const PortalLayout = ({ children, role = 'admin' }) => {
         { 
           id: 'analytics', name: 'Reports & Analytics', icon: BarChart3, path: '/admin/reports',
           submenu: [
-            { name: 'Sales Reports', path: '/admin/reports/sales' },
-            { name: 'Inventory Reports', path: '/admin/reports/inventory' }
+            { name: 'Sales Reports', path: '/admin/reports/sales' }
           ]
         },
         { 

@@ -35,7 +35,6 @@ const OrderManagementPage = React.lazy(() => import('./pages/admin/OrderManageme
 const AdminSalesPerformance = React.lazy(() => import('./pages/admin/AdminSalesPerformance'));
 const AdminSettings = React.lazy(() => import('./pages/admin/AdminSettings'));
 const ReportsAnalytics = React.lazy(() => import('./pages/admin/ReportsAnalytics')); 
-const InventoryManagementPage = React.lazy(() => import('./pages/admin/InventoryManagementPage'));
 const CRMHub = React.lazy(() => import('./pages/admin/CRMHub'));
 const QuoteEngine = React.lazy(() => import('./pages/admin/QuoteEngine'));
 
@@ -118,8 +117,6 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/admin/leads" element={<ProtectedRoute allowedRole="admin"><InquiriesManagementPage /></ProtectedRoute>} />
             <Route path="/admin/customers" element={<ProtectedRoute allowedRole="admin"><CustomerManagementPage /></ProtectedRoute>} />
             <Route path="/admin/orders" element={<ProtectedRoute allowedRole="admin"><OrderManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/inventory" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
-            <Route path="/admin/inventory/warehouse" element={<ProtectedRoute allowedRole="admin"><InventoryManagementPage /></ProtectedRoute>} />
             <Route path="/admin/crm" element={<ProtectedRoute allowedRole="admin"><CRMHub /></ProtectedRoute>} />
             <Route path="/admin/quote" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
             <Route path="/admin/quote/new" element={<ProtectedRoute allowedRole="admin"><QuoteEngine /></ProtectedRoute>} />
@@ -131,7 +128,6 @@ const AnimatedRoutes = ({ onOpenModal }) => {
 
             <Route path="/admin/reports" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
             <Route path="/admin/reports/sales" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
-            <Route path="/admin/reports/inventory" element={<ProtectedRoute allowedRole="admin"><ReportsAnalytics /></ProtectedRoute>} />
             
             <Route path="/admin/sales-performance" element={<ProtectedRoute allowedRole="admin"><AdminSalesPerformance /></ProtectedRoute>} />
             
