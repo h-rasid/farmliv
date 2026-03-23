@@ -180,6 +180,15 @@ function App() {
     // ⭐ Make non-blocking for better LCP
     setInitialLoading(false);
 
+    // ⭐ Fix bfcache issue: reload when restored from browser cache (tab switching)
+    // This ensures Framer Motion event listeners re-attach properly
+    const handlePageShow = (e) => {
+      if (e.persisted) {
+        window.location.reload();
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+
     const initializeApp = async () => {
       console.log(`v1.0.4-prod - Checking Connection to: ${API_URL}`);
       
@@ -205,6 +214,8 @@ function App() {
     };
 
     initializeApp();
+
+    return () => window.removeEventListener('pageshow', handlePageShow);
   }, []);
 
   return (
