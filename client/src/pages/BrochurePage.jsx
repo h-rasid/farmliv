@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 // ✅ Replace this URL with your actual Cloudinary PDF URL
-const CATALOG_PDF_URL = 'https://res.cloudinary.com/dik8mlsie/raw/upload/v1/farmliv_catalog.pdf';
+const CATALOG_PDF_URL = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1774260178/Farmliv_Brochure_aq5zaa.pdf';
 
 const BrochurePage = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
