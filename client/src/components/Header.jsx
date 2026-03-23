@@ -211,36 +211,27 @@ const MobileNavItem = ({ to, children, icon: Icon, active, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="group relative flex items-center justify-between mx-2 py-3.5 px-4 mb-2 overflow-hidden rounded-xl transition-all duration-300"
+    className={`
+      group flex items-center justify-between p-4 mb-2 rounded-xl transition-all duration-300
+      ${active 
+        ? 'bg-[#2E7D32]/10 text-[#2E7D32]' 
+        : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'}
+    `}
   >
-    {/* Active background indicator */}
-    {active ? (
-      <div className="absolute inset-0 bg-gradient-to-r from-[#2E7D32]/5 to-transparent z-0 border-l-[3px] border-[#2E7D32]" />
-    ) : (
-      <div className="absolute inset-0 bg-transparent group-hover:bg-gray-50/80 z-0 transition-colors" />
-    )}
-    
-    <div className="flex items-center gap-4 relative z-10 w-full">
+    <div className="flex items-center gap-4">
       <div className={`
-        transition-colors duration-300
-        ${active ? 'text-[#2E7D32]' : 'text-gray-400 group-hover:text-[#2E7D32]'}
+        p-2.5 rounded-lg transition-colors duration-300
+        ${active ? 'bg-[#2E7D32] text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-white group-hover:shadow-sm group-hover:text-[#2E7D32]'}
       `}>
-        <Icon className="w-5 h-5" strokeWidth={active ? 2.5 : 2} aria-hidden="true" />
+        <Icon className="w-5 h-5" aria-hidden="true" />
       </div>
-      <span className={`text-[15px] font-['Poppins'] tracking-wide transition-all ${
-        active ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 group-hover:text-gray-900'
-      }`}>
+      <span className={`text-base font-semibold tracking-tight ${active ? 'font-bold' : ''}`}>
         {children}
       </span>
-      
-      {/* Right chevron or dot */}
-      {active && (
-        <motion.div 
-          layoutId="activeDot" 
-          className="ml-auto w-1.5 h-1.5 rounded-full bg-[#2E7D32] shadow-[0_0_8px_rgba(46,125,50,0.5)]" 
-        />
-      )}
     </div>
+    {active && (
+      <motion.div layoutId="activeDot" className="w-1.5 h-1.5 rounded-full bg-[#2E7D32]" />
+    )}
   </Link>
 );
 
@@ -415,15 +406,15 @@ const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
-              className="fixed top-0 left-0 bottom-0 w-[85vw] max-w-sm bg-white z-[60] lg:hidden shadow-[10px_0_30px_rgba(0,0,0,0.1)] flex flex-col h-[100dvh]"
+              className="fixed top-0 left-0 bottom-0 w-[85vw] max-w-sm bg-gradient-to-b from-white to-gray-50 z-[60] lg:hidden shadow-2xl flex flex-col h-[100dvh]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="px-6 py-8 border-b border-gray-100 flex justify-between items-center shrink-0">
+              <div className="p-6 pt-8 pb-4 border-b border-gray-100/50 bg-white/50 backdrop-blur-sm flex justify-between items-center shrink-0">
                  <div className="flex flex-col">
                   <span className="text-2xl font-bold text-gray-900 font-['Playfair_Display']">
                     Menu
                   </span>
-                  <span className="text-xs text-gray-400 font-medium mt-1 tracking-wider uppercase">
+                  <span className="text-xs text-gray-400 font-medium mt-1">
                     Farmliv Industries
                   </span>
                 </div>
@@ -443,37 +434,33 @@ const Header = () => {
                     </MobileNavItem>
                   ))}
                   
-                  <div className="my-6 border-t border-gray-100 mx-6" />
+                  <div className="my-4 border-t border-gray-100/80 mx-2" />
                   
                   <Link
                     to="/request-quote"
                     onClick={() => handleNavigation('/request-quote')}
-                    className="relative group flex flex-col mx-4 mt-2 p-5 rounded-2xl transition-all duration-300 overflow-hidden bg-[#2E7D32] shadow-lg shadow-green-900/10 hover:shadow-green-900/20"
+                    className="relative group flex items-center justify-between p-6 mx-2 mt-2 rounded-xl transition-all duration-300 overflow-hidden bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] shadow-lg shadow-green-900/20"
                   >
-                    {/* Subtle aesthetic pattern background */}
-                    <div className="absolute right-0 top-0 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
-                    
-                    <div className="flex items-center gap-3 relative z-10 mb-2">
-                      <div className="p-2 rounded-lg bg-white/10 text-white backdrop-blur-md">
-                         <Sparkles className="w-4 h-4" aria-hidden="true" />
+                    <div className="flex items-center gap-4 relative z-10">
+                      <div className="p-2.5 rounded-lg bg-white/20 text-white backdrop-blur-sm">
+                         <Sparkles className="w-5 h-5" aria-hidden="true" />
                       </div>
-                      <span className="font-bold text-white tracking-wide">Request Quote</span>
+                      <div className="flex flex-col">
+                        <span className="text-lg font-bold text-white tracking-tight">Request Quote</span>
+                        <span className="text-xs text-green-100/80 font-medium">Get a custom price today</span>
+                      </div>
                     </div>
-                    
-                    <div className="flex items-center justify-between relative z-10">
-                      <span className="text-xs text-green-50 font-medium">Get a custom price today</span>
-                      <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                    </div>
+                    <ArrowRight className="w-4 h-4 text-white relative z-10 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                   </Link>
 
                 </div>
               </div>
 
-              <div className="p-6 bg-gray-50 shrink-0 safe-area-bottom">
-                <div className="flex items-center justify-center gap-2">
-                  <a href="tel:+919181395595" className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white text-gray-700 shadow-sm border border-gray-100 hover:border-[#2E7D32]/30 hover:text-[#2E7D32] transition-colors w-full justify-center">
+              <div className="p-6 bg-white border-t border-gray-100 shrink-0 safe-area-bottom">
+                <div className="space-y-4">
+                  <a href="tel:+919181395595" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
                     <Phone className="w-4 h-4 text-[#2E7D32]" aria-hidden="true" />
-                    <span className="font-semibold text-sm tracking-wide">+91 91813 95595</span>
+                    <span className="font-semibold text-xs">+91 91813 95595</span>
                   </a>
                 </div>
               </div>
