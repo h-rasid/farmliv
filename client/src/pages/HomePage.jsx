@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroCarousel from '@/components/HeroCarousel';
-import AboutSection from '@/components/AboutSection';
-import FeaturedCategories from '@/components/FeaturedCategories';
 import QuoteModal from '@/components/QuoteModal';
+
+// 🚀 Performance: Lazy load "Below the Fold" components to drastically reduce index.js size
+const AboutSection = React.lazy(() => import('@/components/AboutSection'));
+const FeaturedCategories = React.lazy(() => import('@/components/FeaturedCategories'));
 
 const HomePage = () => {
   const location = useLocation();
@@ -30,9 +32,14 @@ const HomePage = () => {
         <Header />
         
         <main>
+          {/* Hero is critical path (LCP) -> Keep synchronous */}
           <HeroCarousel />
-          <AboutSection />
-          <FeaturedCategories />
+          
+          {/* Below the fold -> Defer network load until after Hero renders */}
+          <Suspense fallback={<div className="h-96 w-full flex items-center justify-center bg-gray-50"><div className="w-8 h-8 border-4 border-[#2E7D32]/20 border-t-[#2E7D32] rounded-full animate-spin"></div></div>}>
+            <AboutSection />
+            <FeaturedCategories />
+          </Suspense>
         </main>
 
         <Footer />
