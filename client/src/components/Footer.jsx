@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Lock, FileText } from 'lucide-react';
 
 const Footer = () => {
   return <footer className="bg-[#2E7D32] text-white">
