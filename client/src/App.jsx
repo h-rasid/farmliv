@@ -12,7 +12,7 @@ import QuickEnquiryTab from './components/QuickEnquiryTab';
 
 // ⭐ Modal for Popup behavior
 import QuickEnquiryModal from './components/QuickEnquiryModal';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage'; // Eagerly loaded for LCP optimization
 import SystemLogs from './pages/admin/SystemLogs';
 import PortalLayout from './layouts/PortalLayout';
 
