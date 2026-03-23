@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -25,21 +25,22 @@ const slides = [
   }
 ];
 
+const SWIPE_THRESHOLD = 50;
+
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const pointerStart = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
-
     return () => clearInterval(timer);
   }, [currentSlide]);
 
-  // ⭐ Aggressive Preloading of All Slides
+  // Preload all slides
   useEffect(() => {
     slides.forEach((slide) => {
-      // Preload next-gen quality (eco) at 1080w to match LazyImage priority logic
       const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:eco,w_1080/');
       const link = document.createElement('link');
       link.rel = 'preload';
@@ -49,12 +50,25 @@ const HeroCarousel = () => {
     });
   }, []);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  // Native pointer event handlers — no Framer Motion drag, no bfcache issues
+  const handlePointerDown = (e) => {
+    pointerStart.current = { x: e.clientX, y: e.clientY };
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const handlePointerUp = (e) => {
+    if (!pointerStart.current) return;
+    const dx = e.clientX - pointerStart.current.x;
+    const dy = e.clientY - pointerStart.current.y;
+    pointerStart.current = null;
+
+    // Only trigger swipe if horizontal movement dominates and exceeds threshold
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE_THRESHOLD) {
+      if (dx < 0) nextSlide();
+      else prevSlide();
+    }
   };
 
   const slideVariants = {
@@ -63,13 +77,15 @@ const HeroCarousel = () => {
     exit: { opacity: 0, zIndex: 0 }
   };
 
-  const SWIPE_THRESHOLD = 50;
-
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto">
+    <div
+      className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto select-none"
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+    >
       {/* Dynamic Background Layer — fully covers the whole area, no black gaps */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0 transition-all duration-1000"
           style={{
             backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:low,w_200/')})`,
@@ -89,27 +105,12 @@ const HeroCarousel = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            opacity: { duration: 0.8, ease: "easeInOut" }
-          }}
+          transition={{ opacity: { duration: 0.8, ease: "easeInOut" } }}
           className="absolute inset-0 will-change-transform z-10"
         >
-          {/* Invisible drag layer - captures swipe without moving the image or blocking button clicks */}
+          {/* Ken Burns effect */}
           <motion.div
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0}
-            dragMomentum={false}
-            onDragEnd={(_, { offset }) => {
-              if (offset.x < -SWIPE_THRESHOLD) nextSlide();
-              else if (offset.x > SWIPE_THRESHOLD) prevSlide();
-            }}
-            className="absolute inset-0 z-20 cursor-grab active:cursor-grabbing pointer-events-auto"
-            style={{ touchAction: 'pan-y' }}
-          />
-          {/* Ken Burns effect wrapper for the structural image */}
-          <motion.div 
-            className="relative h-full w-full bg-transparent overflow-hidden"
+            className="relative h-full w-full overflow-hidden"
             initial={{ scale: 1.05 }}
             animate={{ scale: 1 }}
             transition={{ duration: 6, ease: "easeOut" }}
@@ -125,10 +126,11 @@ const HeroCarousel = () => {
               sizes="100vw"
               className="w-full h-full object-cover pointer-events-none select-none opacity-70"
             />
-            
-            {/* Minimal overlay just to ensure text is readable, no solid gradients */}
+
+            {/* Minimal readable overlay */}
             <div className="absolute inset-0 bg-black/10 pointer-events-none" />
-            
+
+            {/* Text + CTA */}
             <div className="absolute inset-0 flex flex-col justify-center pointer-events-none px-6 sm:px-12 md:px-20 lg:px-32 xl:px-40">
               <div className="max-w-4xl pt-20">
                 <div className="overflow-hidden mb-6 sm:mb-8">
@@ -141,7 +143,7 @@ const HeroCarousel = () => {
                     {slides[currentSlide].title}
                   </motion.h1>
                 </div>
-                
+
                 <div className="overflow-hidden mb-8 sm:mb-12">
                   <motion.p
                     initial={{ y: 40, opacity: 0 }}
@@ -153,14 +155,14 @@ const HeroCarousel = () => {
                   </motion.p>
                 </div>
 
-                {/* Professional Call To Action Button */}
+                {/* CTA Button — pointer-events-auto so it always receives clicks */}
                 <motion.div
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className="pointer-events-auto relative z-30"
                 >
-                  <Link 
+                  <Link
                     to="/products"
                     className="inline-flex items-center gap-3 bg-white hover:bg-green-50 text-green-900 px-8 py-4 sm:px-10 sm:py-5 rounded-sm font-semibold text-sm md:text-base tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 group"
                   >
@@ -174,7 +176,7 @@ const HeroCarousel = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Modern Navigation Arrows (Sleeker, minimalist styling) */}
+      {/* Navigation Arrows */}
       <div className="hidden md:flex absolute inset-x-8 top-1/2 -translate-y-1/2 justify-between z-20 pointer-events-none">
         <button
           onClick={prevSlide}
@@ -192,7 +194,7 @@ const HeroCarousel = () => {
         </button>
       </div>
 
-      {/* Refined Progress Indicators */}
+      {/* Progress Indicators */}
       <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 md:left-20 lg:left-32 xl:left-40 flex gap-3 sm:gap-4 z-20">
         {slides.map((_, index) => (
           <button
