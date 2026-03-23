@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import LazyImage from '@/components/ui/LazyImage';
 
 const slides = [
@@ -26,11 +27,9 @@ const slides = [
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1);
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
 
@@ -51,30 +50,17 @@ const HeroCarousel = () => {
   }, []);
 
   const nextSlide = () => {
-    setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setDirection(-1);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const slideVariants = {
-    enter: (direction) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-      opacity: 0
-    })
+    enter: { opacity: 0 },
+    center: { opacity: 1, zIndex: 1 },
+    exit: { opacity: 0, zIndex: 0 }
   };
 
   const swipeConfidenceThreshold = 10000;
@@ -84,24 +70,23 @@ const HeroCarousel = () => {
 
   return (
     <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto bg-[#0a0a0a]">
-      {/* Dynamic Background Layer (Subtle blurred base) */}
+      {/* Dynamic Background Layer for blur base */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 transition-opacity duration-1000 opacity-60"
+          className="absolute inset-0 transition-opacity duration-1000 opacity-50"
           style={{
             backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:1000,f_auto,q_auto:low,w_100/')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(30px) brightness(0.8)'
+            filter: 'blur(30px) brightness(0.6)'
           }}
         />
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-xl" />
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl" />
       </div>
 
-      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentSlide}
-          custom={direction}
           variants={slideVariants}
           initial="enter"
           animate="center"
@@ -118,12 +103,17 @@ const HeroCarousel = () => {
             }
           }}
           transition={{
-            x: { type: "tween", duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-            opacity: { duration: 0.4 }
+            opacity: { duration: 0.8, ease: "easeInOut" }
           }}
           className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing z-10"
         >
-          <div className="relative h-full w-full bg-transparent">
+          {/* Ken Burns effect wrapper for the structural image */}
+          <motion.div 
+            className="relative h-full w-full bg-transparent overflow-hidden"
+            initial={{ scale: 1.05 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 6, ease: "easeOut" }}
+          >
             <LazyImage
               priority={true}
               src={slides[currentSlide].image}
@@ -133,69 +123,87 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full object-cover pointer-events-none select-none bg-transparent opacity-85"
+              className="w-full h-full object-cover pointer-events-none select-none bg-transparent opacity-90"
             />
             
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none" />
+            {/* Highly Professional Dark Gradient Overlay (Unified, readable everywhere but rich) */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none opacity-80" />
             
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-center text-white px-4 max-w-5xl w-full">
-                <div className="overflow-hidden mb-4 sm:mb-6">
+            <div className="absolute inset-0 flex flex-col justify-center pointer-events-none px-6 sm:px-12 md:px-20 lg:px-32 xl:px-40">
+              <div className="max-w-4xl pt-20">
+                <div className="overflow-hidden mb-6 sm:mb-8">
                   <motion.h1
-                    initial={currentSlide === 0 ? false : { y: 50, opacity: 0 }}
+                    initial={{ y: 60, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: currentSlide === 0 ? 0 : 0.2, duration: 0.1, ease: "easeOut" }}
-                    className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-['Playfair_Display'] leading-tight tracking-tight text-shadow-lg will-change-transform break-words"
+                    transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold font-['Playfair_Display'] leading-[1.1] tracking-tight text-white drop-shadow-xl"
                   >
                     {slides[currentSlide].title}
                   </motion.h1>
                 </div>
                 
-                <div className="overflow-hidden">
+                <div className="overflow-hidden mb-8 sm:mb-12">
                   <motion.p
-                    initial={currentSlide === 0 ? false : { y: 30, opacity: 0 }}
+                    initial={{ y: 40, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: currentSlide === 0 ? 0 : 0.3, duration: 0.5, ease: "easeOut" }}
-                    className="text-base sm:text-xl md:text-2xl lg:text-3xl font-light font-['Poppins'] tracking-wide text-gray-100 will-change-transform px-4"
+                    transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-lg sm:text-xl md:text-2xl font-light font-['Poppins'] tracking-wide text-gray-200 drop-shadow-md max-w-2xl"
                   >
                     {slides[currentSlide].subtitle}
                   </motion.p>
                 </div>
+
+                {/* Professional Call To Action Button */}
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="pointer-events-auto"
+                >
+                  <Link 
+                    to="/products"
+                    className="inline-flex items-center gap-3 bg-white hover:bg-green-50 text-green-900 px-8 py-4 sm:px-10 sm:py-5 rounded-sm font-semibold text-sm md:text-base tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 group"
+                  >
+                    Explore Products
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
-      <div className="hidden md:flex absolute inset-x-4 top-1/2 -translate-y-1/2 justify-between z-20 pointer-events-none">
+      {/* Modern Navigation Arrows (Sleeker, minimalist styling) */}
+      <div className="hidden md:flex absolute inset-x-8 top-1/2 -translate-y-1/2 justify-between z-20 pointer-events-none">
         <button
           onClick={prevSlide}
-          className="pointer-events-auto p-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/20 backdrop-blur-sm text-white transition-all duration-300 hover:scale-110 group min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="pointer-events-auto p-3 rounded-full border border-white/10 bg-black/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-md text-white/80 hover:text-white transition-all duration-500 hover:scale-110 group min-w-[50px] min-h-[50px] flex items-center justify-center shadow-lg"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" aria-hidden="true" />
+          <ChevronLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" strokeWidth={1.5} aria-hidden="true" />
         </button>
         <button
           onClick={nextSlide}
-          className="pointer-events-auto p-4 rounded-full border border-white/20 bg-white/5 hover:bg-white/20 backdrop-blur-sm text-white transition-all duration-300 hover:scale-110 group min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="pointer-events-auto p-3 rounded-full border border-white/10 bg-black/20 hover:bg-white/10 hover:border-white/30 backdrop-blur-md text-white/80 hover:text-white transition-all duration-500 hover:scale-110 group min-w-[50px] min-h-[50px] flex items-center justify-center shadow-lg"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+          <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" strokeWidth={1.5} aria-hidden="true" />
         </button>
       </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex gap-3 sm:gap-4 z-20">
+      {/* Refined Progress Indicators */}
+      <div className="absolute bottom-8 sm:bottom-12 left-6 sm:left-12 md:left-20 lg:left-32 xl:left-40 flex gap-3 sm:gap-4 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={(e) => { e.stopPropagation(); setCurrentSlide(index); }}
-            className="group relative py-4 min-h-[44px] min-w-[44px] flex items-center justify-center pointer-events-auto"
+            className="group relative py-4 min-w-[32px] flex items-center justify-center pointer-events-auto"
             aria-label={`Go to slide ${index + 1}`}
           >
-            <div className={`h-1.5 rounded-full transition-all duration-300 ${
-              index === currentSlide ? 'w-10 sm:w-12 bg-white' : 'w-6 sm:w-8 bg-white/40 group-hover:bg-white/60'
+            <div className={`h-[3px] rounded-full transition-all duration-500 ${
+              index === currentSlide ? 'w-12 sm:w-16 bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'w-8 sm:w-10 bg-white/30 group-hover:bg-white/60'
             }`} />
           </button>
         ))}
