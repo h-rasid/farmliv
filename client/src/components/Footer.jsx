@@ -39,7 +39,7 @@ const Footer = () => {
               </a>
               {/* ⭐ UPDATED: SEO Friendly LinkedIn Link */}
               <a 
-                href="https://www.linkedin.com/company/farmliv-industries-pvt-ltd/" 
+                href="https://www.linkedin.com/company/farmliv/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
