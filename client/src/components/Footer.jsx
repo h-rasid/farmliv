@@ -124,7 +124,7 @@ const Footer = () => {
                   href="https://res.cloudinary.com/dik8mlsie/image/upload/v1/Farmliv_Brochure_cg40zq.pdf" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-2.5 rounded shadow-md transition-all duration-300 w-fit"
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-[#2E7D32] px-6 py-2.5 rounded shadow-md transition-all duration-300 w-fit"
                 >
                   <FileText className="w-5 h-5" aria-hidden="true" />
                   <span className="font-semibold text-sm sm:text-base tracking-wide">E-Catalogue</span>
