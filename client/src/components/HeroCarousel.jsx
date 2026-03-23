@@ -63,25 +63,23 @@ const HeroCarousel = () => {
     exit: { opacity: 0, zIndex: 0 }
   };
 
-  const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset, velocity) => {
-    return Math.abs(offset) * velocity;
-  };
+
 
   return (
-    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto bg-[#0a0a0a]">
-      {/* Dynamic Background Layer for blur base */}
+    <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto">
+      {/* Dynamic Background Layer — fully covers the whole area, no black gaps */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute inset-0 transition-opacity duration-1000 opacity-50"
+          className="absolute inset-0 transition-all duration-1000"
           style={{
-            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:1000,f_auto,q_auto:low,w_100/')})`,
+            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:low,w_200/')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(30px) brightness(0.6)'
+            filter: 'blur(25px) brightness(0.85)',
+            transform: 'scale(1.1)'
           }}
         />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl" />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       <AnimatePresence initial={false}>
@@ -91,21 +89,10 @@ const HeroCarousel = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={1}
-          onDragEnd={(e, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x);
-            if (swipe < -swipeConfidenceThreshold) {
-              nextSlide();
-            } else if (swipe > swipeConfidenceThreshold) {
-              prevSlide();
-            }
-          }}
           transition={{
             opacity: { duration: 0.8, ease: "easeInOut" }
           }}
-          className="absolute inset-0 will-change-transform cursor-grab active:cursor-grabbing z-10"
+          className="absolute inset-0 will-change-transform z-10"
         >
           {/* Ken Burns effect wrapper for the structural image */}
           <motion.div 
@@ -123,7 +110,7 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full object-cover pointer-events-none select-none bg-transparent opacity-60"
+              className="w-full h-full object-cover pointer-events-none select-none opacity-70"
             />
             
             {/* Minimal overlay just to ensure text is readable, no solid gradients */}
