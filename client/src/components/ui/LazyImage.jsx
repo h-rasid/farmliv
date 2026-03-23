@@ -135,7 +135,7 @@ const LazyImage = ({
               : 'opacity-0 scale-100'
           } ${imgClassName}`}
           style={objectFit ? { objectFit, maxHeight: '100%' } : { maxHeight: '100%' }}
-          decoding="async" 
+          decoding={priority ? "sync" : "async"} 
           width={width}
           height={height}
         />
