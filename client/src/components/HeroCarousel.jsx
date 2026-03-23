@@ -135,10 +135,10 @@ const HeroCarousel = () => {
               <div className="max-w-4xl pt-20">
                 <div className="overflow-hidden mb-6 sm:mb-8">
                   <motion.h1
-                    initial={{ y: 60, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold font-['Playfair_Display'] leading-[1.1] tracking-tight text-white drop-shadow-xl"
+                    transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-[5rem] font-bold font-['Playfair_Display'] leading-[1.1] tracking-tight text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)] will-change-transform"
                   >
                     {slides[currentSlide].title}
                   </motion.h1>
@@ -146,10 +146,10 @@ const HeroCarousel = () => {
 
                 <div className="overflow-hidden mb-8 sm:mb-12">
                   <motion.p
-                    initial={{ y: 40, opacity: 0 }}
+                    initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-lg sm:text-xl md:text-2xl font-light font-['Poppins'] tracking-wide text-gray-200 drop-shadow-md max-w-2xl"
+                    transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-lg sm:text-xl md:text-2xl font-light font-['Poppins'] tracking-wide text-gray-200 [text-shadow:0_2px_8px_rgba(0,0,0,0.6)] max-w-2xl will-change-transform"
                   >
                     {slides[currentSlide].subtitle}
                   </motion.p>
@@ -157,10 +157,10 @@ const HeroCarousel = () => {
 
                 {/* CTA Button — pointer-events-auto so it always receives clicks */}
                 <motion.div
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="pointer-events-auto relative z-30"
+                  transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="pointer-events-auto relative z-30 will-change-transform"
                 >
                   <Link
                     to="/products"
