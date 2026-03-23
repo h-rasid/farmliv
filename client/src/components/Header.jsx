@@ -190,7 +190,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location, categor
         </AnimatePresence>
       </div>
 
-      {['/certification', '/catalog', '/contact'].map(path => (
+      {['/certification', '/contact'].map(path => (
         <Link 
           key={path} 
           to={path} 
@@ -199,7 +199,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location, categor
             location.pathname === path ? 'text-[#2E7D32]' : 'text-gray-700 hover:text-[#2E7D32]'
           }`}
         >
-          {path === '/certification' ? 'Certification' : path === '/catalog' ? 'Catalog' : 'Contact'}
+          {path === '/certification' ? 'Certification' : 'Contact'}
           <span className={`absolute -bottom-2 left-0 h-0.5 bg-[#2E7D32] rounded-full transition-all duration-300 ease-out group-hover:w-full ${location.pathname === path ? 'w-full' : 'w-0'}`}></span>
         </Link>
       ))}
@@ -314,7 +314,6 @@ const Header = () => {
     { name: 'About Us', path: '/about', icon: Users },
     { name: 'Products', path: '/products', icon: Sprout },
     { name: 'Certification', path: '/certification', icon: Award },
-    { name: 'Catalog', path: '/catalog', icon: BookOpen },
     { name: 'Contact', path: '/contact', icon: Phone },
   ];
 
