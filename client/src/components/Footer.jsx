@@ -119,6 +119,16 @@ const Footer = () => {
                   Mulch Film
                 </Link>
               </li>
+              <li>
+                <a 
+                  href="https://res.cloudinary.com/dik8mlsie/image/upload/v1/Farmliv_Brochure_cg40zq.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-[#D4AF37] hover:text-white font-medium transition-colors py-1 block text-sm sm:text-base"
+                >
+                  Download Brochure
+                </a>
+              </li>
             </ul>
           </div>
 
