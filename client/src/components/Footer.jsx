@@ -37,10 +37,14 @@ const Footer = () => {
               >
                 <Twitter className="w-5 h-5" aria-hidden="true" />
               </a>
+              {/* ⭐ UPDATED: SEO Friendly LinkedIn Link */}
               <a 
-                href="#" 
+                href="https://www.linkedin.com/company/farmliv-industries-pvt-ltd/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
-                aria-label="LinkedIn"
+                title="Follow Farmliv Industries on LinkedIn"
+                aria-label="Follow Farmliv Industries on LinkedIn"
               >
                 <Linkedin className="w-5 h-5" aria-hidden="true" />
               </a>
