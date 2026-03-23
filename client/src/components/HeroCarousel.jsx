@@ -123,12 +123,11 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full object-cover pointer-events-none select-none bg-transparent opacity-90"
+              className="w-full h-full object-cover pointer-events-none select-none bg-transparent opacity-60"
             />
             
-            {/* Highly Professional Dark Gradient Overlay (Unified, readable everywhere but rich) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none opacity-80" />
+            {/* Minimal overlay just to ensure text is readable, no solid gradients */}
+            <div className="absolute inset-0 bg-black/10 pointer-events-none" />
             
             <div className="absolute inset-0 flex flex-col justify-center pointer-events-none px-6 sm:px-12 md:px-20 lg:px-32 xl:px-40">
               <div className="max-w-4xl pt-20">
