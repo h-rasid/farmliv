@@ -63,7 +63,7 @@ const HeroCarousel = () => {
     exit: { opacity: 0, zIndex: 0 }
   };
 
-
+  const SWIPE_THRESHOLD = 50;
 
   return (
     <div className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto">
@@ -94,6 +94,19 @@ const HeroCarousel = () => {
           }}
           className="absolute inset-0 will-change-transform z-10"
         >
+          {/* Invisible drag layer - captures swipe without moving the image or blocking button clicks */}
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0}
+            dragMomentum={false}
+            onDragEnd={(_, { offset }) => {
+              if (offset.x < -SWIPE_THRESHOLD) nextSlide();
+              else if (offset.x > SWIPE_THRESHOLD) prevSlide();
+            }}
+            className="absolute inset-0 z-20 cursor-grab active:cursor-grabbing pointer-events-auto"
+            style={{ touchAction: 'pan-y' }}
+          />
           {/* Ken Burns effect wrapper for the structural image */}
           <motion.div 
             className="relative h-full w-full bg-transparent overflow-hidden"
