@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram, Lock, FileText } from 'lucide-react';
+import { API_URL } from '@/utils/config';
+
+const FALLBACK_BROCHURE = 'https://res.cloudinary.com/dik8mlsie/image/upload/v1/Farmliv_Brochure_cg40zq.pdf';
 
 const Footer = () => {
+  const [brochureUrl, setBrochureUrl] = useState(FALLBACK_BROCHURE);
+
+  useEffect(() => {
+    fetch(`${API_URL}/settings`)
+      .then(r => r.json())
+      .then(data => { if (data?.brochure) setBrochureUrl(data.brochure); })
+      .catch(() => {}); // silently fall back
+  }, []);
+
   return <footer className="bg-[#2E7D32] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
@@ -121,7 +133,7 @@ const Footer = () => {
               </li>
               <li className="pt-4">
                 <a 
-                  href="https://res.cloudinary.com/dik8mlsie/image/upload/v1/Farmliv_Brochure_cg40zq.pdf" 
+                  href={brochureUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="inline-flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-[#2E7D32] px-6 py-2.5 rounded shadow-md transition-all duration-300 w-fit"

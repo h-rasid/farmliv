@@ -439,6 +439,9 @@ const transporter = nodemailer.createTransport({
         await addColumnIfMissing('leads', 'is_seen', 'TINYINT(1) DEFAULT 0');
         await addColumnIfMissing('quick_enquiries', 'is_seen', 'TINYINT(1) DEFAULT 0');
 
+        // Added brochure column for global settings
+        await addColumnIfMissing('settings', 'brochure', 'TEXT DEFAULT NULL');
+
         connection.release();
     } catch (err) {
         console.error('❌ Database Initialization Error:', err.message);
@@ -448,12 +451,13 @@ const transporter = nodemailer.createTransport({
 const storage = multer.memoryStorage(); 
 const upload = multer({ 
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 } 
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB limit for PDFs
 }).fields([
   { name: 'images', maxCount: 10 },
   { name: 'video', maxCount: 1 },
   { name: 'logo', maxCount: 1 },
-  { name: 'favicon', maxCount: 1 }
+  { name: 'favicon', maxCount: 1 },
+  { name: 'brochure', maxCount: 1 }
 ]);
 
 const processImage = async (file) => {
@@ -465,6 +469,14 @@ const processImage = async (file) => {
     .webp({ quality: 80 }) 
     .toFile(filepath);
     
+  return `/uploads/${filename}`;
+};
+
+// Save PDF brochure directly (no image processing)
+const savePdf = (file) => {
+  const filename = `brochure_${Date.now()}.pdf`;
+  const filepath = path.join(uploadDir, filename);
+  fs.writeFileSync(filepath, file.buffer);
   return `/uploads/${filename}`;
 };
 
@@ -655,6 +667,10 @@ app.get('/api/settings', async (req, res) => {
   try {
     const rows = await safeQuery('SELECT * FROM settings LIMIT 1', [], 'settings');
     const data = Array.isArray(rows) ? (rows[0] || MOCK_DATA.settings) : rows;
+    // Attach full server origin to brochure URL for client consumption
+    if (data && data.brochure && !data.brochure.startsWith('http')) {
+      data.brochure = `${req.protocol}://${req.get('host')}${data.brochure}`;
+    }
     return res.json(data);
   } catch (err) {
     return res.json(MOCK_DATA.settings); // Absolute fallback
@@ -666,24 +682,26 @@ app.post('/api/settings', upload, async (req, res) => {
     const b = req.body;
     let logoUrl = b.logo;
     let faviconUrl = b.favicon;
+    let brochureUrl = b.brochure; // keep existing URL if no new file
 
     if (req.files['logo']) logoUrl = await processImage(req.files['logo'][0]);
     if (req.files['favicon']) faviconUrl = await processImage(req.files['favicon'][0]);
+    if (req.files['brochure']) brochureUrl = savePdf(req.files['brochure'][0]);
 
     const [existing] = await pool.query('SELECT id FROM settings LIMIT 1');
     
     if (existing.length > 0) {
       await pool.query(
-        `UPDATE settings SET gstNumber=?, whatsapp=?, smtpHost=?, smtpUser=?, smtpPass=?, facebook=?, instagram=?, isMaintenance=?, logo=?, favicon=? WHERE id=?`,
-        [b.gstNumber, b.whatsapp, b.smtpHost, b.smtpUser, b.smtpPass, b.facebook, b.instagram, b.isMaintenance === 'true' ? 1 : 0, logoUrl, faviconUrl, existing[0].id]
+        `UPDATE settings SET gstNumber=?, whatsapp=?, smtpHost=?, smtpUser=?, smtpPass=?, facebook=?, instagram=?, isMaintenance=?, logo=?, favicon=?, brochure=? WHERE id=?`,
+        [b.gstNumber, b.whatsapp, b.smtpHost, b.smtpUser, b.smtpPass, b.facebook, b.instagram, b.isMaintenance === 'true' ? 1 : 0, logoUrl, faviconUrl, brochureUrl, existing[0].id]
       );
     } else {
       await pool.query(
-        `INSERT INTO settings (gstNumber, whatsapp, smtpHost, smtpUser, smtpPass, facebook, instagram, isMaintenance, logo, favicon) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [b.gstNumber, b.whatsapp, b.smtpHost, b.smtpUser, b.smtpPass, b.facebook, b.instagram, b.isMaintenance === 'true' ? 1 : 0, logoUrl, faviconUrl]
+        `INSERT INTO settings (gstNumber, whatsapp, smtpHost, smtpUser, smtpPass, facebook, instagram, isMaintenance, logo, favicon, brochure) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [b.gstNumber, b.whatsapp, b.smtpHost, b.smtpUser, b.smtpPass, b.facebook, b.instagram, b.isMaintenance === 'true' ? 1 : 0, logoUrl, faviconUrl, brochureUrl]
       );
     }
-    res.json({ success: true, message: "Settings saved" });
+    res.json({ success: true, message: "Settings saved", brochure: brochureUrl });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to save settings" });

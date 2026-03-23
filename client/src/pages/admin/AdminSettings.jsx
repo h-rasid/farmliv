@@ -19,9 +19,11 @@ const AdminSettings = () => {
   // Files ke liye alag state
   const [logo, setLogo] = useState(null);
   const [favicon, setFavicon] = useState(null);
+  const [brochure, setBrochure] = useState(null);
   
   // ⭐ Image Previews (New UI Logic)
   const [previews, setPreviews] = useState({ logo: null, favicon: null });
+  const [brochureUrl, setBrochureUrl] = useState(null);
   
   // ⭐ Loading State (To prevent double clicks during image processing)
   const [isUpdating, setIsUpdating] = useState(false);
@@ -40,6 +42,8 @@ const AdminSettings = () => {
             logo: res.data.logo ? `${baseHost}${res.data.logo}` : null,
             favicon: res.data.favicon ? `${baseHost}${res.data.favicon}` : null
           });
+          // Set existing brochure URL
+          if (res.data.brochure) setBrochureUrl(res.data.brochure);
         }
       } catch (err) {
         console.error("Settings load karne mein error:", err);
@@ -55,9 +59,12 @@ const AdminSettings = () => {
       if (type === 'logo') {
         setLogo(file);
         setPreviews(prev => ({ ...prev, logo: URL.createObjectURL(file) }));
-      } else {
+      } else if (type === 'favicon') {
         setFavicon(file);
         setPreviews(prev => ({ ...prev, favicon: URL.createObjectURL(file) }));
+      } else if (type === 'brochure') {
+        setBrochure(file);
+        setBrochureUrl(null); // clear old preview so user sees new filename
       }
     }
   };
@@ -78,6 +85,7 @@ const AdminSettings = () => {
       // Agar nayi files select ki hain toh unhe append karein
       if (logo) formData.append('logo', logo);
       if (favicon) formData.append('favicon', favicon);
+      if (brochure) formData.append('brochure', brochure);
 
       // 3. Backend API call
       const response = await API.post('/settings', formData, {
@@ -85,6 +93,7 @@ const AdminSettings = () => {
       });
 
       console.log("Saving to Database:", response.data);
+      if (response.data.brochure) setBrochureUrl(response.data.brochure);
       alert("✅ Settings updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);
@@ -137,6 +146,22 @@ const AdminSettings = () => {
                {previews.favicon && (
                  <img src={previews.favicon} alt="Fav" className="h-8 w-8 object-contain border p-1 rounded bg-white shadow-sm" />
                )}
+            </div>
+
+            {/* Brochure PDF Upload */}
+            <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+              <label className="block text-sm font-medium mb-1 text-blue-800">📄 E-Catalogue / Brochure (PDF)</label>
+              <input 
+                type="file"
+                accept="application/pdf"
+                className="block w-full text-xs border rounded-lg p-1 bg-white mb-2"
+                onChange={(e) => handleFileChange(e, 'brochure')}
+              />
+              {brochure && <p className="text-xs text-green-700 font-medium">✅ New file selected: {brochure.name}</p>}
+              {brochureUrl && !brochure && (
+                <a href={brochureUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline">View Current Brochure ↗</a>
+              )}
+              <p className="text-xs text-gray-400 mt-1">Max size: 20MB. Will appear as E-Catalogue button in footer.</p>
             </div>
           </section>
 
