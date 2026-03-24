@@ -329,9 +329,9 @@ const Header = () => {
         >
           <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center text-xs font-medium tracking-wide">
             <div className="flex items-center gap-6">
-              <a href="tel:+919181395595" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
+              <a href="tel:+919181127883" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
                 <Phone className="w-3 h-3" aria-hidden="true" />
-                <span>+91 91813 95595</span>
+                <span>+91 91811 27883</span>
               </a>
               <a href="mailto:sales@farmliv.com" className="hidden sm:flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
                 <Mail className="w-3 h-3" aria-hidden="true" />
