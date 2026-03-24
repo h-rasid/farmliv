@@ -31,11 +31,39 @@ function optimizationPlugin() {
         }
       );
 
-      // 2. Preload Main Script (Standard Vite often skips preloading the entry itself in some configs)
+      // 2. Preload Main Script & Assets (Move ALL to TOP of head for maximum priority)
       const scriptMatch = modifiedHtml.match(/<script type="module" crossorigin src="([^"]+)"><\/script>/);
-      if (scriptMatch && !modifiedHtml.includes(`rel="modulepreload" crossorigin href="${scriptMatch[1]}"`)) {
+      const modulePreloads = [];
+      
+      // Collect all existing modulepreloads and remove them from their original positions
+      modifiedHtml = modifiedHtml.replace(/<link rel="modulepreload"[^>]+>\s*/g, (match) => {
+        modulePreloads.push(match.trim());
+        return '';
+      });
+
+      // Add the main entry script to preloads if not already there
+      if (scriptMatch) {
         const scriptUrl = scriptMatch[1];
-        modifiedHtml = modifiedHtml.replace('</head>', `  <link rel="modulepreload" crossorigin href="${scriptUrl}">\n  </head>`);
+        const mainPreload = `<link rel="modulepreload" crossorigin href="${scriptUrl}">`;
+        if (!modulePreloads.some(p => p.includes(scriptUrl))) {
+           modulePreloads.unshift(mainPreload);
+        }
+      }
+
+      // Re-insert ALL modulepreloads at the very top of <head>
+      if (modulePreloads.length > 0) {
+        modifiedHtml = modifiedHtml.replace('<head>', `<head>\n  ${modulePreloads.join('\n  ')}`);
+      }
+
+      // 3. Move Preconnects to top too (Before preloads)
+      const preconnects = [];
+      modifiedHtml = modifiedHtml.replace(/<link rel="preconnect"[^>]+>\s*/g, (match) => {
+        const cleaned = match.trim();
+        if (!preconnects.includes(cleaned)) preconnects.push(cleaned);
+        return '';
+      });
+      if (preconnects.length > 0) {
+        modifiedHtml = modifiedHtml.replace('<head>', `<head>\n  ${preconnects.join('\n  ')}`);
       }
 
       return modifiedHtml;
