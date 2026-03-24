@@ -98,12 +98,10 @@ export default defineConfig({
     // Build folder ka naam 'dist' hi rehne dein kyunki Hostinger ise asani se pehchanta hai
     outDir: 'dist',
     /* ⭐ Performance Optimization: Large libraries ko separate chunks mein divide kiya gaya hai taaki initial load fast ho */
+    /* Vite's default chunking is now highly optimized for React 18+ and handles tree-shaking/hashing more reliably than manual overrides in complex graphs. */
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-ui': ['framer-motion'],
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-        }
+        // No manual chunks to prevent "missing export 'r'" issues in split vendor bundles
       }
     }
   }

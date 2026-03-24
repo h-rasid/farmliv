@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, useLocation, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingFallback from './components/ui/LoadingFallback';
-import { AnimatePresence, m as motion, LazyMotion } from 'framer-motion';
+import { LazyMotion } from 'framer-motion';
 import { API_BASE, API_URL } from '@/utils/config';
 import './styles/public.css';
 
