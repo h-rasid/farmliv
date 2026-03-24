@@ -7,8 +7,34 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Custom plugin to defer CSS loading
+function deferCssPlugin() {
+  return {
+    name: 'defer-css',
+    enforce: 'post',
+    transformIndexHtml(html, ctx) {
+      if (!ctx.bundle) return html;
+      
+      // Replace synchronous stylesheet link injected by Vite with preload
+      return html.replace(
+        /<link\s([^>]*?)rel="stylesheet"([^>]*?)href="([^"]+)"([^>]*?)>/gi,
+        (match, prefix1, prefix2, href, suffix) => {
+          // Construct the attributes string, excluding rel and href which we handle explicitly
+          const attrs = (prefix1 + prefix2 + suffix).trim().replace(/\s+/g, ' ');
+          
+          return [
+            `<link rel="preload" as="style" href="${href}" ${attrs}>`,
+            `<link rel="stylesheet" href="${href}" media="print" onload="this.media='all'" ${attrs}>`,
+            `<noscript><link rel="stylesheet" href="${href}" ${attrs}></noscript>`
+          ].join('\n    ');
+        }
+      );
+    }
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), deferCssPlugin()],
   // Hostinger par refresh problem se bachne ke liye base path './' rakhein taaki assets relative load hon
   base: './', 
   resolve: {
