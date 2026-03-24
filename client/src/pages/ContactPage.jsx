@@ -99,6 +99,7 @@ const ContactPage = () => {
       <Helmet>
         <title>Contact Farmliv Industries - Get in Touch | Request Quote & Support</title>
         <meta name="description" content="Contact Farmliv Industries for product inquiries, quotes, and support. Phone: +91 91811 27883, Email: sales@farmliv.com. We respond within 24 hours." />
+        <link rel="canonical" href="https://farmliv.com/contact" />
       </Helmet>
 
       <div className="min-h-screen bg-white">
