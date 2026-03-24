@@ -41,7 +41,7 @@ const HeroCarousel = () => {
   // Preload all slides
   useEffect(() => {
     slides.forEach((slide) => {
-      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1080/');
+      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:low,c_fill,g_auto,w_1080/');
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
