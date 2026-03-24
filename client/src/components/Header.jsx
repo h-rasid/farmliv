@@ -5,10 +5,9 @@ import {
   ArrowRight, Home, Users, Sprout, FileCheck, FileText,
   BookOpen, Truck, Shield, Sparkles, Lock 
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import API from '@/utils/axios';
 import { API_BASE } from '@/utils/config';
-import { throttle } from '@/utils/performance';
 import LazyImage from '@/components/ui/LazyImage';
 
 // --- Components ---
@@ -245,7 +244,15 @@ const HEADER_FALLBACK_CATEGORIES = [
 ];
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  
+  // Transform scroll position into motion values (Zero re-renders)
+  const headerY = useTransform(scrollY, [0, 50], [0, -40]);
+  const headerBg = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0.8)", "rgba(255, 255, 255, 0.95)"]);
+  const headerShadow = useTransform(scrollY, [0, 50], ["0 0 0 rgba(0,0,0,0)", "0 10px 15px -3px rgba(0,0,0,0.1)"]);
+  const topBarOpacity = useTransform(scrollY, [0, 20], [1, 0]);
+  const topBarY = useTransform(scrollY, [0, 20], [0, -40]);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -269,15 +276,6 @@ const Header = () => {
       }
     };
     fetchCategories();
-  }, []);
-
-
-  useEffect(() => {
-    const handleScroll = throttle(() => {
-      setIsScrolled(window.scrollY > 20);
-    }, 100);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -321,18 +319,14 @@ const Header = () => {
 
   return (
     <>
-      <header 
-        className={`
-          fixed top-0 left-0 right-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-300 will-change-[transform,background-color]
-          ${isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg py-3' 
-            : 'bg-white/80 backdrop-blur-sm py-3'}
-        `}
+      <motion.header 
+        style={{ backgroundColor: headerBg, boxShadow: headerShadow }}
+        className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md py-3"
       >
-        <div className={`
-          absolute top-0 left-0 w-full bg-[#0F172A] text-white transition-[transform,opacity] duration-300 overflow-hidden h-10
-          ${isScrolled ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
-        `}>
+        <motion.div 
+          style={{ opacity: topBarOpacity, y: topBarY }}
+          className="absolute top-0 left-0 w-full bg-[#0F172A] text-white overflow-hidden h-10"
+        >
           <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center text-xs font-medium tracking-wide">
             <div className="flex items-center gap-6">
               <a href="tel:+919181395595" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
@@ -345,11 +339,11 @@ const Header = () => {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div 
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-transform duration-300 mt-10"
-          style={{ transform: isScrolled ? 'translateY(-40px)' : 'translateY(0)' }}
+        <motion.div 
+          style={{ y: headerY }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10"
         >
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group relative z-[60]" onClick={() => { closeMobileMenu(); window.scrollTo(0, 0); }}>
@@ -391,8 +385,8 @@ const Header = () => {
               <MenuToggle isOpen={isMobileMenuOpen} toggle={handleMobileMenuToggle} />
             </div>
           </div>
-        </div>
-      </header>
+        </motion.div>
+      </motion.header>
 
       <AnimatePresence mode="wait">
         {isMobileMenuOpen && (

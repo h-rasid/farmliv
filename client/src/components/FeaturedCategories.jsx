@@ -84,15 +84,9 @@ const FeaturedCategories = () => {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="visible" // Start visible
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((category) => (
-            <motion.div key={category.id} variants={cardVariants} className="will-change-transform">
+            <div key={category.id} className="will-change-transform">
               <Link to={`/products/${category.name.toLowerCase().replace(/ /g, '-')}`} className="group block relative h-[400px] w-full overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 card-optimize">
                 {/* Background Image */}
                 <div className="absolute inset-0">
@@ -123,13 +117,13 @@ const FeaturedCategories = () => {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 };
 
 
-export default memo(FeaturedCategories);
+export default memo(FeaturedCategories);
