@@ -60,6 +60,7 @@ const AboutSection = () => {
                 src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483789/Shadenet5_fyfyqx.webp"
                 alt="Modern agricultural facility showcasing quality manufacturing"
                 className="w-full h-full object-cover"
+                sizes="(max-width: 1024px) 100vw, 600px"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-[#2E7D32]/10 rounded-2xl -z-10" />

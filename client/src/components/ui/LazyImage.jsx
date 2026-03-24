@@ -81,7 +81,7 @@ const LazyImage = ({
   // ⭐ Generate srcSet for responsive images
   const generateSrcSet = (url) => {
     if (!url || !url.includes('cloudinary.com')) return null;
-    const widths = [320, 640, 828, 1080, 1280, 1920];
+    const widths = [320, 640, 768, 1024, 1280, 1440, 1600, 1920];
     return widths
       .map(w => `${getOptimizedUrl(url, w)} ${w}w`)
       .join(', ');
