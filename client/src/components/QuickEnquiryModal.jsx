@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { m as motion } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { X, Send, User, Phone, Mail, Building2, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import API from '@/utils/axios';
 
