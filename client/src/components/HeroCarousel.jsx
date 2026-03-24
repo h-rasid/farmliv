@@ -106,7 +106,7 @@ const HeroCarousel = () => {
           animate="center"
           exit="exit"
           transition={{ opacity: { duration: 0.8, ease: "easeInOut" } }}
-          className="absolute inset-0 will-change-transform z-10"
+          className={`absolute inset-0 will-change-transform z-10 ${currentSlide === index ? 'pointer-events-auto' : 'pointer-events-none'}`}
         >
           {/* Ken Burns effect */}
           <motion.div
@@ -164,7 +164,7 @@ const HeroCarousel = () => {
                 >
                   <Link
                     to="/products"
-                    className="inline-flex items-center gap-3 bg-white hover:bg-green-50 text-green-900 px-8 py-4 sm:px-10 sm:py-5 rounded-sm font-semibold text-sm md:text-base tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 group"
+                    className="inline-flex items-center gap-3 bg-white hover:bg-green-50 text-green-900 px-8 py-5 sm:px-10 sm:py-5 rounded-sm font-semibold text-sm md:text-base tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:-translate-y-1 group"
                   >
                     Explore Products
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

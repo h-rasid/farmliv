@@ -35,7 +35,7 @@ const Footer = () => {
                 href="https://www.facebook.com/share/1B3uGhgYQQ/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 title="Follow Farmliv Industries on Facebook"
                 aria-label="Follow Farmliv Industries on Facebook"
               >
@@ -44,7 +44,7 @@ const Footer = () => {
 
               <a 
                 href="#" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 aria-label="Twitter"
               >
                 <Twitter className="w-5 h-5" aria-hidden="true" />
@@ -54,7 +54,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/company/farmliv/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 title="Follow Farmliv Industries on LinkedIn"
                 aria-label="Follow Farmliv Industries on LinkedIn"
               >
@@ -66,7 +66,7 @@ const Footer = () => {
                 href="https://www.instagram.com/farmliv.industries?igsh=MXhwanhqdDh5Nm4000000" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" 
                 title="Follow Farmliv Industries on Instagram"
                 aria-label="Follow Farmliv Industries on Instagram"
               >
@@ -80,27 +80,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/about" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Products
                 </Link>
               </li>
               <li>
-                <Link to="/certification" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/certification" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Certification
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/contact" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Contact
                 </Link>
               </li>
@@ -112,22 +112,22 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-2 sm:mb-4">Our Product Category</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/products/weed-control" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/weed-control" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Weed Control Mat
                 </Link>
               </li>
               <li>
-                <Link to="/products/shade-nets" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/shade-nets" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Shade Net
                 </Link>
               </li>
               <li>
-                <Link to="/products/irrigation-systems" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/irrigation-systems" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Drip Irrigation
                 </Link>
               </li>
               <li>
-                <Link to="/products/crop-protection" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">
+                <Link to="/products/crop-protection" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">
                   Mulch Film
                 </Link>
               </li>
@@ -136,7 +136,7 @@ const Footer = () => {
                   href={brochureUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-[#2E7D32] px-6 py-2.5 rounded shadow-md transition-all duration-300 w-fit"
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-green-50 text-[#2E7D32] px-8 py-3.5 rounded shadow-md transition-all duration-300 w-fit"
                 >
                   <FileText className="w-5 h-5" aria-hidden="true" />
                   <span className="font-semibold text-sm sm:text-base tracking-wide">E-Catalogue</span>
@@ -158,11 +158,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 flex-shrink-0 opacity-80" aria-hidden="true" />
-                <a href="tel:+919181395595" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">+91 91813 95595</a>
+                <a href="tel:+919181395595" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">+91 91813 95595</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 flex-shrink-0 opacity-80" aria-hidden="true" />
-                <a href="mailto:sales@farmliv.com" className="text-green-100 hover:text-white transition-colors py-1 block text-sm sm:text-base">sales@farmliv.com</a>
+                <a href="mailto:sales@farmliv.com" className="text-green-100 hover:text-white transition-colors py-2 block text-sm sm:text-base">sales@farmliv.com</a>
               </li>
             </ul>
           </div>
