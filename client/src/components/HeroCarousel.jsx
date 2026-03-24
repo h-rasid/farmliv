@@ -86,7 +86,7 @@ const HeroCarousel = () => {
       {/* Dynamic Background Layer — fully covers the whole area, no black gaps */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute inset-0 transition-all duration-1000"
+          className="absolute inset-0 transition-[opacity,transform] duration-1000"
           style={{
             backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:eco,c_fill,g_auto,w_200/')})`,
             backgroundSize: 'cover',

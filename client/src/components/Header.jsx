@@ -347,7 +347,10 @@ const Header = () => {
           </div>
         </div>
 
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-transform duration-300 ${isScrolled ? 'mt-0' : 'mt-10'}`}>
+        <div 
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-transform duration-300 mt-10"
+          style={{ transform: isScrolled ? 'translateY(-40px)' : 'translateY(0)' }}
+        >
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group relative z-[60]" onClick={() => { closeMobileMenu(); window.scrollTo(0, 0); }}>
               <div className="w-10 h-10 bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] rounded-xl flex items-center justify-center shadow-lg shadow-green-900/10 group-hover:shadow-green-900/20 transition-all duration-300 shrink-0">
