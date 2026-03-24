@@ -7,7 +7,7 @@ import LazyImage from '@/components/ui/LazyImage';
 const slides = [
   {
     id: 1,
-    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp',
+    image: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1774339662/copy_of_shadenet_ew7jv2_6e0202.webp',
     title: 'Premium B2B Agricultural Solutions',
     subtitle: 'Trusted by Industry Leaders Worldwide'
   },
