@@ -5,6 +5,7 @@ import ScrollToTop from './components/ScrollToTop';
 import LoadingFallback from './components/ui/LoadingFallback';
 import { AnimatePresence, motion } from 'framer-motion';
 import { API_BASE, API_URL } from '@/utils/config';
+import './styles/public.css';
 
 // ⭐ Existing Components
 import FloatingContactButtons from './components/FloatingContactButtons';
@@ -12,9 +13,10 @@ import QuickEnquiryTab from './components/QuickEnquiryTab';
 
 // ⭐ Modal for Popup behavior
 import QuickEnquiryModal from './components/QuickEnquiryModal';
-import HomePage from './pages/HomePage';
-import SystemLogs from './pages/admin/SystemLogs';
-import PortalLayout from './layouts/PortalLayout';
+// --- Lazy Load Layouts & Main Pages ---
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const PortalLayout = React.lazy(() => import('./layouts/PortalLayout'));
+const SystemLogs = React.lazy(() => import('./pages/admin/SystemLogs'));
 
 // --- Lazy Load Public Pages ---
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));

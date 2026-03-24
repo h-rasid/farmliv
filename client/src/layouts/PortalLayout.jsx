@@ -12,6 +12,7 @@ import {
   Activity, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import '../styles/portal.css';
 
 const PortalLayout = ({ role = 'admin' }) => {
   const navigate = useNavigate();
