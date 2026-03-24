@@ -59,7 +59,7 @@ const ThankYouPage = () => {
                   </div>
                   <div className="text-left leading-tight">
                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Direct Support</p>
-                    <p className="font-bold text-sm">+91 91813 95595</p>
+                    <p className="font-bold text-sm">+91 91811 27883</p>
                   </div>
                 </div>
               </div>

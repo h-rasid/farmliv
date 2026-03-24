@@ -61,8 +61,8 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: 'Phone Support',
-      details: ['+91 91813 95595', '+91 91814 09182'],
-      link: 'tel:+91 91813 95595',
+      details: ['+91 91811 27883', '+91 91814 09182'],
+      link: 'tel:+919181127883',
       color: 'bg-blue-50 text-blue-600'
     },
     {
@@ -98,7 +98,7 @@ const ContactPage = () => {
     <>
       <Helmet>
         <title>Contact Farmliv Industries - Get in Touch | Request Quote & Support</title>
-        <meta name="description" content="Contact Farmliv Industries for product inquiries, quotes, and support. Phone: +91 91813 95595, Email: sales@farmliv.com. We respond within 24 hours." />
+        <meta name="description" content="Contact Farmliv Industries for product inquiries, quotes, and support. Phone: +91 91811 27883, Email: sales@farmliv.com. We respond within 24 hours." />
       </Helmet>
 
       <div className="min-h-screen bg-white">

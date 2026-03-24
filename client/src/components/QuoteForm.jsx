@@ -117,7 +117,7 @@ const QuoteForm = () => {
     doc.setTextColor(80);
     doc.text("Sales Department", 115, 71);
     doc.text("sales@farmliv.com", 115, 77);
-    doc.text("+91 91813 95595", 115, 83);
+    doc.text("+91 91811 27883", 115, 83);
 
     autoTable(doc, {
       startY: 95,

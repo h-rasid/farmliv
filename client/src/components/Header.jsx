@@ -457,9 +457,9 @@ const Header = () => {
 
               <div className="p-6 bg-white border-t border-gray-100 shrink-0 safe-area-bottom">
                 <div className="space-y-4">
-                  <a href="tel:+919181395595" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
+                  <a href="tel:+919181127883" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
                     <Phone className="w-4 h-4 text-[#2E7D32]" aria-hidden="true" />
-                    <span className="font-semibold text-xs">+91 91813 95595</span>
+                    <span className="font-semibold text-xs">+91 91811 27883</span>
                   </a>
                 </div>
               </div>
