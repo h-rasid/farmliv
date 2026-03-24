@@ -51,6 +51,8 @@ const ProductCard = ({ product }) => {
               src={getImageUrl()} 
               alt={product?.name || 'Product Image'}
               className="w-full h-full object-cover"
+              aspectRatio="16/9"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           </div>
           

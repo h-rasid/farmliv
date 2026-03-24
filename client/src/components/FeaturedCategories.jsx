@@ -93,6 +93,8 @@ const FeaturedCategories = () => {
                         src={category.image ? (category.image.startsWith('http') ? category.image : `${API_BASE}${category.image}`) : '/cat-placeholder.jpg'}
                         alt={category.name}
                         className="w-full h-full object-cover"
+                        aspectRatio="3/4"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
                       />
                   </div>
                 </div>

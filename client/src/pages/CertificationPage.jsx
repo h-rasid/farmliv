@@ -118,9 +118,10 @@ const CertificationPage = () => {
                           alt={cert.title} 
                           className="w-full h-full"
                           imgClassName="certificate-img"
-                          aspectRatio="auto"
+                          aspectRatio="3/4"
                           objectFit="contain"
                           fullHeight={true}
+                          sizes="(max-width: 768px) 100vw, 400px"
                         />
                       </div>
                       {/* Zoom Overlay */}
@@ -167,7 +168,7 @@ const CertificationPage = () => {
 
                 <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="relative">
                   <div className="rounded-[3rem] overflow-hidden shadow-2xl border-[12px] border-white">
-                    <LazyImage src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet7_mt70ge.webp" alt="Farmliv Quality Inspection" className="w-full h-full" aspectRatio="4/3" />
+                    <LazyImage src="https://res.cloudinary.com/dik8mlsie/image/upload/v1771483790/Shadenet7_mt70ge.webp" alt="Farmliv Quality Inspection" className="w-full h-full" aspectRatio="4/3" sizes="(max-width: 1024px) 100vw, 600px" />
                   </div>
                   <div className="absolute -bottom-6 -right-6 bg-[#2E7D32] text-white p-8 rounded-[2rem] shadow-xl">
                     <FileCheck size={40} />

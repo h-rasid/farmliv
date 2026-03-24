@@ -28,6 +28,8 @@ const ProductGallery = ({ images, productName }) => {
                 src={images[selectedImage]}
                 alt={`${productName} - Main view`}
                 priority={true}
+                aspectRatio="1/1"
+                sizes="(max-width: 1024px) 100vw, 600px"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
           </motion.div>
@@ -53,6 +55,8 @@ const ProductGallery = ({ images, productName }) => {
             <LazyImage
               src={image}
               alt={`${productName} - View ${index + 1}`}
+              aspectRatio="1/1"
+              sizes="150px"
               className="w-full h-full object-cover"
             />
             {selectedImage === index && (
