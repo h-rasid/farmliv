@@ -7,21 +7,22 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Custom plugin to defer CSS loading
-function deferCssPlugin() {
+// Custom plugin to defer CSS and preload critical scripts
+function optimizationPlugin() {
   return {
-    name: 'defer-css',
+    name: 'optimization-plugin',
     enforce: 'post',
     transformIndexHtml(html, ctx) {
       if (!ctx.bundle) return html;
       
+      let modifiedHtml = html;
+
+      // 1. Defer CSS
       // Replace synchronous stylesheet link injected by Vite with preload
-      return html.replace(
+      modifiedHtml = modifiedHtml.replace(
         /<link\s([^>]*?)rel="stylesheet"([^>]*?)href="([^"]+)"([^>]*?)>/gi,
         (match, prefix1, prefix2, href, suffix) => {
-          // Construct the attributes string, excluding rel and href which we handle explicitly
           const attrs = (prefix1 + prefix2 + suffix).trim().replace(/\s+/g, ' ');
-          
           return [
             `<link rel="preload" as="style" href="${href}" ${attrs}>`,
             `<link rel="stylesheet" href="${href}" media="print" onload="this.media='all'" ${attrs}>`,
@@ -29,12 +30,21 @@ function deferCssPlugin() {
           ].join('\n    ');
         }
       );
+
+      // 2. Preload Main Script (Standard Vite often skips preloading the entry itself in some configs)
+      const scriptMatch = modifiedHtml.match(/<script type="module" crossorigin src="([^"]+)"><\/script>/);
+      if (scriptMatch && !modifiedHtml.includes(`rel="modulepreload" crossorigin href="${scriptMatch[1]}"`)) {
+        const scriptUrl = scriptMatch[1];
+        modifiedHtml = modifiedHtml.replace('</head>', `  <link rel="modulepreload" crossorigin href="${scriptUrl}">\n  </head>`);
+      }
+
+      return modifiedHtml;
     }
   };
 }
 
 export default defineConfig({
-  plugins: [react(), deferCssPlugin()],
+  plugins: [react(), optimizationPlugin()],
   // Hostinger par refresh problem se bachne ke liye base path './' rakhein taaki assets relative load hon
   base: './', 
   resolve: {
