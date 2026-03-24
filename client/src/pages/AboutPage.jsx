@@ -27,6 +27,7 @@ const AboutPage = () => {
       <Helmet>
         <title>About Farmliv Industries - ISO Certified Manufacturer</title>
         <meta name="description" content="Learn about Farmliv Industries' commitment to quality agricultural products. ISO certified manufacturer with 5 years experience, serving 5000 clients worldwide." />
+        <link rel="canonical" href="https://farmliv.com/about" />
       </Helmet>
 
       <div className="min-h-screen">

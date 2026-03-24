@@ -130,6 +130,7 @@ const ProductDetailPage = () => {
       <Helmet>
         <title>{product.name} | Farmliv Industries</title>
         <meta name="description" content={product.description} />
+        <link rel="canonical" href={`https://farmliv.com/product/${productId}`} />
       </Helmet>
 
       <Header />

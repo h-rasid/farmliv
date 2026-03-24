@@ -48,6 +48,7 @@ const CertificationPage = () => {
       <Helmet>
         <title>Official Certifications | Farmliv Industries | ISO 9001 & ZED Certified</title>
         <meta name="description" content="Certificate of Farmliv Industries including ISO 9001:2015, DPIIT Startup Recognition, and MSME ZED Bronze certification." />
+        <link rel="canonical" href="https://farmliv.com/certification" />
       </Helmet>
 
       {/* ⭐ NEW: Image Zoom Modal (Lightbox) */}

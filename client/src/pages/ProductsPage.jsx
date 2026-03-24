@@ -108,6 +108,7 @@ const ProductsPage = () => {
       <Helmet>
         <title>Agricultural Products Catalog | Farmliv Industries</title>
         <meta name="description" content="Explore Farmliv's premium range of agricultural solutions." />
+        <link rel="canonical" href="https://farmliv.com/products" />
       </Helmet>
 
       <Header />
