@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion'; // Added for smoother branding
+import { m as motion } from 'framer-motion';
+ // Added for smoother branding
 
 const LoadingFallback = () => (
   /* - min-h-[50vh] ko h-screen se replace kiya taaki poori screen cover ho.

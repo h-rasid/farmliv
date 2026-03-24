@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   IndianRupee, Database, ShoppingBag, Target, PieChart,
   Truck, AlertCircle, TrendingUp, History, 

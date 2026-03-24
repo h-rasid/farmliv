@@ -3,7 +3,7 @@ import { X, Loader2, Upload, AlertCircle, Tag, DollarSign, AlignLeft } from 'luc
 import { mockDB } from '@/lib/mockDatabase';
 import { useToast } from '@/components/ui/use-toast';
 import { validateProductForm } from '@/utils/formValidation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 
 const ProductFormModal = ({ isOpen, onClose, onSuccess }) => {
   const { toast } = useToast();

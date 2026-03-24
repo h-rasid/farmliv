@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 
 // ⭐ Link ko hata kar 'openModal' prop ka istemal kiya gaya hai
 const QuickEnquiryTab = ({ openModal }) => {

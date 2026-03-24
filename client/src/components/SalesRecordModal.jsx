@@ -3,7 +3,7 @@ import API from '@/utils/axios';
 import { X, Loader2, Calendar, DollarSign, Package, User, FileText } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 
 const SalesRecordModal = ({ isOpen, onClose, onSuccess, recordToEdit = null }) => {
   const { user } = useAuth();

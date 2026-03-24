@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 import { API_BASE } from '@/utils/config';
 import { ShieldCheck, ArrowRight, Layers, Info, CheckCircle2, Zap, Globe, Award, Activity } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const ProductDescriptionSection = ({ product }) => {

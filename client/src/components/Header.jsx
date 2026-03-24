@@ -5,7 +5,7 @@ import {
   ArrowRight, Home, Users, Sprout, FileCheck, FileText,
   BookOpen, Truck, Shield, Sparkles, Lock 
 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { m as motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import API from '@/utils/axios';
 import { API_BASE } from '@/utils/config';
 import LazyImage from '@/components/ui/LazyImage';

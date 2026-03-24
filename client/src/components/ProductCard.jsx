@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { ArrowRight, Package, Tag } from 'lucide-react';
 import LazyImage from './ui/LazyImage'; 
 import { API_BASE } from '@/utils/config';

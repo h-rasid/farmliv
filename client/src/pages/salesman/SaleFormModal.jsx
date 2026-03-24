@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import API from '@/utils/axios';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   X, CheckCircle2, Receipt, CreditCard, 
   Truck, User, Smartphone, IndianRupee 

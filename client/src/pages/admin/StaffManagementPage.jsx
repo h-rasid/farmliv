@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   UserPlus, Shield, Trash2, Search, Loader2, Key, 
   Phone, Mail, Fingerprint, Activity, CheckCircle2, X

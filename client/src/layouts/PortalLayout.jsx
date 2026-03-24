@@ -11,7 +11,7 @@ import {
   ScrollText, UserCog, Mail, MessageCircle, Zap,
   Activity, Star
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import '../styles/portal.css';
 
 const PortalLayout = ({ role = 'admin' }) => {

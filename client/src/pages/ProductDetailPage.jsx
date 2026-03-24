@@ -11,7 +11,7 @@ import {
   Loader2, BarChart3, ArrowRight, Box, Shield, Clock,
   Truck, Factory, Layers, Eye
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 
 const ProductDetailPage = () => {

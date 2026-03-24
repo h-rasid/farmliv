@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { 
   TrendingUp, Users, Target, Clock, CheckCircle2, 
   Search, Filter, Plus, ChevronRight, Briefcase, 

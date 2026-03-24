@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Award, CheckCircle2, FileCheck, Shield, ZoomIn, Star, Landmark, X } from 'lucide-react'; // ⭐ Added X icon
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import LazyImage from '@/components/ui/LazyImage';
 
 const CertificationPage = () => {

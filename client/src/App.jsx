@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, useLocation, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingFallback from './components/ui/LoadingFallback';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m as motion, LazyMotion } from 'framer-motion';
 import { API_BASE, API_URL } from '@/utils/config';
 import './styles/public.css';
 
@@ -173,6 +173,8 @@ const AnimatedRoutes = ({ onOpenModal }) => {
   );
 };
 
+const loadFeatures = () => import('@/utils/framer-features').then(res => res.default);
+
 function App() {
   const [initialLoading, setInitialLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -209,17 +211,19 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <ScrollToTop />
-      <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
-      <Suspense fallback={null}>
-        <QuickEnquiryModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
-        />
-        <Toaster />
-      </Suspense>
-    </Router>
+    <LazyMotion features={loadFeatures} strict>
+      <Router>
+        <ScrollToTop />
+        <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
+        <Suspense fallback={null}>
+          <QuickEnquiryModal 
+            isOpen={isModalOpen} 
+            onClose={() => setIsModalOpen(false)} 
+          />
+          <Toaster />
+        </Suspense>
+      </Router>
+    </LazyMotion>
   );
 }
 

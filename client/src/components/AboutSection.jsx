@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Award, Users, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import LazyImage from '@/components/ui/LazyImage';
 
 const AboutSection = () => {

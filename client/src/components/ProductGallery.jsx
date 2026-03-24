@@ -1,6 +1,6 @@
 
 import React, { useState, Suspense, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { ZoomIn, Maximize2 } from 'lucide-react';
 import LazyImage from '@/components/ui/LazyImage';
 

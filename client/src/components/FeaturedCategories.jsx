@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { API_BASE } from '@/utils/config';
 import API from '@/utils/axios';
@@ -126,4 +126,4 @@ const FeaturedCategories = () => {
 };
 
 
-export default memo(FeaturedCategories);
+export default memo(FeaturedCategories);

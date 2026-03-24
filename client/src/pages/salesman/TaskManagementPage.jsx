@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import API from '@/utils/axios';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, Clock, Calendar, AlertCircle, 
   ChevronRight, Search, Target, ListChecks, Filter,

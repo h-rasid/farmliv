@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '@/utils/axios';
 
-import { motion } from 'framer-motion';
+import { m as motion } from 'framer-motion';
 import { 
   BarChart3, PieChart, TrendingUp, Users, Package, 
   Download, Calendar, Filter, FileSpreadsheet, Loader2 

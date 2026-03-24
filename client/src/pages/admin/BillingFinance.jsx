@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '@/utils/axios';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   CreditCard, IndianRupee, FileText, CheckCircle2, 
   Clock, AlertCircle, TrendingUp, Search, Filter,

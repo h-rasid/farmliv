@@ -4,7 +4,7 @@ import { API_BASE } from '@/utils/config';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Package, Tag, ArrowRight, Search } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import LazyImage from '@/components/ui/LazyImage';

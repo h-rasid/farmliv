@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { m as motion, AnimatePresence } from 'framer-motion';
 import { 
   Calculator, Plus, ShoppingBag, User, Calendar, 
   ChevronRight, Download, Send, Trash2, Search,
