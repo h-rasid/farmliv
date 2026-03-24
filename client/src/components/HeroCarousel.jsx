@@ -72,9 +72,9 @@ const HeroCarousel = () => {
   };
 
   const slideVariants = {
-    enter: { opacity: 0 },
-    center: { opacity: 1, zIndex: 1 },
-    exit: { opacity: 0, zIndex: 0 }
+    enter: { opacity: 0, pointerEvents: 'none' },
+    center: { opacity: 1, zIndex: 1, pointerEvents: 'auto' },
+    exit: { opacity: 0, zIndex: 0, pointerEvents: 'none' }
   };
 
   return (
@@ -106,7 +106,7 @@ const HeroCarousel = () => {
           animate="center"
           exit="exit"
           transition={{ opacity: { duration: 0.8, ease: "easeInOut" } }}
-          className={`absolute inset-0 will-change-transform z-10 ${currentSlide === index ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          className="absolute inset-0 will-change-transform z-10"
         >
           {/* Ken Burns effect */}
           <motion.div
