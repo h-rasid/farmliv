@@ -124,7 +124,7 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full object-cover pointer-events-none select-none"
+              className="w-full h-full object-cover pointer-events-none select-none opacity-70"
             />
 
             {/* Minimal readable overlay */}
