@@ -120,7 +120,7 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location, categor
                 animate={{ opacity: 1, y: 0, scale: 1 }} 
                 exit={{ opacity: 0, y: 15, scale: 0.98 }} 
                 transition={{ duration: 0.2, ease: "easeOut" }} 
-                className="fixed top-[105px] left-0 right-0 mx-auto w-[94vw] max-w-7xl bg-white/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] rounded-[2.5rem] overflow-hidden border border-white/40 z-50 ring-1 ring-black/5"
+                className="fixed top-[85px] left-0 right-0 mx-auto w-[94vw] max-w-7xl bg-white/95 backdrop-blur-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.25)] rounded-[2.5rem] overflow-hidden border border-white/40 z-50 ring-1 ring-black/5"
               >
                 <div className="p-8 lg:p-12">
                   <div className="grid grid-cols-12 gap-10">
@@ -138,6 +138,8 @@ const DesktopMenu = memo(({ isProductsOpen, setIsProductsOpen, location, categor
                               src={category.image ? (category.image.startsWith('http') ? category.image : `${API_BASE}${category.image}`) : '/cat-placeholder.jpg'} 
                               alt={category.name} 
                               className="w-full h-full object-cover transform group-hover/item:scale-110 transition-transform duration-700" 
+                              width="80"
+                              height="80"
                             />
                           </div>
                           <div className="flex flex-col justify-center">
@@ -321,15 +323,15 @@ const Header = () => {
     <>
       <header 
         className={`
-          fixed top-0 left-0 right-0 z-40 transition-all duration-300 will-change-transform
+          fixed top-0 left-0 right-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-300 will-change-[transform,background-color]
           ${isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg py-2' 
-            : 'bg-white/80 backdrop-blur-sm py-4'}
+            ? 'bg-white/95 backdrop-blur-md shadow-lg py-3' 
+            : 'bg-white/80 backdrop-blur-sm py-3'}
         `}
       >
         <div className={`
-          absolute top-0 left-0 w-full bg-[#0F172A] text-white transition-all duration-300 overflow-hidden
-          ${isScrolled ? 'h-0 opacity-0' : 'h-10 opacity-100'}
+          absolute top-0 left-0 w-full bg-[#0F172A] text-white transition-[transform,opacity] duration-300 overflow-hidden h-10
+          ${isScrolled ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
         `}>
           <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center text-xs font-medium tracking-wide">
             <div className="flex items-center gap-6">
@@ -345,7 +347,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-300 ${!isScrolled && 'mt-10'}`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-transform duration-300 ${isScrolled ? 'mt-0' : 'mt-10'}`}>
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group relative z-[60]" onClick={() => { closeMobileMenu(); window.scrollTo(0, 0); }}>
               <div className="w-10 h-10 bg-gradient-to-br from-[#2E7D32] to-[#1B5E20] rounded-xl flex items-center justify-center shadow-lg shadow-green-900/10 group-hover:shadow-green-900/20 transition-all duration-300 shrink-0">
