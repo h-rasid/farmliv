@@ -26,6 +26,7 @@ const HomePage = () => {
       <Helmet>
         <title>Farmliv Industries - Premium B2B Agricultural Solutions | Quality Products for Modern Farming</title>
         <meta name="description" content="Leading B2B supplier of agricultural products including weed control mats, shade nets, drip irrigation, and mulch films. ISO certified quality, Your trusted partner for business solutions." />
+        <link rel="canonical" href="https://farmliv.com/" />
       </Helmet>
 
       <div className="min-h-screen">
