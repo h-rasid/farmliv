@@ -41,7 +41,7 @@ const HeroCarousel = () => {
   // Preload all slides
   useEffect(() => {
     slides.forEach((slide) => {
-      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:eco,w_1080/');
+      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1080/');
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
@@ -88,7 +88,7 @@ const HeroCarousel = () => {
         <div
           className="absolute inset-0 transition-all duration-1000"
           style={{
-            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:low,w_200/')})`,
+            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:eco,c_fill,g_auto,w_200/')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'blur(25px) brightness(0.85)',
