@@ -1,6 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, useLocation, Navigate } from 'react-router-dom';
-import { Toaster } from './components/ui/toaster';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingFallback from './components/ui/LoadingFallback';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,11 +7,11 @@ import { API_BASE, API_URL } from '@/utils/config';
 import './styles/public.css';
 
 // ⭐ Existing Components
-import FloatingContactButtons from './components/FloatingContactButtons';
-import QuickEnquiryTab from './components/QuickEnquiryTab';
-
-// ⭐ Modal for Popup behavior
-import QuickEnquiryModal from './components/QuickEnquiryModal';
+// ⭐ Lazy Loaded Global Components
+const FloatingContactButtons = React.lazy(() => import('./components/FloatingContactButtons'));
+const QuickEnquiryTab = React.lazy(() => import('./components/QuickEnquiryTab'));
+const QuickEnquiryModal = React.lazy(() => import('./components/QuickEnquiryModal'));
+const Toaster = React.lazy(() => import('./components/ui/toaster').then(m => ({ default: m.Toaster })));
 // --- Lazy Load Layouts & Main Pages ---
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const PortalLayout = React.lazy(() => import('./layouts/PortalLayout'));
@@ -165,10 +164,10 @@ const AnimatedRoutes = ({ onOpenModal }) => {
       </AnimatePresence>
 
       {!isStaffArea && (
-        <>
+        <Suspense fallback={null}>
           <QuickEnquiryTab openModal={onOpenModal} />
           <FloatingContactButtons />
-        </>
+        </Suspense>
       )}
     </>
   );
@@ -213,11 +212,13 @@ function App() {
     <Router>
       <ScrollToTop />
       <AnimatedRoutes onOpenModal={() => setIsModalOpen(true)} />
-      <QuickEnquiryModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
-      <Toaster />
+      <Suspense fallback={null}>
+        <QuickEnquiryModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+        <Toaster />
+      </Suspense>
     </Router>
   );
 }
