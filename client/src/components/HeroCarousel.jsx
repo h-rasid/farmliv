@@ -123,7 +123,7 @@ const HeroCarousel = () => {
               width="1600"
               height="1080"
               objectFit="cover"
-              sizes="100vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1920px"
               className="w-full h-full object-cover pointer-events-none select-none opacity-70"
             />
 
