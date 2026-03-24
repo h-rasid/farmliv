@@ -16,9 +16,7 @@ const AboutSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
+            initial={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
@@ -37,9 +35,7 @@ const AboutSection = () => {
               {metrics.map((metric, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-10%" }}
+                  initial={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.4 }}
                   className="text-center"
                 >
@@ -55,9 +51,7 @@ const AboutSection = () => {
 
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
+            initial={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             className="relative"
           >
