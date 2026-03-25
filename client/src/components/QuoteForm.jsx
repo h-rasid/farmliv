@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
 import API from '@/utils/axios';
+import { isValidPhone } from '@/utils/formValidation';
 // ⭐ IMPORT FIXED: Added 'Phone' icon here to fix the "Phone is not defined" error
 import { User, Package, Loader2, MapPin, Building2, Download, MessageSquare, Phone } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
@@ -146,6 +145,14 @@ const QuoteForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // ⭐ Only allow numbers for phone field
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9]/g, '');
+      if (numericValue.length <= 10) {
+        setFormData(prev => ({ ...prev, [name]: numericValue }));
+      }
+      return;
+    }
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
   };
@@ -154,7 +161,11 @@ const QuoteForm = () => {
     e.preventDefault();
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Required';
-    if (!formData.phone.trim()) newErrors.phone = 'Required';
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Required';
+    } else if (!isValidPhone(formData.phone)) {
+      newErrors.phone = 'Enter valid 10-digit mobile number';
+    }
     if (!formData.productId) newErrors.productId = 'Select Product';
     if (!formData.quantity) newErrors.quantity = 'Invalid Volume';
     if (!formData.deliveryLocation.trim()) newErrors.deliveryLocation = 'Required';

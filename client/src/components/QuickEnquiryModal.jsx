@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { m as motion, AnimatePresence } from 'framer-motion';
 import { X, Send, User, Phone, Mail, Building2, MapPin, Loader2, CheckCircle2 } from 'lucide-react';
 import API from '@/utils/axios';
+import { isValidPhone } from '@/utils/formValidation';
 
 const QuickEnquiryModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -19,10 +20,27 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'mobile') {
+      const numericValue = value.replace(/[^0-9]/g, '');
+      if (numericValue.length <= 10) {
+        setFormData({ ...formData, [name]: numericValue });
+      }
+      return;
+    }
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // ⭐ Validate Mobile Number
+    if (!isValidPhone(formData.mobile)) {
+      setStatus({ loading: false, success: false, error: "Please enter a valid 10-digit mobile number." });
+      return;
+    }
+
     setStatus({ loading: true, success: false, error: null });
 
     try {

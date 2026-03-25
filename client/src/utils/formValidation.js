@@ -1,4 +1,10 @@
 
+
+export const isValidPhone = (phone) => {
+  const phoneRegex = /^[6-9]\d{9}$/;
+  return phoneRegex.test(phone.replace(/\s+/g, '').replace('+91', ''));
+};
+
 export const validateProductForm = (data) => {
   const errors = {};
   
@@ -56,7 +62,11 @@ export const validateSaleForm = (data) => {
 export const validateQuoteForm = (formData) => {
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!isValidPhone(formData.phone)) {
+      newErrors.phone = 'Enter valid 10-digit mobile number';
+    }
     // Company details and Address technically optional for simple inquiries but good to have
     // Requirements are explicitly OPTIONAL now
     
