@@ -1,5 +1,1 @@
-<<<<<<<< HEAD:client/dist/assets/file-text-BPa3t3Id.js
-import{f as e}from"./index-Dxcc8BEk.js";const t=e("FileText",[["path",{d:"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",key:"1rqfz7"}],["path",{d:"M14 2v4a2 2 0 0 0 2 2h4",key:"tnqrlb"}],["path",{d:"M10 9H8",key:"b1mrlr"}],["path",{d:"M16 13H8",key:"t4e002"}],["path",{d:"M16 17H8",key:"z1uh3a"}]]);export{t as F};
-========
 import{f as e}from"./index-C9kBBazU.js";const t=e("FileText",[["path",{d:"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z",key:"1rqfz7"}],["path",{d:"M14 2v4a2 2 0 0 0 2 2h4",key:"tnqrlb"}],["path",{d:"M10 9H8",key:"b1mrlr"}],["path",{d:"M16 13H8",key:"t4e002"}],["path",{d:"M16 17H8",key:"z1uh3a"}]]);export{t as F};
->>>>>>>> 3ba7d7ed8cc3f5d87d150306f11ff9036bb6cf01:client/dist/assets/file-text-Dv3AVZck.js
