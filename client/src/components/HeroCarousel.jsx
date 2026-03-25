@@ -105,7 +105,7 @@ const HeroCarousel = () => {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentSlide}
           initial={{ opacity: 0, scale: 1.05 }}
@@ -131,7 +131,8 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full object-cover pointer-events-none select-none opacity-70"
+              className="w-full h-full pointer-events-none select-none"
+              imgClassName="opacity-70"
             />
 
             {/* Minimal readable overlay */}
