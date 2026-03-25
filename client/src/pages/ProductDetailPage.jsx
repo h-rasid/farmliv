@@ -174,6 +174,7 @@ const ProductDetailPage = () => {
                     modules={[Navigation, Pagination]}
                     spaceBetween={0}
                     slidesPerView={1}
+                    speed={0}
                     onSlideChange={(swiper) => setActiveImage(swiper.activeIndex)}
                     className="w-full h-full"
                   >
