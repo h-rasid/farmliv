@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:client/dist/assets/star-C5KIMQ9H.js
-import{f as o}from"./index-Dxcc8BEk.js";const r=o("Star",[["polygon",{points:"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2",key:"8f66p6"}]]);export{r as S};
-========
-import{f as o}from"./index-C9kBBazU.js";const r=o("Star",[["polygon",{points:"12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2",key:"8f66p6"}]]);export{r as S};
->>>>>>>> 3ba7d7ed8cc3f5d87d150306f11ff9036bb6cf01:client/dist/assets/star-Brdq8GZR.js

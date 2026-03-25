@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import API from '@/utils/axios';
 import { isValidPhone } from '@/utils/formValidation';
 // ⭐ IMPORT FIXED: Added 'Phone' icon here to fix the "Phone is not defined" error
