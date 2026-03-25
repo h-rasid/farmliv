@@ -150,8 +150,8 @@ const QuoteForm = () => {
     // ⭐ Only allow numbers for phone field
     if (name === 'phone') {
       const numericValue = value.replace(/[^0-9]/g, '');
-      // ⭐ Strict: First digit must be 6-9 for Indian mobile numbers
-      if (numericValue.length === 1 && !/[6-9]/.test(numericValue)) return;
+      // ⭐ Strict: If not empty, first digit must be 6-9 for Indian mobile numbers
+      if (numericValue.length > 0 && !/[6-9]/.test(numericValue[0])) return;
       
       if (numericValue.length <= 10) {
         setFormData(prev => ({ ...prev, [name]: numericValue }));
