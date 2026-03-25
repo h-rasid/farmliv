@@ -179,6 +179,7 @@ const ProductDetailPage = () => {
                     grabCursor={true}
                     onSlideChange={(swiper) => setActiveImage(swiper.activeIndex)}
                     className="w-full h-full product-swiper"
+                    style={{ willChange: 'transform, opacity' }}
                   >
                     {product.images.map((img, index) => (
                       <SwiperSlide key={index} className="w-full h-full flex items-center justify-center">

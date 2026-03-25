@@ -282,9 +282,7 @@ const Header = () => {
     const body = document.body;
     if (isMobileMenuOpen) {
       body.style.overflow = 'hidden';
-      // ⭐ Optimized: Removed position: fixed which was triggering heavy reflows
-      // and fixed the width string typo
-    } else {
+    } else if (body.style.overflow === 'hidden') {
       body.style.overflow = '';
     }
   }, [isMobileMenuOpen]);
@@ -318,7 +316,7 @@ const Header = () => {
   return (
     <>
       <motion.header 
-        style={{ backgroundColor: headerBg, boxShadow: headerShadow }}
+        style={{ backgroundColor: headerBg, boxShadow: headerShadow, willChange: 'transform' }}
         className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md py-3"
       >
         <motion.div 
@@ -340,7 +338,7 @@ const Header = () => {
         </motion.div>
 
         <motion.div 
-          style={{ y: headerY }}
+          style={{ y: headerY, willChange: 'transform', backfaceVisibility: 'hidden' }}
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10"
         >
           <div className="flex items-center justify-between">

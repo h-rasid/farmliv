@@ -102,8 +102,27 @@
     .skeleton-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 1; }
     .skeleton-hero-content { width: 600px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; z-index: 2; position: relative; }
     
-    /* Hide skeleton once React hydrates */
-    #root.hydrated .skeleton-header, #root.hydrated .skeleton-hero { display: none !important; }
+    /* Smooth Hydration Transition: Avoid forced reflows from layout shifts */
+    .skeleton-header, .skeleton-hero {
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s ease-out;
+      will-change: opacity, transform;
+    }
+
+    #root.hydrated .skeleton-header, #root.hydrated .skeleton-hero { 
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-10px);
+    }
+    
+    /* Reveal React app smoothly */
+    #root > *:not(.skeleton-header):not(.skeleton-hero) {
+      opacity: 0;
+      transition: opacity 0.6s ease-in 0.2s;
+    }
+    
+    #root.hydrated > *:not(.skeleton-header):not(.skeleton-hero) {
+      opacity: 1;
+    }
     
     h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 800; }
 

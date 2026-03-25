@@ -4,7 +4,7 @@
   <link rel="preconnect" href="https://res.cloudinary.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="modulepreload" crossorigin href="./assets/index-CuWae4BY.js">
+  <link rel="modulepreload" crossorigin href="./assets/index-MjSmcSO7.js">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Farmliv Industries Private Limited - Premium Agricultural Solutions" />
@@ -102,8 +102,27 @@
     .skeleton-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 1; }
     .skeleton-hero-content { width: 600px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; z-index: 2; position: relative; }
     
-    /* Hide skeleton once React hydrates */
-    #root.hydrated .skeleton-header, #root.hydrated .skeleton-hero { display: none !important; }
+    /* Smooth Hydration Transition: Avoid forced reflows from layout shifts */
+    .skeleton-header, .skeleton-hero {
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s ease-out;
+      will-change: opacity, transform;
+    }
+
+    #root.hydrated .skeleton-header, #root.hydrated .skeleton-hero { 
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateY(-10px);
+    }
+    
+    /* Reveal React app smoothly */
+    #root > *:not(.skeleton-header):not(.skeleton-hero) {
+      opacity: 0;
+      transition: opacity 0.6s ease-in 0.2s;
+    }
+    
+    #root.hydrated > *:not(.skeleton-header):not(.skeleton-hero) {
+      opacity: 1;
+    }
     
     h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 800; }
 
@@ -152,10 +171,10 @@
       if (root) root.classList.add('hydrated');
     });
   </script>
-   <script type="module" crossorigin src="./assets/index-CuWae4BY.js"></script>
-   <link rel="preload" as="style" href="./assets/index-D8MSVqzo.css" crossorigin>
-    <link rel="stylesheet" href="./assets/index-D8MSVqzo.css" media="print" onload="this.media='all'" crossorigin>
-    <noscript><link rel="stylesheet" href="./assets/index-D8MSVqzo.css" crossorigin></noscript>
+   <script type="module" crossorigin src="./assets/index-MjSmcSO7.js"></script>
+   <link rel="preload" as="style" href="./assets/index-DuVmLMz5.css" crossorigin>
+    <link rel="stylesheet" href="./assets/index-DuVmLMz5.css" media="print" onload="this.media='all'" crossorigin>
+    <noscript><link rel="stylesheet" href="./assets/index-DuVmLMz5.css" crossorigin></noscript>
  </head>
  <body>
   <!-- Google Tag Manager (noscript) -->
@@ -181,6 +200,6 @@
       <div class="skeleton-hero-content"></div>
     </div>
   </div>
-
+
  </body>
 </html>

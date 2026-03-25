@@ -105,15 +105,15 @@ const HeroCarousel = () => {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <AnimatePresence initial={false}>
+      <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ opacity: { duration: 0.8, ease: "easeInOut" } }}
-          className="absolute inset-0 will-change-transform z-10"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 z-10 overflow-hidden"
+          style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
         >
           {/* Ken Burns effect */}
           <motion.div
