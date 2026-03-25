@@ -24,6 +24,9 @@ const QuickEnquiryModal = ({ isOpen, onClose }) => {
     const { name, value } = e.target;
     if (name === 'mobile') {
       const numericValue = value.replace(/[^0-9]/g, '');
+      // ⭐ Strict: First digit must be 6-9 for Indian mobile numbers
+      if (numericValue.length === 1 && !/[6-9]/.test(numericValue)) return;
+      
       if (numericValue.length <= 10) {
         setFormData({ ...formData, [name]: numericValue });
       }
