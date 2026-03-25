@@ -1969,23 +1969,6 @@ app.get('{*path}', (req, res) => {
   if (req.path.includes('.') && 
       !req.path.endsWith('.html') && 
       !req.path.startsWith('/api')) {
-    
-    // Self-Healing SPA Cache Buster: If browser asks for old JS, force reload!
-    if (req.path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send(`
-        console.warn('Farmliv: Outdated cache detected. Forcing page reload...');
-        if (window.location.search.indexOf('v=') === -1) {
-          window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
-        }
-      `);
-    } else if (req.path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
-    }
-    
     return res.status(404).send('Product not found');
   }
 
