@@ -77,6 +77,9 @@ const AdminSettings = () => {
       
       // Settings object ko append karein
       Object.keys(settings).forEach(key => {
+        // ⭐ Skip brochure from body if we're uploading a new file to avoid confusion
+        if (key === 'brochure' && brochure) return;
+        
         // Fix for SQL tinyint (Boolean to String for Multer/FormData)
         const value = key === 'isMaintenance' ? (settings[key] ? 'true' : 'false') : settings[key];
         formData.append(key, value || '');
@@ -93,7 +96,11 @@ const AdminSettings = () => {
       });
 
       console.log("Saving to Database:", response.data);
-      if (response.data.brochure) setBrochureUrl(response.data.brochure);
+      if (response.data.brochure) {
+        setBrochureUrl(response.data.brochure);
+        setSettings(prev => ({ ...prev, brochure: response.data.brochure }));
+        setBrochure(null); // clear file state after success
+      }
       alert("✅ Settings updated successfully!");
     } catch (err) {
       console.error("Update failed:", err);

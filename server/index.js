@@ -683,6 +683,16 @@ app.post('/api/settings', upload, async (req, res) => {
     let logoUrl = b.logo;
     let faviconUrl = b.favicon;
     let brochureUrl = b.brochure; // keep existing URL if no new file
+    
+    // ⭐ DEFENSIVE: If brochure is a full URL, strip the protocol/host before saving
+    if (brochureUrl && brochureUrl.startsWith('http')) {
+      try {
+        const urlObj = new URL(brochureUrl);
+        brochureUrl = urlObj.pathname;
+      } catch (e) {
+        console.warn("Invalid brochure URL format, saving as-is:", brochureUrl);
+      }
+    }
 
     if (req.files['logo']) logoUrl = await processImage(req.files['logo'][0]);
     if (req.files['favicon']) faviconUrl = await processImage(req.files['favicon'][0]);
