@@ -1965,31 +1965,17 @@ app.use(express.static(finalPath, {
 
 // React app catch-all route
 app.get('*', (req, res) => {
-  // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
-  if (req.path.includes('.') && 
-      !req.path.endsWith('.html') && 
-      !req.path.startsWith('/api') &&
-      !req.path.startsWith('/uploads')) {
-    
-    // Self-Healing SPA Cache Buster: If browser asks for old JS, force reload!
-    if (req.path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'application/javascript');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send(`
-        console.warn('Farmliv: Outdated cache detected. Forcing page reload...');
-        if (window.location.search.indexOf('v=') === -1) {
-          window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
-        }
-      `);
-    } else if (req.path.endsWith('.css')) {
-      res.setHeader('Content-Type', 'text/css');
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
-    }
-    
-    return res.status(404).send('Product not found');
+  // 1. Skip /api and /uploads
+  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    return res.status(404).send('Resource Not Found');
   }
 
+  // 2. Handle missing static assets (images, js, css) with a simple 404
+  if (req.path.includes('.') && !req.path.endsWith('.html')) {
+    return res.status(404).send('Asset not found');
+  }
+
+  // 3. Serve SPA entry point
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -1997,7 +1983,7 @@ app.get('*', (req, res) => {
     res.setHeader('Expires', '0');
     res.sendFile(indexPath);
   } else {
-    res.status(404).send(`Frontend build not found. Checked: ${finalPath}`);
+    res.status(404).send('Build folder not found. Please run npm run build.');
   }
 });
 
