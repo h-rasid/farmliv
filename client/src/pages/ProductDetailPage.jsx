@@ -168,15 +168,17 @@ const ProductDetailPage = () => {
                   <Maximize2 className="w-5 h-5 text-[#2E7D32]" />
                 </div>
 
-                <div className="w-full h-full relative bg-gray-50 flex items-center justify-center">
+                <div className="w-full h-full relative bg-gray-50 flex items-center justify-center swiper-container-custom">
                   <Swiper
                     onSwiper={setSwiperInstance}
                     modules={[Navigation, Pagination]}
                     spaceBetween={0}
                     slidesPerView={1}
-                    speed={0}
+                    navigation={true}
+                    pagination={{ clickable: true }}
+                    grabCursor={true}
                     onSlideChange={(swiper) => setActiveImage(swiper.activeIndex)}
-                    className="w-full h-full"
+                    className="w-full h-full product-swiper"
                   >
                     {product.images.map((img, index) => (
                       <SwiperSlide key={index} className="w-full h-full flex items-center justify-center">
