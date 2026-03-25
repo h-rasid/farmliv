@@ -1964,11 +1964,12 @@ app.use(express.static(finalPath, {
 
 
 // React app catch-all route
-app.get('{*path}', (req, res) => {
+app.get('*', (req, res) => {
   // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
   if (req.path.includes('.') && 
       !req.path.endsWith('.html') && 
-      !req.path.startsWith('/api')) {
+      !req.path.startsWith('/api') &&
+      !req.path.startsWith('/uploads')) {
     
     // Self-Healing SPA Cache Buster: If browser asks for old JS, force reload!
     if (req.path.endsWith('.js')) {
