@@ -13,6 +13,14 @@ import {
 } from 'lucide-react';
 import { m as motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, EffectFade } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
@@ -22,6 +30,7 @@ const ProductDetailPage = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
 
   useEffect(() => {
@@ -159,42 +168,31 @@ const ProductDetailPage = () => {
                   <Maximize2 className="w-5 h-5 text-[#2E7D32]" />
                 </div>
 
-                <div className="w-full h-full flex items-center justify-center relative bg-gray-50">
-                  <AnimatePresence mode='wait'>
-                    <motion.div 
-                      key={activeImage}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="w-full h-full absolute inset-0 cursor-grab active:cursor-grabbing"
-                      drag="x"
-                      dragConstraints={{ left: 0, right: 0 }}
-                      dragElastic={0.8}
-                      onDragEnd={(e, { offset, velocity }) => {
-                        const swipeThreshold = 40;
-                        if (offset.x < -swipeThreshold) {
-                          // Swipe Left -> Next
-                          setActiveImage((prev) => (prev + 1) % product.images.length);
-                        } else if (offset.x > swipeThreshold) {
-                          // Swipe Right -> Prev
-                          setActiveImage((prev) => (prev - 1 + product.images.length) % product.images.length);
-                        } else {
-                          // Tap / Click detection
-                          if (Math.abs(offset.x) < 5) {
-                            setIsLightboxOpen(true);
-                          }
-                        }
-                      }}
-                    >
-                      <img 
-                        src={product.images[activeImage]} 
-                        alt={product.name} 
-                        draggable="false"
-                        className="w-full h-full object-cover select-none transition-transform duration-700 md:group-hover:scale-110"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
+                <div className="w-full h-full relative bg-gray-50 flex items-center justify-center">
+                  <Swiper
+                    onSwiper={setSwiperInstance}
+                    modules={[Navigation, Pagination]}
+                    spaceBetween={0}
+                    slidesPerView={1}
+                    onSlideChange={(swiper) => setActiveImage(swiper.activeIndex)}
+                    className="w-full h-full"
+                  >
+                    {product.images.map((img, index) => (
+                      <SwiperSlide key={index} className="w-full h-full flex items-center justify-center">
+                        <div 
+                          className="w-full h-full cursor-grab active:cursor-grabbing relative"
+                          onClick={() => setIsLightboxOpen(true)}
+                        >
+                          <img 
+                            src={img} 
+                            alt={`${product.name} view ${index + 1}`} 
+                            draggable="false"
+                            className="w-full h-full object-cover select-none transition-transform duration-700 md:group-hover:scale-110"
+                          />
+                        </div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
               </div>
 
@@ -202,7 +200,10 @@ const ProductDetailPage = () => {
                 {product.images.map((img, index) => (
                   <button 
                     key={index} 
-                    onClick={() => setActiveImage(index)} 
+                    onClick={() => {
+                      setActiveImage(index);
+                      swiperInstance?.slideTo(index);
+                    }} 
                     className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0 ${activeImage === index ? 'border-[#2E7D32] scale-90 shadow-md' : 'border-transparent opacity-50 hover:opacity-100'}`}
                   >
                     <img src={img} className="w-full h-full object-cover" alt={`view-${index}`} />
