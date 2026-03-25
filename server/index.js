@@ -1965,12 +1965,29 @@ app.use(express.static(finalPath, {
 
 // React app catch-all route
 app.get('{*path}', (req, res) => {
-  // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
-  if (req.path.includes('.') && 
-      !req.path.endsWith('.html') && 
-      !req.path.startsWith('/api')) {
-    return res.status(404).send('Product not found');
-  }
+    // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
+    if (req.path.includes('.') && 
+        !req.path.endsWith('.html') && 
+        !req.path.startsWith('/api')) {
+      
+      // Self-Healing SPA Cache Buster: If browser asks for old JS/CSS, force reload!
+      if (req.path.endsWith('.js') || req.path.endsWith('.css')) {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        if (req.path.endsWith('.js')) {
+          res.setHeader('Content-Type', 'application/javascript');
+          return res.send(`
+            console.warn('Farmliv: Outdated cache detected. Forcing page reload...');
+            if (window.location.search.indexOf('v=') === -1) {
+              window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
+            }
+          `);
+        } else {
+          res.setHeader('Content-Type', 'text/css');
+          return res.send('/* Farmliv: Outdated CSS. Waiting for JS cache-buster to reload. */');
+        }
+      }
+      return res.status(404).send('Product not found');
+    }
 
   const indexPath = path.join(finalPath, 'index.html');
   if (fs.existsSync(indexPath)) {
