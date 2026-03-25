@@ -38,17 +38,24 @@ const HeroCarousel = () => {
     return () => clearInterval(timer);
   }, [currentSlide]);
 
-  // Preload all slides
+  // Optimized Preloading: Only preload the next slide after a delay to reduce initial network contention
   useEffect(() => {
-    slides.forEach((slide) => {
-      const preloadUrl = slide.image.replace('/upload/', '/upload/f_auto,q_auto:low,c_fill,g_auto,w_1080/');
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = preloadUrl;
-      document.head.appendChild(link);
-    });
-  }, []);
+    const timer = setTimeout(() => {
+      const nextIndex = (currentSlide + 1) % slides.length;
+      // MATCH LazyImage priority optimization (w_1080 for desktop/tablet clarity)
+      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto:low,c_fill,g_auto,w_1080/');
+      
+      // Check if already preloaded
+      if (!document.querySelector(`link[href="${preloadUrl}"]`)) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = preloadUrl;
+        document.head.appendChild(link);
+      }
+    }, 3500); // 3.5s delay gives priority to hydration and the primary LCP image
+    return () => clearTimeout(timer);
+  }, [currentSlide]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
