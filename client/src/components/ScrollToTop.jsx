@@ -9,19 +9,12 @@ const ScrollToTop = () => {
     // ⭐ Fix: Skip scroll to top if navigation is "Back" (POP)
     if (navType === 'POP') return;
 
-    // Performance Optimization: Wrap in requestAnimationFrame
+    const mainContent = document.querySelector('main');
+    
     requestAnimationFrame(() => {
-      try {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'instant',
-        });
-      } catch (error) {
-        window.scrollTo(0, 0);
-      }
+      // ⭐ Optimized: Single call to window.scrollTo
+      window.scrollTo(0, 0);
 
-      const mainContent = document.querySelector('main');
       if (mainContent) {
         mainContent.scrollTo(0, 0);
       }

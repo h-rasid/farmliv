@@ -282,12 +282,10 @@ const Header = () => {
     const body = document.body;
     if (isMobileMenuOpen) {
       body.style.overflow = 'hidden';
-      body.style.position = 'fixed';
-      body.style.width = '100% ';
+      // ⭐ Optimized: Removed position: fixed which was triggering heavy reflows
+      // and fixed the width string typo
     } else {
-      body.style.overflow = 'unset';
-      body.style.position = 'static';
-      body.style.width = 'auto';
+      body.style.overflow = '';
     }
   }, [isMobileMenuOpen]);
 
