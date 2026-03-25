@@ -60,7 +60,7 @@ const LazyImage = ({
       // Avoid double injection
       // ⭐ Use c_fill for cover images to handle aspect ratio on server
       // Aggressive optimization for priority images (LCP)
-      const quality = 'q_auto:low';
+      const quality = 'q_auto';
       let params = objectFit === 'cover' ? `f_auto,${quality},c_fill,g_auto` : `f_auto,${quality},c_limit`;
       
       // ⭐ Add Aspect Ratio if provided to force server-side cropping

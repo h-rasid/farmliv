@@ -43,7 +43,7 @@ const HeroCarousel = () => {
     const timer = setTimeout(() => {
       const nextIndex = (currentSlide + 1) % slides.length;
       // MATCH LazyImage priority optimization (w_1080 for desktop/tablet clarity)
-      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto:low,c_fill,g_auto,w_1080/');
+      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto,c_fill,g_auto,w_1080/');
       
       // Check if already preloaded
       if (!document.querySelector(`link[href="${preloadUrl}"]`)) {
@@ -95,26 +95,26 @@ const HeroCarousel = () => {
         <div
           className="absolute inset-0 transition-[opacity,transform] duration-1000 will-change-transform"
           style={{
-            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:800,f_auto,q_auto:eco,c_fill,g_auto,w_200/')})`,
+            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:200,f_auto,q_auto:eco,c_fill,g_auto,w_200/')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(25px) brightness(0.85)',
+            filter: 'blur(10px) brightness(0.85)',
             transform: 'scale(1.1)'
           }}
         />
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 z-10 overflow-hidden"
-          style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
-        >
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 z-10 overflow-hidden"
+            style={{ willChange: 'transform, opacity' }}
+          >
           {/* Ken Burns effect */}
           <motion.div
             className="relative h-full w-full overflow-hidden"
@@ -131,8 +131,7 @@ const HeroCarousel = () => {
               height="1080"
               objectFit="cover"
               sizes="100vw"
-              className="w-full h-full pointer-events-none select-none"
-              imgClassName="opacity-70"
+              className="w-full h-full object-cover pointer-events-none select-none opacity-70"
             />
 
             {/* Minimal readable overlay */}
