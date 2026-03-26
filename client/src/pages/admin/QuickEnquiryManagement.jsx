@@ -88,9 +88,10 @@ const QuickEnquiryManagement = () => {
                   <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-[#2E7D32] group-hover:bg-[#2E7D32] group-hover:text-white transition-all"><MessageSquare size={24}/></div>
                   <div>
                     <h3 className="font-black uppercase text-gray-900 tracking-tighter">{enquiry.customer_name}</h3>
-                    <div className="flex gap-4 mt-1 text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                      <span className="flex items-center gap-1"><Building2 size={12}/> {enquiry.company || 'Individual'}</span>
-                      <span className="flex items-center gap-1"><MapPin size={12}/> {enquiry.location || 'Assam'}</span>
+                    <div className="flex flex-wrap gap-4 mt-2 text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                      <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-lg text-slate-600"><Phone size={10} className="text-[#2E7D32]"/> {enquiry.phone}</span>
+                      <span className="flex items-center gap-1.5"><Building2 size={12}/> {enquiry.company || 'Individual'}</span>
+                      <span className="flex items-center gap-1.5"><MapPin size={12}/> {enquiry.location || 'Assam'}</span>
                     </div>
                   </div>
                 </div>

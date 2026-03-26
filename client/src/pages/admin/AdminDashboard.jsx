@@ -347,9 +347,10 @@ const AdminDashboard = () => {
                           Lead ID #{lead.id} {highlightedLeadId === lead.id && <span className="text-[#2E7D32] animate-pulse">● New Acquisition</span>}
                         </span>
                         <h4 className="text-sm font-bold text-slate-900 uppercase tracking-tighter">{lead.customer_name}</h4>
-                        <div className="flex items-center gap-4 mt-1 text-[10px] text-slate-500 font-black uppercase tracking-widest">
-                          <span className="flex items-center gap-1"><Building2 size={12}/> {lead.company || 'Individual'}</span>
-                          <span className="flex items-center gap-1"><MapPin size={12}/> {lead.location || 'Assam'}</span>
+                        <div className="flex flex-wrap items-center gap-4 mt-2 text-[10px] text-slate-500 font-black uppercase tracking-widest">
+                          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-lg text-slate-700 border border-slate-100"><Phone size={10} className="text-[#2E7D32]"/> {lead.phone}</span>
+                          <span className="flex items-center gap-1.5"><Building2 size={12}/> {lead.company || 'Individual'}</span>
+                          <span className="flex items-center gap-1.5"><MapPin size={12}/> {lead.location || 'Assam'}</span>
                         </div>
                       </div>
                     </div>
