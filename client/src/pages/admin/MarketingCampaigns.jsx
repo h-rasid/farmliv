@@ -72,28 +72,12 @@ const MarketingCampaigns = () => {
   const [activeTab, setActiveTab] = useState('all');
 
   const stats = [
-    { label: 'Total Reach', value: '45.2K', sub: '+12% this month', icon: Target, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Avg. Engagement', value: '8.4%', sub: 'Higher than last qr', icon: BarChart3, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Conversion Rate', value: '3.1%', sub: 'Target 4%', icon: ArrowUpRight, color: 'text-[#D4AF37]', bg: 'bg-amber-50' },
+    { label: 'Total Reach', value: '0', sub: 'Target not set', icon: Target, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Avg. Engagement', value: '0%', sub: 'No active campaigns', icon: BarChart3, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: 'Conversion Rate', value: '0%', sub: 'Awaiting data', icon: ArrowUpRight, color: 'text-[#D4AF37]', bg: 'bg-amber-50' },
   ];
 
-  const campaigns = [
-    { 
-      id: 1, name: 'Monsoon Bulk Offer', target: 'Drip Irrigation', reach: '12.4K', ctr: '14.2', 
-      status: 'Active', statusColor: 'text-emerald-600', statusBg: 'bg-emerald-50', statusBorder: 'border-emerald-100',
-      icon: Mail, color: 'text-emerald-600', bg: 'bg-emerald-50'
-    },
-    { 
-      id: 2, name: 'Shade Net Awareness', target: 'New Farmers', reach: '28.1K', ctr: '6.8', 
-      status: 'Completed', statusColor: 'text-blue-600', statusBg: 'bg-blue-50', statusBorder: 'border-blue-100',
-      icon: Megaphone, color: 'text-blue-600', bg: 'bg-blue-50'
-    },
-    { 
-      id: 3, name: 'SMS Blast - Region A', target: 'Lead Database', reach: '4.7K', ctr: '22.1', 
-      status: 'In Review', statusColor: 'text-[#D4AF37]', statusBg: 'bg-amber-50', statusBorder: 'border-amber-100',
-      icon: MessageCircle, color: 'text-amber-500', bg: 'bg-amber-50'
-    },
-  ];
+  const campaigns = [];
 
   return (
     <div className="space-y-10 pb-20">
