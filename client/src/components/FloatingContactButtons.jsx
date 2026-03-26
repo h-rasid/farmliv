@@ -9,7 +9,7 @@ const FloatingContactButtons = () => {
       <motion.a
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        href="https://wa.me/919181127883"
+        href="https://wa.me/919181127883?text=Hello!%20I%20would%20like%20information%20about%20the%20products.%20I%20am%20messaging%20through%20the%20website."
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
