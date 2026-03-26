@@ -106,3 +106,4 @@ const ProductCard = ({ product }) => {
 };
 
 export default memo(ProductCard);
+

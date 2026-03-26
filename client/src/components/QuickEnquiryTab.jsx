@@ -36,3 +36,4 @@ const QuickEnquiryTab = ({ openModal }) => {
 };
 
 export default QuickEnquiryTab;
+

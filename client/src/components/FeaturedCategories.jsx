@@ -127,3 +127,4 @@ const FeaturedCategories = () => {
 
 
 export default memo(FeaturedCategories);
+

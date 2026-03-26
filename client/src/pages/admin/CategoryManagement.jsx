@@ -190,3 +190,4 @@ const CategoryManagement = () => {
 };
 
 export default CategoryManagement;
+

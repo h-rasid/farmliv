@@ -101,3 +101,4 @@ const ProductGallery = ({ images, productName }) => {
 };
 
 export default memo(ProductGallery);
+

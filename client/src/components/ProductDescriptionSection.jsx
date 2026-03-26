@@ -191,3 +191,4 @@ const ProductDescriptionSection = ({ product }) => {
 };
 
 export default ProductDescriptionSection;
+

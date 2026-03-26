@@ -29,3 +29,4 @@ const HeroImage = () => {
 };
 
 export default HeroImage;
+

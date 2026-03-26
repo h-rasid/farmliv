@@ -151,3 +151,4 @@ const LazyImage = ({
 
 // React.memo render cycles ko bacha kar performance boost karta hai
 export default React.memo(LazyImage);
+

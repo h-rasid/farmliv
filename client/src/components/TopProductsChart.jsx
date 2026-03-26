@@ -60,3 +60,4 @@ const TopProductsChart = ({ salesData }) => {
 };
 
 export default TopProductsChart;
+

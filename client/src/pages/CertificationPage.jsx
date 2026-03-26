@@ -187,3 +187,4 @@ const CertificationPage = () => {
 };
 
 export default CertificationPage;
+

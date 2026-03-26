@@ -310,3 +310,4 @@ const InquiriesManagementPage = () => {
 };
 
 export default InquiriesManagementPage;
+

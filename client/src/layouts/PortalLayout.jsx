@@ -239,9 +239,9 @@ const PortalLayout = ({ role = 'admin' }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   
-  const adminEmail = "admin@farmliv.com";
+  const adminEmail = "hub@farmliv.com";
   const sessionKey = role === 'admin' ? 'farmliv_admin' : 'farmliv_salesman';
-  const user = JSON.parse(localStorage.getItem(sessionKey)) || { name: 'Super Admin' };
+  const user = JSON.parse(localStorage.getItem(sessionKey)) || { name: 'Portal Administrator' };
 
   const dashboardPath = role === 'admin' ? '/admin-portal' : '/salesman-portal';
 
@@ -651,3 +651,4 @@ const PortalLayout = ({ role = 'admin' }) => {
 };
 
 export default PortalLayout;
+

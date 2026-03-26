@@ -57,3 +57,4 @@ const StaffPerformanceChart = ({ data }) => {
 };
 
 export default StaffPerformanceChart;
+

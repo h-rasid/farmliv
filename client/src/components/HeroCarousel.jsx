@@ -221,3 +221,4 @@ const HeroCarousel = () => {
 };
 
 export default memo(HeroCarousel);
+

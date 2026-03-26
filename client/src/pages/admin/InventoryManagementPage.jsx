@@ -411,3 +411,4 @@ const InventoryManagementPage = () => {
 };
 
 export default InventoryManagementPage;
+

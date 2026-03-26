@@ -221,3 +221,4 @@ const SalesRecordModal = ({ isOpen, onClose, onSuccess, recordToEdit = null }) =
 };
 
 export default SalesRecordModal;
+

@@ -160,3 +160,4 @@ const QuoteModal = ({ isOpen, onClose, productName = '', productId = null }) => 
 };
 
 export default QuoteModal;
+

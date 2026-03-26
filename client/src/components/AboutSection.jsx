@@ -74,3 +74,4 @@ const AboutSection = () => {
 };
 
 export default memo(AboutSection);
+

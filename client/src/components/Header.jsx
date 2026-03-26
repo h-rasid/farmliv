@@ -325,9 +325,9 @@ const Header = () => {
         >
           <div className="max-w-7xl mx-auto px-4 h-full flex justify-between items-center text-xs font-medium tracking-wide">
             <div className="flex items-center gap-6">
-              <a href="tel:+919181127883" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
+              <a href="tel:+91XXXXXXXXXX" className="flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
                 <Phone className="w-3 h-3" aria-hidden="true" />
-                <span>+91 91811 27883</span>
+                <span>+91 XXXXX XXXXX</span>
               </a>
               <a href="mailto:sales@farmliv.com" className="hidden sm:flex items-center gap-2 hover:text-[#4CAF50] transition-colors" rel="noopener noreferrer">
                 <Mail className="w-3 h-3" aria-hidden="true" />
@@ -453,9 +453,9 @@ const Header = () => {
 
               <div className="p-6 bg-white border-t border-gray-100 shrink-0 safe-area-bottom">
                 <div className="space-y-4">
-                  <a href="tel:+919181127883" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
+                  <a href="tel:+91XXXXXXXXXX" className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-[#2E7D32] transition-colors">
                     <Phone className="w-4 h-4 text-[#2E7D32]" aria-hidden="true" />
-                    <span className="font-semibold text-xs">+91 91811 27883</span>
+                    <span className="font-semibold text-xs">+91 XXXXX XXXXX</span>
                   </a>
                 </div>
               </div>
@@ -468,3 +468,4 @@ const Header = () => {
 };
 
 export default memo(Header);
+

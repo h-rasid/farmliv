@@ -71,17 +71,17 @@ const MarketingPromotions = () => {
 
   const promos = [
     { 
-      id: 1, name: 'B2B Bulk Discount', code: 'FARMLIV20', value: '20% OFF', minOrder: '₹50,000',
-      used: 142, total: 500, status: 'Active', statusColor: 'text-emerald-600', statusDot: 'bg-emerald-500', progressColor: 'bg-emerald-500',
+      id: 1, name: 'Standard Discount', code: 'OFFER-XXXX', value: '0% OFF', minOrder: '₹0',
+      used: 0, total: 1000, status: 'Active', statusColor: 'text-emerald-600', statusDot: 'bg-emerald-500', progressColor: 'bg-emerald-500',
       icon: Percent, color: 'text-emerald-600', bg: 'bg-emerald-50'
     },
     { 
-      id: 2, name: 'New Farmer Welcome', code: 'PROGROW5', value: '₹5,000 OFF', minOrder: '₹20,000',
-      used: 31, total: 50, status: 'Near Limit', statusColor: 'text-amber-500', statusDot: 'bg-amber-500', progressColor: 'bg-amber-500',
+      id: 2, name: 'Retail Awareness', code: 'RETAIL-XX', value: '₹0 OFF', minOrder: '₹0',
+      used: 0, total: 100, status: 'In Review', statusColor: 'text-amber-500', statusDot: 'bg-amber-500', progressColor: 'bg-amber-500',
       icon: ShoppingBag, color: 'text-blue-600', bg: 'bg-blue-50'
     },
     { 
-      id: 3, name: 'Season End Sale', code: 'MATEXP2024', value: '15% OFF', minOrder: '₹1,00,000',
+      id: 3, name: 'Seasonal Special', code: 'SEASON-XX', value: '0% OFF', minOrder: '₹0',
       used: 0, total: 1000, status: 'Scheduled', statusColor: 'text-blue-500', statusDot: 'bg-blue-500', progressColor: 'bg-blue-200',
       icon: Calendar, color: 'text-purple-600', bg: 'bg-purple-50'
     },
@@ -205,3 +205,4 @@ const MarketingPromotions = () => {
 };
 
 export default MarketingPromotions;
+

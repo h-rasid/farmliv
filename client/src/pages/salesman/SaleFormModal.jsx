@@ -172,3 +172,4 @@ const SaleFormModal = ({ isOpen, onClose, leadData, onSuccess }) => {
 };
 
 export default SaleFormModal;
+

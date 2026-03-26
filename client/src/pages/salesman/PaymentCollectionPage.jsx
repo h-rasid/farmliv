@@ -339,3 +339,4 @@ const PaymentCollectionPage = () => {
 
 export default PaymentCollectionPage;
 ;
+
