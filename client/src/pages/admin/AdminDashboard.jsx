@@ -104,9 +104,9 @@ const AdminDashboard = () => {
           <StatCard title="Total Categories" value={stats.totalCategories} icon={Layers} colorClass="bg-indigo-50 text-indigo-600" />
           <StatCard title="Total Inquiries" value={stats.totalInquiries} icon={MessageSquare} colorClass="bg-purple-50 text-purple-600" />
           <StatCard title="Total Customers" value={stats.totalCustomers} icon={Users} colorClass="bg-orange-50 text-orange-600" />
-          <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-[#2E7D32]" trend="0" />
-          <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" trend="0" />
-          <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" trend="0" />
+          <StatCard title="Total Revenue" value={stats.totalRevenue} icon={IndianRupee} colorClass="bg-green-50 text-[#2E7D32]" trend="24" />
+          <StatCard title="Low Stock Alerts" value={stats.lowStockAlerts} icon={AlertCircle} colorClass="bg-rose-50 text-rose-600" trend="15" />
+          <StatCard title="Conversion Rate" value={stats.conversionRate} icon={Target} colorClass="bg-cyan-50 text-cyan-600" trend="8.5" />
         </div>
               
         {/* OVERVIEW CONTENT GRID */}
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                   <div className="flex-1 w-full min-h-[300px] flex items-end gap-2 px-4">
-                     {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((val, i) => (
+                     {[45, 30, 60, 40, 80, 55, 90, 70, 100, 85, 95].map((val, i) => (
                         <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
                            <div className="w-full bg-slate-50 rounded-full relative overflow-hidden" style={{ height: `${val}%` }}>
                               <motion.div 
@@ -381,4 +381,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
