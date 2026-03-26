@@ -43,7 +43,7 @@ const HeroCarousel = () => {
     const timer = setTimeout(() => {
       const nextIndex = (currentSlide + 1) % slides.length;
       // MATCH LazyImage priority optimization (w_1080 for desktop/tablet clarity)
-      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto,c_fill,g_auto,w_1080/');
+      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1080/');
       
       // Check if already preloaded
       if (!document.querySelector(`link[href="${preloadUrl}"]`)) {
