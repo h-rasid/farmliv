@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:client/dist/assets/layout-dashboard-CwpuBW0k.js
-import{f as t}from"./index-C2eo2UNI.js";const h=t("LayoutDashboard",[["rect",{width:"7",height:"9",x:"3",y:"3",rx:"1",key:"10lvy0"}],["rect",{width:"7",height:"5",x:"14",y:"3",rx:"1",key:"16une8"}],["rect",{width:"7",height:"9",x:"14",y:"12",rx:"1",key:"1hutg5"}],["rect",{width:"7",height:"5",x:"3",y:"16",rx:"1",key:"ldoo1y"}]]);export{h as L};
-========
-import{f as t}from"./index-BdZNUKEn.js";const h=t("LayoutDashboard",[["rect",{width:"7",height:"9",x:"3",y:"3",rx:"1",key:"10lvy0"}],["rect",{width:"7",height:"5",x:"14",y:"3",rx:"1",key:"16une8"}],["rect",{width:"7",height:"9",x:"14",y:"12",rx:"1",key:"1hutg5"}],["rect",{width:"7",height:"5",x:"3",y:"16",rx:"1",key:"ldoo1y"}]]);export{h as L};
->>>>>>>> e7d6f9b (feat: show mobile numbers in admin list views):client/dist/assets/layout-dashboard-savV4DR0.js
