@@ -231,7 +231,7 @@ const MobileNavItem = ({ to, children, icon: Icon, active, onClick }) => (
       </span>
     </div>
     {active && (
-      <motion.div layoutId="activeDot" className="w-1.5 h-1.5 rounded-full bg-[#2E7D32]" />
+      <div className="w-1.5 h-1.5 rounded-full bg-[#2E7D32]" />
     )}
   </Link>
 );
@@ -316,8 +316,8 @@ const Header = () => {
   return (
     <>
       <motion.header 
-        style={{ backgroundColor: headerBg, boxShadow: headerShadow, willChange: 'transform' }}
-        className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md py-3"
+        style={{ backgroundColor: headerBg, boxShadow: headerShadow }}
+        className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md py-3 layer-promote"
       >
         <motion.div 
           style={{ opacity: topBarOpacity, y: topBarY }}
@@ -338,8 +338,8 @@ const Header = () => {
         </motion.div>
 
         <motion.div 
-          style={{ y: headerY, willChange: 'transform', backfaceVisibility: 'hidden' }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10"
+          style={{ y: headerY }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 layer-promote"
         >
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group relative z-[60]" onClick={() => { closeMobileMenu(); window.scrollTo(0, 0); }}>

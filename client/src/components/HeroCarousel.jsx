@@ -86,7 +86,7 @@ const HeroCarousel = () => {
 
   return (
     <div
-      className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto select-none"
+      className="relative h-[85vh] sm:h-screen w-full overflow-hidden touch-pan-y pointer-events-auto select-none section-isolate"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
     >

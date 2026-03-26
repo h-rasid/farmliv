@@ -63,7 +63,7 @@ const FeaturedCategories = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-gray-50 overflow-visible" id="categories">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50 overflow-visible section-isolate" id="categories">
       <div className="max-w-7xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 1, y: 0 }}

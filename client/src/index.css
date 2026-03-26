@@ -140,6 +140,23 @@
   }
 }
 
+/* ⭐ Performance Hardening: Forced Reflow Protection */
+.section-isolate {
+  contain: paint layout;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
+.layer-promote {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.card-optimize {
+  contain: layout style;
+}
+
 /* Force Certificate Containment */
 .certificate-img {
   object-fit: contain !important;

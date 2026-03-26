@@ -11,7 +11,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-white contain-content">
+    <section className="py-16 bg-gradient-to-br from-gray-50 to-white contain-content section-isolate">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
