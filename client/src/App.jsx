@@ -42,6 +42,8 @@ const QuoteEngine = React.lazy(() => import('./pages/admin/QuoteEngine'));
 
 const QuickEnquiryManagement = React.lazy(() => import('./pages/admin/QuickEnquiryManagement'));
 const BillingFinance = React.lazy(() => import('./pages/admin/BillingFinance'));
+const MarketingCampaigns = React.lazy(() => import('./pages/admin/MarketingCampaigns'));
+const MarketingPromotions = React.lazy(() => import('./pages/admin/MarketingPromotions'));
 
 // --- Lazy Load Salesman Pages ---
 const SalesDashboard = React.lazy(() => import('./pages/salesman/SalesDashboard')); 
@@ -127,6 +129,9 @@ const AnimatedRoutes = ({ onOpenModal }) => {
               <Route path="/admin/billing" element={<BillingFinance />} />
               <Route path="/admin/billing/invoices" element={<BillingFinance />} />
               <Route path="/admin/billing/payments" element={<BillingFinance />} />
+              <Route path="/admin/marketing" element={<Navigate to="/admin/marketing/campaigns" replace />} />
+              <Route path="/admin/marketing/campaigns" element={<MarketingCampaigns />} />
+              <Route path="/admin/marketing/promotions" element={<MarketingPromotions />} />
               <Route path="/admin/reports" element={<ReportsAnalytics />} />
               <Route path="/admin/reports/sales" element={<ReportsAnalytics />} />
               <Route path="/admin/sales-performance" element={<AdminSalesPerformance />} />
