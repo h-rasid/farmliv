@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:client/dist/assets/user-plus-CaMGkSx2.js
-import{f as e}from"./index-CVDjsvTr.js";const c=e("UserPlus",[["path",{d:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",key:"1yyitq"}],["circle",{cx:"9",cy:"7",r:"4",key:"nufk8"}],["line",{x1:"19",x2:"19",y1:"8",y2:"14",key:"1bvyxn"}],["line",{x1:"22",x2:"16",y1:"11",y2:"11",key:"1shjgl"}]]);export{c as U};
-========
-import{f as e}from"./index-X3GWksuq.js";const c=e("UserPlus",[["path",{d:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",key:"1yyitq"}],["circle",{cx:"9",cy:"7",r:"4",key:"nufk8"}],["line",{x1:"19",x2:"19",y1:"8",y2:"14",key:"1bvyxn"}],["line",{x1:"22",x2:"16",y1:"11",y2:"11",key:"1shjgl"}]]);export{c as U};
->>>>>>>> 9325b15 (perf: eliminate 42ms forced reflow via layout isolation and layer promotion):client/dist/assets/user-plus-CurLruPc.js
