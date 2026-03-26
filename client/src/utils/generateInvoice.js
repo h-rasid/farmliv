@@ -1,7 +1,8 @@
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
-
-export const generateInvoice = (data) => {
+// jsPDF and jspdf-autotable will be loaded dynamically on request
+export const generateInvoice = async (data) => {
+  const { jsPDF } = await import('jspdf');
+  await import('jspdf-autotable');
+  
   const doc = new jsPDF();
   const brandColor = [46, 125, 50]; // Farmliv Green (#2E7D32)
   const darkColor = [26, 26, 26];   // Elite Black (#1A1A1A)

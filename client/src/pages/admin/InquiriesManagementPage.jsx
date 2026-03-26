@@ -8,7 +8,7 @@ import {
   Trash2, FileDown, Filter, Building2, MapPin, Mail, Phone 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import jsPDF from 'jspdf';
+// jsPDF and jspdf-autotable will be loaded dynamically on request
 import { API_BASE } from '@/utils/config';
 
 const InquiriesManagementPage = () => {
@@ -59,7 +59,10 @@ const InquiriesManagementPage = () => {
     }
   };
 
-  const exportToPDF = () => {
+  const exportToPDF = async () => {
+    const { default: jsPDF } = await import('jspdf');
+    await import('jspdf-autotable');
+    
     const doc = new jsPDF();
     doc.text("Farmliv - Lead Inquiry Report", 14, 15);
     const tableData = filteredLeads.map(l => [

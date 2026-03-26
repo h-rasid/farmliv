@@ -6,8 +6,7 @@ import { isValidPhone } from '@/utils/formValidation';
 import { User, Package, Loader2, MapPin, Building2, Download, MessageSquare, Phone } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import QuoteSuccessModal from './QuoteSuccessModal';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// jsPDF and jspdf-autotable will be loaded dynamically on request
 
 const QuoteForm = () => {
   const [searchParams] = useSearchParams();
@@ -54,12 +53,16 @@ const QuoteForm = () => {
     fetchProducts();
   }, [searchParams]);
 
-  const generatePDF = (data, pName) => {
+  const generatePDF = async (data, pName) => {
+    const { default: jsPDF } = await import('jspdf');
+    const { default: autoTable } = await import('jspdf-autotable');
+    
     const doc = new jsPDF();
     const dateToday = new Date().toLocaleDateString('en-GB', { 
       day: '2-digit', month: 'long', year: 'numeric' 
     });
-
+    
+    // ... existing logic ...
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
     doc.setTextColor(46, 125, 50); 

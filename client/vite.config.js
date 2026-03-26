@@ -18,7 +18,6 @@ function optimizationPlugin() {
       let modifiedHtml = html;
 
       // 1. Defer CSS
-      // Replace synchronous stylesheet link injected by Vite with preload
       modifiedHtml = modifiedHtml.replace(
         /<link\s([^>]*?)rel="stylesheet"([^>]*?)href="([^"]+)"([^>]*?)>/gi,
         (match, prefix1, prefix2, href, suffix) => {
@@ -31,17 +30,15 @@ function optimizationPlugin() {
         }
       );
 
-      // 2. Preload Main Script & Assets (Move ALL to TOP of head for maximum priority)
+      // 2. Preload Main Script & Assets
       const scriptMatch = modifiedHtml.match(/<script type="module" crossorigin src="([^"]+)"><\/script>/);
       const modulePreloads = [];
       
-      // Collect all existing modulepreloads and remove them from their original positions
       modifiedHtml = modifiedHtml.replace(/<link rel="modulepreload"[^>]+>\s*/g, (match) => {
         modulePreloads.push(match.trim());
         return '';
       });
 
-      // Add the main entry script to preloads if not already there
       if (scriptMatch) {
         const scriptUrl = scriptMatch[1];
         const mainPreload = `<link rel="modulepreload" crossorigin href="${scriptUrl}">`;
@@ -50,12 +47,11 @@ function optimizationPlugin() {
         }
       }
 
-      // Re-insert ALL modulepreloads at the very top of <head>
       if (modulePreloads.length > 0) {
         modifiedHtml = modifiedHtml.replace('<head>', `<head>\n  ${modulePreloads.join('\n  ')}`);
       }
 
-      // 3. Move Preconnects to top too (Before preloads)
+      // 3. Move Preconnects to top
       const preconnects = [];
       modifiedHtml = modifiedHtml.replace(/<link rel="preconnect"[^>]+>\s*/g, (match) => {
         const cleaned = match.trim();
@@ -73,36 +69,32 @@ function optimizationPlugin() {
 
 export default defineConfig({
   plugins: [react(), optimizationPlugin()],
-  // Hostinger par refresh problem se bachne ke liye base path './' rakhein taaki assets relative load hon
   base: './', 
   resolve: {
     alias: {
-      // Ab "@" sahi se "src" folder ko point karega
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    port: 5173,
-    proxy: {
-      // Yeh local development ke liye hai
-      '/api': {
-        // Jab aap Hostinger par Node.js setup karenge, 
-        // toh localhost:5000 hi backend ka default port rahega
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
-  },
   build: {
-    // Build folder ka naam 'dist' hi rehne dein kyunki Hostinger ise asani se pehchanta hai
     outDir: 'dist',
-    /* ⭐ Performance Optimization: Large libraries ko separate chunks mein divide kiya gaya hai taaki initial load fast ho */
-    /* Vite's default chunking is now highly optimized for React 18+ and handles tree-shaking/hashing more reliably than manual overrides in complex graphs. */
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
-        // No manual chunks to prevent "missing export 'r'" issues in split vendor bundles
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor-core';
+            if (id.includes('framer-motion')) return 'vendor-animation';
+            if (id.includes('lucide-react')) return 'vendor-icons';
+          }
+        }
       }
-    }
+    },
+    chunkSizeWarningLimit: 1000
   }
 })

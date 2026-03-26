@@ -1,6 +1,5 @@
-
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+// Static imports removed to optimize initial bundle size
+// jsPDF and html2canvas will be loaded dynamically on request
 
 export const generateQuotePDF = async (quoteData) => {
   // Create a temporary container for the PDF content
@@ -134,6 +133,12 @@ export const generateQuotePDF = async (quoteData) => {
   document.body.appendChild(container);
 
   try {
+    // --- Dynamic Imports for Heavy Libraries ---
+    const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf')
+    ]);
+
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
