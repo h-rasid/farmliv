@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:client/dist/assets/message-circle-B_MKM3Ug.js
 import{f as e}from"./index-BRbRnk2Z.js";const a=e("MessageCircle",[["path",{d:"M7.9 20A9 9 0 1 0 4 16.1L2 22Z",key:"vv11sd"}]]);export{a as M};
 ========
@@ -13,3 +14,6 @@ import{f as e}from"./index-BRbRnk2Z.js";const a=e("MessageCircle",[["path",{d:"M
 >>>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist)):client/dist/assets/message-circle-BtSF_Ngx.js
 =======
 >>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist))
+=======
+import{f as e}from"./index-BRbRnk2Z.js";const a=e("MessageCircle",[["path",{d:"M7.9 20A9 9 0 1 0 4 16.1L2 22Z",key:"vv11sd"}]]);export{a as M};
+>>>>>>> 0e10fe5 (fix: resolve build corruption and improve mobile skeleton responsiveness)

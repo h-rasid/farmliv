@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:client/dist/assets/activity-DygyvYJK.js
 import{f as t}from"./index-BRbRnk2Z.js";const i=t("Activity",[["path",{d:"M22 12h-4l-3 9L9 3l-3 9H2",key:"d5dnw9"}]]);export{i as A};
 ========
@@ -13,3 +14,6 @@ import{f as t}from"./index-BRbRnk2Z.js";const i=t("Activity",[["path",{d:"M22 12
 >>>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist)):client/dist/assets/activity-CFpsmaMg.js
 =======
 >>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist))
+=======
+import{f as t}from"./index-BRbRnk2Z.js";const i=t("Activity",[["path",{d:"M22 12h-4l-3 9L9 3l-3 9H2",key:"d5dnw9"}]]);export{i as A};
+>>>>>>> 0e10fe5 (fix: resolve build corruption and improve mobile skeleton responsiveness)

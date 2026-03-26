@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:client/dist/assets/use-toast-BuHiXuLK.js
 import{r as u}from"./index-BRbRnk2Z.js";const f=1;let c=0;function l(){return c=(c+1)%Number.MAX_VALUE,c.toString()}const t={state:{toasts:[]},listeners:[],getState:()=>t.state,setState:s=>{typeof s=="function"?t.state=s(t.state):t.state={...t.state,...s},t.listeners.forEach(e=>e(t.state))},subscribe:s=>(t.listeners.push(s),()=>{t.listeners=t.listeners.filter(e=>e!==s)})},m=({...s})=>{const e=l(),a=r=>t.setState(n=>({...n,toasts:n.toasts.map(i=>i.id===e?{...i,...r}:i)})),o=()=>t.setState(r=>({...r,toasts:r.toasts.filter(n=>n.id!==e)}));return t.setState(r=>({...r,toasts:[{...s,id:e,dismiss:o},...r.toasts].slice(0,f)})),{id:e,dismiss:o,update:a}};function d(){const[s,e]=u.useState(t.getState());return u.useEffect(()=>t.subscribe(o=>{e(o)}),[]),u.useEffect(()=>{const a=[];return s.toasts.forEach(o=>{if(o.duration===1/0)return;const r=setTimeout(()=>{o.dismiss()},o.duration||5e3);a.push(r)}),()=>{a.forEach(o=>clearTimeout(o))}},[s.toasts]),{toast:m,toasts:s.toasts}}export{d as u};
 ========
@@ -13,3 +14,6 @@ import{r as u}from"./index-BRbRnk2Z.js";const f=1;let c=0;function l(){return c=
 >>>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist)):client/dist/assets/use-toast-5oxJTn-2.js
 =======
 >>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist))
+=======
+import{r as u}from"./index-BRbRnk2Z.js";const f=1;let c=0;function l(){return c=(c+1)%Number.MAX_VALUE,c.toString()}const t={state:{toasts:[]},listeners:[],getState:()=>t.state,setState:s=>{typeof s=="function"?t.state=s(t.state):t.state={...t.state,...s},t.listeners.forEach(e=>e(t.state))},subscribe:s=>(t.listeners.push(s),()=>{t.listeners=t.listeners.filter(e=>e!==s)})},m=({...s})=>{const e=l(),a=r=>t.setState(n=>({...n,toasts:n.toasts.map(i=>i.id===e?{...i,...r}:i)})),o=()=>t.setState(r=>({...r,toasts:r.toasts.filter(n=>n.id!==e)}));return t.setState(r=>({...r,toasts:[{...s,id:e,dismiss:o},...r.toasts].slice(0,f)})),{id:e,dismiss:o,update:a}};function d(){const[s,e]=u.useState(t.getState());return u.useEffect(()=>t.subscribe(o=>{e(o)}),[]),u.useEffect(()=>{const a=[];return s.toasts.forEach(o=>{if(o.duration===1/0)return;const r=setTimeout(()=>{o.dismiss()},o.duration||5e3);a.push(r)}),()=>{a.forEach(o=>clearTimeout(o))}},[s.toasts]),{toast:m,toasts:s.toasts}}export{d as u};
+>>>>>>> 0e10fe5 (fix: resolve build corruption and improve mobile skeleton responsiveness)

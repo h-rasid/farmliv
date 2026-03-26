@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:client/dist/assets/more-vertical-npVlxsL6.js
 import{f as c}from"./index-BRbRnk2Z.js";const r=c("MoreVertical",[["circle",{cx:"12",cy:"12",r:"1",key:"41hilf"}],["circle",{cx:"12",cy:"5",r:"1",key:"gxeob9"}],["circle",{cx:"12",cy:"19",r:"1",key:"lyex9k"}]]);export{r as M};
 ========
@@ -13,3 +14,6 @@ import{f as c}from"./index-BRbRnk2Z.js";const r=c("MoreVertical",[["circle",{cx:
 >>>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist)):client/dist/assets/more-vertical-Bv3f9_Da.js
 =======
 >>>>>>> b45bb46 (fix: restore hero clarity and visibility (force update dist))
+=======
+import{f as c}from"./index-BRbRnk2Z.js";const r=c("MoreVertical",[["circle",{cx:"12",cy:"12",r:"1",key:"41hilf"}],["circle",{cx:"12",cy:"5",r:"1",key:"gxeob9"}],["circle",{cx:"12",cy:"19",r:"1",key:"lyex9k"}]]);export{r as M};
+>>>>>>> 0e10fe5 (fix: resolve build corruption and improve mobile skeleton responsiveness)

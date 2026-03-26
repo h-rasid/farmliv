@@ -90,8 +90,9 @@
       position: fixed; top: 0; left: 0; right: 0; height: 80px; 
       background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 100;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
     }
+    @media (min-width: 768px) { .skeleton-header { padding: 0 40px; } }
     .skeleton-logo { width: 120px; height: 32px; background: #f1f5f9; border-radius: 8px; }
     .skeleton-hero {
       width: 100%; height: 85vh; background: #000; display: flex; align-items: center; justify-content: center;
@@ -100,7 +101,7 @@
     @media (min-width: 640px) { .skeleton-hero { height: 100vh; } }
     
     .skeleton-hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, transparent 100%); z-index: 1; }
-    .skeleton-hero-content { width: 600px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; z-index: 2; position: relative; }
+    .skeleton-hero-content { width: min(90%, 600px); height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; z-index: 2; position: relative; }
     
     /* Smooth Hydration Transition: Avoid forced reflows from layout shifts */
     .skeleton-header, .skeleton-hero {
