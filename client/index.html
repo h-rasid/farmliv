@@ -126,44 +126,50 @@
     }
     
     h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 800; }
-
-    /* Custom Swiper Styles */
-    .product-swiper .swiper-button-next, .product-swiper .swiper-button-prev {
-      color: #2E7D32 !important;
-      background: rgba(255, 255, 255, 0.9);
-      width: 38px !important;
-      height: 38px !important;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      backdrop-filter: blur(4px);
-      z-index: 20;
-    }
-    .product-swiper .swiper-button-next:after, .product-swiper .swiper-button-prev:after {
-      font-size: 14px !important;
-      font-weight: bold;
-    }
-    .product-swiper .swiper-pagination-bullet {
-      background: #ccc !important;
-      opacity: 0.5;
-    }
-    .product-swiper .swiper-pagination-bullet-active {
-      background: #2E7D32 !important;
-      opacity: 1;
-    }
-    @media (max-width: 640px) {
-      .product-swiper .swiper-button-next, .product-swiper .swiper-button-prev {
-        display: none !important;
-      }
-    }
   </style>
 
-  <!-- Google Tag Manager (Moved to end of head for performance) -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NGB83X8R');</script>
-  <!-- End Google Tag Manager -->
+  <!-- Smart Google Tag Manager Loader: Optimized for Performance (LCP/FCP) -->
+  <script>
+    (function() {
+      // 1. Initialize dataLayer immediately for early events
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+
+      let gtmLoaded = false;
+      function loadGTM() {
+        if (gtmLoaded) return;
+        gtmLoaded = true;
+
+        // Clean up listeners
+        window.removeEventListener('scroll', loadGTM);
+        window.removeEventListener('mousedown', loadGTM);
+        window.removeEventListener('mousemove', loadGTM);
+        window.removeEventListener('touchstart', loadGTM);
+        window.removeEventListener('keydown', loadGTM);
+
+        // Inject GTM script
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-NGB83X8R';
+        const f = document.getElementsByTagName('script')[0];
+        f.parentNode.insertBefore(s, f);
+      }
+
+      // 2. Trigger on User Interaction
+      const interactionEvents = ['scroll', 'mousedown', 'mousemove', 'touchstart', 'keydown'];
+      interactionEvents.forEach(event => {
+        window.addEventListener(event, loadGTM, { passive: true, once: true });
+      });
+
+      // 3. Fallback: Load after 3.5s if no interaction occurs
+      if (document.readyState === 'complete') {
+        setTimeout(loadGTM, 3500);
+      } else {
+        window.addEventListener('load', () => setTimeout(loadGTM, 3500));
+      }
+    })();
+  </script>
+  <!-- End Smart GTM Loader -->
 
   <script>
     // Reveal application container immediately
