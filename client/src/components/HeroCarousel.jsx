@@ -43,7 +43,7 @@ const HeroCarousel = () => {
     const timer = setTimeout(() => {
       const nextIndex = (currentSlide + 1) % slides.length;
       // MATCH LazyImage priority optimization (w_1080 for desktop/tablet clarity)
-      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1080/');
+      const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto,c_fill,g_auto,w_1080/');
 
       // Check if already preloaded
       if (!document.querySelector(`link[href="${preloadUrl}"]`)) {
@@ -95,7 +95,7 @@ const HeroCarousel = () => {
         <div
           className="absolute inset-0 transition-[opacity,transform] duration-1000 will-change-transform"
           style={{
-            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:200,f_auto,q_auto:eco,c_fill,g_auto,w_200/')})`,
+            backgroundImage: `url(${slides[currentSlide].image.replace('/upload/', '/upload/e_blur:200,f_auto,q_auto,c_fill,g_auto,w_200/')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'blur(10px) brightness(0.85)',

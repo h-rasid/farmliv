@@ -11,6 +11,7 @@ const LazyImage = ({
   fullHeight = true,
   maxWidth = null, 
   sizes = "100vw",
+  quality = "q_auto",
   width = "1920",  // ⭐ Default aspect ratio hint
   height = "1080"
 }) => {
@@ -60,7 +61,6 @@ const LazyImage = ({
       // Avoid double injection
       // ⭐ Use c_fill for cover images to handle aspect ratio on server
       // Aggressive optimization for priority images (LCP)
-      const quality = 'q_auto:eco';
       let params = objectFit === 'cover' ? `f_auto,${quality},c_fill,g_auto` : `f_auto,${quality},c_limit`;
       
       // ⭐ Add Aspect Ratio if provided to force server-side cropping
@@ -128,7 +128,7 @@ const LazyImage = ({
           /* ⭐ 'eager' priority images ke liye, 'lazy' baaki ke liye */
           loading={priority ? 'eager' : 'lazy'}
           /* ⭐ 'high' priority images ke liye (LCP optimization) */
-          fetchpriority={priority ? 'high' : 'auto'}
+          fetchPriority={priority ? 'high' : 'auto'}
           onLoad={handleLoad}
           onError={handleError}
           /* ⭐ Smooth opacity transition (0.4s) but bypass for priority images to maximize LCP/SpeedIndex scores. */
