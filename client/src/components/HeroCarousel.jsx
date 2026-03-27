@@ -44,7 +44,7 @@ const HeroCarousel = () => {
       const nextIndex = (currentSlide + 1) % slides.length;
       // MATCH LazyImage priority optimization (w_1080 for desktop/tablet clarity)
       const preloadUrl = slides[nextIndex].image.replace('/upload/', '/upload/f_auto,q_auto:eco,c_fill,g_auto,w_1080/');
-      
+
       // Check if already preloaded
       if (!document.querySelector(`link[href="${preloadUrl}"]`)) {
         const link = document.createElement('link');
@@ -105,16 +105,16 @@ const HeroCarousel = () => {
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 z-10 overflow-hidden"
-            style={{ willChange: 'transform, opacity' }}
-          >
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 z-10 overflow-hidden"
+          style={{ willChange: 'transform, opacity' }}
+        >
           {/* Ken Burns effect */}
           <motion.div
             className="relative h-full w-full overflow-hidden"
@@ -210,9 +210,8 @@ const HeroCarousel = () => {
             className="group relative py-4 min-w-[32px] flex items-center justify-center pointer-events-auto"
             aria-label={`Go to slide ${index + 1}`}
           >
-            <div className={`h-[3px] rounded-full transition-all duration-500 ${
-              index === currentSlide ? 'w-12 sm:w-16 bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'w-8 sm:w-10 bg-white/30 group-hover:bg-white/60'
-            }`} />
+            <div className={`h-[3px] rounded-full transition-all duration-500 ${index === currentSlide ? 'w-12 sm:w-16 bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'w-8 sm:w-10 bg-white/30 group-hover:bg-white/60'
+              }`} />
           </button>
         ))}
       </div>
