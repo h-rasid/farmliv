@@ -15,6 +15,16 @@ const app = express();
 // --- 1. MIDDLEWARE ---
 app.use(compression()); 
 
+// ⭐ SEO Redirect: Force /product/2 to new descriptive URL
+app.use((req, res, next) => {
+  const path = req.path.toLowerCase().replace(/\/$/, ""); // Remove trailing slash
+  if (path === "/product/2") {
+    console.log(`[SEO Redirect] Moving ${req.originalUrl} to slug...`);
+    return res.redirect(301, "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer");
+  }
+  next();
+});
+
 app.use(cors({
   origin: (origin, callback) => {
     const allowedOrigins = [
