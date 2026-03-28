@@ -112,11 +112,6 @@ const ProductDetailPage = ({ productIdOverride }) => {
 
     fetchProductData();
     
-    // Redirect /product/2 to SEO slug
-    if (productId === '2' && !productIdOverride) {
-      navigate('/heavy-duty-weed-control-mat-manufacturer', { replace: true });
-    }
-
     window.scrollTo(0, 0);
   }, [productId, productIdOverride, navigate]);
 
