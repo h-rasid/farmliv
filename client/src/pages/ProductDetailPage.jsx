@@ -37,6 +37,22 @@ const ProductDetailPage = ({ productIdOverride }) => {
 
   useEffect(() => {
     const fetchProductData = async () => {
+      // ⭐ SEO SLUG MAPPING: Force specific IDs to their SEO-friendly URLs
+      const slugMap = {
+        '2': '/heavy-duty-weed-control-mat-manufacturer',
+        '3': '/uv-stabilized-agriculture-shade-net-manufacturer',
+        '4': '/pp-leno-mesh-bag-manufacturer',
+        '5': '/ldpe-drip-irrigation-pipe-manufacturer',
+        '6': '/hdpe-geomembrane-sheet-manufacturer',
+        '9': '/geotextile-geo-bag-manufacturer',
+        '10': '/fibc-jumbo-bag-manufacturer'
+      };
+
+      if (slugMap[productId] && !productIdOverride) {
+        navigate(slugMap[productId], { replace: true });
+        return;
+      }
+
       if (!productId) return;
       
       try {
@@ -154,7 +170,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
                   ? "https://farmliv.com/hdpe-geomembrane-sheet-manufacturer"
                   : String(product.id) === '9'
                     ? "https://farmliv.com/geotextile-geo-bag-manufacturer"
-                    : `https://farmliv.com/product/${product.id}`} />
+                    : String(product.id) === '10'
+                      ? "https://farmliv.com/fibc-jumbo-bag-manufacturer"
+                      : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />

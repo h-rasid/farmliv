@@ -25,7 +25,8 @@ app.use((req, res, next) => {
     "/product/4": "https://farmliv.com/pp-leno-mesh-bag-manufacturer",
     "/product/5": "https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer",
     "/product/6": "https://farmliv.com/hdpe-geomembrane-sheet-manufacturer",
-    "/product/9": "https://farmliv.com/geotextile-geo-bag-manufacturer"
+    "/product/9": "https://farmliv.com/geotextile-geo-bag-manufacturer",
+    "/product/10": "https://farmliv.com/fibc-jumbo-bag-manufacturer"
   };
 
   if (seoRedirects[path]) {
@@ -674,6 +675,8 @@ app.get('/sitemap.xml', async (req, res) => {
         productUrl = `${DOMAIN}/hdpe-geomembrane-sheet-manufacturer`;
       } else if (String(prod.id) === '9') {
         productUrl = `${DOMAIN}/geotextile-geo-bag-manufacturer`;
+      } else if (String(prod.id) === '10') {
+        productUrl = `${DOMAIN}/fibc-jumbo-bag-manufacturer`;
       }
         
       xml += `

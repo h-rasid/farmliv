@@ -56,6 +56,8 @@ const ProductCard = ({ product }) => {
                   ? '/hdpe-geomembrane-sheet-manufacturer'
                 : String(product?.id) === '9'
                   ? '/geotextile-geo-bag-manufacturer'
+                : String(product?.id) === '10'
+                  ? '/fibc-jumbo-bag-manufacturer'
                   : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >
