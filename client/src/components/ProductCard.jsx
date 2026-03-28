@@ -50,7 +50,9 @@ const ProductCard = ({ product }) => {
             ? '/uv-stabilized-agriculture-shade-net-manufacturer'
             : String(product?.id) === '4'
               ? '/pp-leno-mesh-bag-manufacturer'
-              : `/product/${product?.id}`} 
+              : String(product?.id) === '5'
+                ? '/ldpe-drip-irrigation-pipe-manufacturer'
+                : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >
         {/* IMAGE SECTION */}
