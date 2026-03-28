@@ -1886,8 +1886,8 @@ app.put('/api/tasks/:id/status', async (req, res) => {
     await logActivity(`Task Intelligence Updated: ID ${req.params.id} -> ${status}`);
     return res.json({ success: true });
   } catch (err) {
-    return res.status(500).jror:", err);
-    res.status(500).end();
+    console.error("Task update error:", err);
+    return res.status(500).json({ error: "Task update refusal" });
   }
 });
 
