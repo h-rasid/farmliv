@@ -1918,6 +1918,10 @@ app.use(express.static(finalPath, {
 
 
 // React app catch-all route
+app.get('/product/2', (req, res) => {
+    res.redirect(301, 'https://farmliv.com/heavy-duty-weed-control-mat-manufacturer');
+});
+
 app.get('{*path}', (req, res) => {
     // If request contains a dot (like .js, .css, .png) but isn't HTML, handle missing assets
     if (req.path.includes('.') && 
