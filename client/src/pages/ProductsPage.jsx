@@ -198,7 +198,9 @@ const ProductsPage = () => {
                                   ? '/ldpe-drip-irrigation-pipe-manufacturer' 
                                   : String(p.id) === '6' 
                                     ? '/hdpe-geomembrane-sheet-manufacturer' 
-                                    : `/product/${p.id}`} 
+                                    : String(p.id) === '9' 
+                                      ? '/geotextile-geo-bag-manufacturer' 
+                                      : `/product/${p.id}`} 
                           className="block w-full h-full"
                         >
                           <LazyImage 
@@ -245,7 +247,9 @@ const ProductsPage = () => {
                                   ? '/ldpe-drip-irrigation-pipe-manufacturer' 
                                   : String(p.id) === '6' 
                                     ? '/hdpe-geomembrane-sheet-manufacturer' 
-                                    : `/product/${p.id}`}
+                                    : String(p.id) === '9' 
+                                      ? '/geotextile-geo-bag-manufacturer' 
+                                      : `/product/${p.id}`}
                           className="flex items-center justify-between pt-4 border-t border-gray-100 group/btn"
                         >
                           <span className="text-[#2E7D32] font-black text-[10px] uppercase tracking-widest">Explore Details</span>

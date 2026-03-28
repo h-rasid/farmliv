@@ -54,6 +54,8 @@ const ProductCard = ({ product }) => {
                 ? '/ldpe-drip-irrigation-pipe-manufacturer'
                 : String(product?.id) === '6'
                   ? '/hdpe-geomembrane-sheet-manufacturer'
+                : String(product?.id) === '9'
+                  ? '/geotextile-geo-bag-manufacturer'
                   : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >

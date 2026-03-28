@@ -152,7 +152,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
                 ? "https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer"
                 : String(product.id) === '6'
                   ? "https://farmliv.com/hdpe-geomembrane-sheet-manufacturer"
-                  : `https://farmliv.com/product/${product.id}`} />
+                  : String(product.id) === '9'
+                    ? "https://farmliv.com/geotextile-geo-bag-manufacturer"
+                    : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />
