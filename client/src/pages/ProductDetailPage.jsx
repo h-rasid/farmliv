@@ -46,7 +46,8 @@ const ProductDetailPage = ({ productIdOverride }) => {
         '6': '/hdpe-geomembrane-sheet-manufacturer',
         '9': '/geotextile-geo-bag-manufacturer',
         '10': '/fibc-jumbo-bag-manufacturer',
-        '11': '/pp-leno-mesh-bag-manufacturer'
+        '11': '/pp-leno-mesh-bag-manufacturer',
+        '12': '/ldpe-agricultural-poly-film-manufacturer'
       };
 
       if (slugMap[productId] && !productIdOverride) {
@@ -173,7 +174,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
                     ? "https://farmliv.com/geotextile-geo-bag-manufacturer"
                     : String(product.id) === '10'
                       ? "https://farmliv.com/fibc-jumbo-bag-manufacturer"
-                      : `https://farmliv.com/product/${product.id}`} />
+                      : String(product.id) === '12'
+                        ? "https://farmliv.com/ldpe-agricultural-poly-film-manufacturer"
+                        : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />
