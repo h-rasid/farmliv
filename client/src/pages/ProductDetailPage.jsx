@@ -47,7 +47,8 @@ const ProductDetailPage = ({ productIdOverride }) => {
         '9': '/geotextile-geo-bag-manufacturer',
         '10': '/fibc-jumbo-bag-manufacturer',
         '11': '/pp-leno-mesh-bag-manufacturer',
-        '12': '/ldpe-agricultural-poly-film-manufacturer'
+        '12': '/ldpe-agricultural-poly-film-manufacturer',
+        '13': '/ldpe-mulching-film-manufacturer'
       };
 
       if (slugMap[productId] && !productIdOverride) {
@@ -176,7 +177,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
                       ? "https://farmliv.com/fibc-jumbo-bag-manufacturer"
                       : String(product.id) === '12'
                         ? "https://farmliv.com/ldpe-agricultural-poly-film-manufacturer"
-                        : `https://farmliv.com/product/${product.id}`} />
+                        : String(product.id) === '13'
+                          ? "https://farmliv.com/ldpe-mulching-film-manufacturer"
+                          : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />

@@ -204,7 +204,9 @@ const ProductsPage = () => {
                                         ? '/fibc-jumbo-bag-manufacturer' 
                                         : String(p.id) === '12' 
                                           ? '/ldpe-agricultural-poly-film-manufacturer' 
-                                          : `/product/${p.id}`} 
+                                          : String(p.id) === '13' 
+                                            ? '/ldpe-mulching-film-manufacturer' 
+                                            : `/product/${p.id}`} 
                           className="block w-full h-full"
                         >
                           <LazyImage 
@@ -257,7 +259,9 @@ const ProductsPage = () => {
                                         ? '/fibc-jumbo-bag-manufacturer' 
                                         : String(p.id) === '12' 
                                           ? '/ldpe-agricultural-poly-film-manufacturer' 
-                                          : `/product/${p.id}`}
+                                          : String(p.id) === '13' 
+                                            ? '/ldpe-mulching-film-manufacturer' 
+                                            : `/product/${p.id}`}
                           className="flex items-center justify-between pt-4 border-t border-gray-100 group/btn"
                         >
                           <span className="text-[#2E7D32] font-black text-[10px] uppercase tracking-widest">Explore Details</span>

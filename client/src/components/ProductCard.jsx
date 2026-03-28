@@ -60,6 +60,8 @@ const ProductCard = ({ product }) => {
                   ? '/fibc-jumbo-bag-manufacturer'
                 : String(product?.id) === '12'
                   ? '/ldpe-agricultural-poly-film-manufacturer'
+                : String(product?.id) === '13'
+                  ? '/ldpe-mulching-film-manufacturer'
                   : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >

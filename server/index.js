@@ -28,7 +28,8 @@ app.use((req, res, next) => {
     "/product/9": "https://farmliv.com/geotextile-geo-bag-manufacturer",
     "/product/10": "https://farmliv.com/fibc-jumbo-bag-manufacturer",
     "/product/11": "https://farmliv.com/pp-leno-mesh-bag-manufacturer",
-    "/product/12": "https://farmliv.com/ldpe-agricultural-poly-film-manufacturer"
+    "/product/12": "https://farmliv.com/ldpe-agricultural-poly-film-manufacturer",
+    "/product/13": "https://farmliv.com/ldpe-mulching-film-manufacturer"
   };
 
   if (seoRedirects[path]) {
@@ -681,6 +682,8 @@ app.get('/sitemap.xml', async (req, res) => {
         productUrl = `${DOMAIN}/fibc-jumbo-bag-manufacturer`;
       } else if (String(prod.id) === '12') {
         productUrl = `${DOMAIN}/ldpe-agricultural-poly-film-manufacturer`;
+      } else if (String(prod.id) === '13') {
+        productUrl = `${DOMAIN}/ldpe-mulching-film-manufacturer`;
       }
         
       xml += `
