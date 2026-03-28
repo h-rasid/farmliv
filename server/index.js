@@ -26,7 +26,8 @@ app.use((req, res, next) => {
     "/product/5": "https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer",
     "/product/6": "https://farmliv.com/hdpe-geomembrane-sheet-manufacturer",
     "/product/9": "https://farmliv.com/geotextile-geo-bag-manufacturer",
-    "/product/10": "https://farmliv.com/fibc-jumbo-bag-manufacturer"
+    "/product/10": "https://farmliv.com/fibc-jumbo-bag-manufacturer",
+    "/product/11": "https://farmliv.com/pp-leno-mesh-bag-manufacturer"
   };
 
   if (seoRedirects[path]) {
@@ -667,7 +668,7 @@ app.get('/sitemap.xml', async (req, res) => {
         productUrl = `${DOMAIN}/heavy-duty-weed-control-mat-manufacturer`;
       } else if (String(prod.id) === '3') {
         productUrl = `${DOMAIN}/uv-stabilized-agriculture-shade-net-manufacturer`;
-      } else if (String(prod.id) === '4') {
+      } else if (String(prod.id) === '4' || String(prod.id) === '11') {
         productUrl = `${DOMAIN}/pp-leno-mesh-bag-manufacturer`;
       } else if (String(prod.id) === '5') {
         productUrl = `${DOMAIN}/ldpe-drip-irrigation-pipe-manufacturer`;

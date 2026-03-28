@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
           ? '/heavy-duty-weed-control-mat-manufacturer' 
           : String(product?.id) === '3'
             ? '/uv-stabilized-agriculture-shade-net-manufacturer'
-            : String(product?.id) === '4'
+            : String(product?.id) === '4' || String(product?.id) === '11'
               ? '/pp-leno-mesh-bag-manufacturer'
               : String(product?.id) === '5'
                 ? '/ldpe-drip-irrigation-pipe-manufacturer'

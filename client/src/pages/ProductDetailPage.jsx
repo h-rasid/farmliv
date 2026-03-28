@@ -45,7 +45,8 @@ const ProductDetailPage = ({ productIdOverride }) => {
         '5': '/ldpe-drip-irrigation-pipe-manufacturer',
         '6': '/hdpe-geomembrane-sheet-manufacturer',
         '9': '/geotextile-geo-bag-manufacturer',
-        '10': '/fibc-jumbo-bag-manufacturer'
+        '10': '/fibc-jumbo-bag-manufacturer',
+        '11': '/pp-leno-mesh-bag-manufacturer'
       };
 
       if (slugMap[productId] && !productIdOverride) {
@@ -162,7 +163,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
           ? "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer" 
           : String(product.id) === '3'
             ? "https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer"
-            : String(product.id) === '4'
+            : String(product.id) === '4' || String(product.id) === '11'
               ? "https://farmliv.com/pp-leno-mesh-bag-manufacturer"
               : String(product.id) === '5'
                 ? "https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer"
