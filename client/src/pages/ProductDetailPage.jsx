@@ -146,7 +146,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
           ? "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer" 
           : String(product.id) === '3'
             ? "https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer"
-            : `https://farmliv.com/product/${product.id}`} />
+            : String(product.id) === '4'
+              ? "https://farmliv.com/pp-leno-mesh-bag-manufacturer"
+              : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />
