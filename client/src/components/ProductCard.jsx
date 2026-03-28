@@ -44,7 +44,11 @@ const ProductCard = ({ product }) => {
       className="group bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transition-all duration-300 h-full"
     >
       <Link 
-        to={String(product?.id) === '2' ? '/heavy-duty-weed-control-mat-manufacturer' : `/product/${product?.id}`} 
+        to={String(product?.id) === '2' 
+          ? '/heavy-duty-weed-control-mat-manufacturer' 
+          : String(product?.id) === '3'
+            ? '/uv-stabilized-agriculture-shade-net-manufacturer'
+            : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >
         {/* IMAGE SECTION */}

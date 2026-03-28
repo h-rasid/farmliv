@@ -142,9 +142,11 @@ const ProductDetailPage = ({ productIdOverride }) => {
       <Helmet>
         <title>{product.name} | Farmliv Industries</title>
         <meta name="description" content={product.description} />
-        <link rel="canonical" href={String(productId) === '2' 
+        <link rel="canonical" href={String(product.id) === '2' 
           ? "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer" 
-          : `https://farmliv.com/product/${productId}`} />
+          : String(product.id) === '3'
+            ? "https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer"
+            : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />

@@ -15,12 +15,18 @@ const app = express();
 // --- 1. MIDDLEWARE ---
 app.use(compression()); 
 
-// ⭐ SEO Redirect: Force /product/2 to new descriptive URL
+// ⭐ SEO Redirect: Force specific IDs to their new descriptive URLs
 app.use((req, res, next) => {
   const path = req.path.toLowerCase().replace(/\/$/, ""); // Remove trailing slash
-  if (path === "/product/2") {
+  
+  const seoRedirects = {
+    "/product/2": "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer",
+    "/product/3": "https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer"
+  };
+
+  if (seoRedirects[path]) {
     console.log(`[SEO Redirect] Moving ${req.originalUrl} to slug...`);
-    return res.redirect(301, "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer");
+    return res.redirect(301, seoRedirects[path]);
   }
   next();
 });
@@ -640,10 +646,13 @@ app.get('/sitemap.xml', async (req, res) => {
 
     // Add Dynamic Products
     products.forEach(prod => {
-      // Special logic for Weed Mat (ID 2) as requested by user
-      const productUrl = String(prod.id) === '2' 
-        ? `${DOMAIN}/heavy-duty-weed-control-mat-manufacturer`
-        : `${DOMAIN}/product/${prod.id}`;
+      // Special logic for SEO Slugs as requested by user
+      let productUrl = `${DOMAIN}/product/${prod.id}`;
+      if (String(prod.id) === '2') {
+        productUrl = `${DOMAIN}/heavy-duty-weed-control-mat-manufacturer`;
+      } else if (String(prod.id) === '3') {
+        productUrl = `${DOMAIN}/uv-stabilized-agriculture-shade-net-manufacturer`;
+      }
         
       xml += `
   <url>
