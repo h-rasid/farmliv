@@ -25,6 +25,8 @@ const CertificationPage = React.lazy(() => import('./pages/CertificationPage'));
 const ContactPage = React.lazy(() => import('./pages/ContactPage'));
 const RequestQuotePage = React.lazy(() => import('./pages/RequestQuotePage'));
 const ThankYouPage = React.lazy(() => import('./pages/ThankYouPage'));
+const PrivacyPolicyPage = React.lazy(() => import('./pages/PrivacyPolicyPage'));
+const DisclaimerPage = React.lazy(() => import('./pages/DisclaimerPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
 // --- Lazy Load Admin Pages ---
@@ -113,6 +115,8 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/request-quote" element={<RequestQuotePage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
 
             {/* AUTHENTICATION */}
             <Route path="/admin/login" element={<LoginPage />} />

@@ -633,6 +633,16 @@ app.get('/sitemap.xml', async (req, res) => {
     <loc>${DOMAIN}/request-quote</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/privacy-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>${DOMAIN}/disclaimer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>`;
 
     // Add Dynamic Categories

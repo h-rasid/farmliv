@@ -170,6 +170,10 @@ const Footer = () => {
 
         <div className="border-t border-white/20 mt-12 pt-8 text-center text-green-100 text-sm">
           <p>&copy; {new Date().getFullYear()} Farmliv Industries. All rights reserved. | ISO 9001:2015 Certified</p>
+          <div className="flex justify-center gap-6 mt-4">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
+          </div>
         </div>
       </div>
     </footer>;
