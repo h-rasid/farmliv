@@ -266,6 +266,11 @@ const QuoteForm = () => {
         <button type="submit" disabled={isSubmitting} className="w-full bg-gray-900 text-white py-6 rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-[#2E7D32] transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50">
           {isSubmitting ? <Loader2 className="animate-spin" /> : <><Download size={16}/> SUBMIT & Download Quote</>}
         </button>
+
+        <p className="text-[10px] text-gray-400 text-center font-medium">
+          By submitting this form, you acknowledge that you have read and agree to our 
+          <a href="/privacy-policy" target="_blank" className="text-[#2E7D32] hover:underline ml-1">Privacy Policy</a>.
+        </p>
       </form>
       <QuoteSuccessModal isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} quoteData={lastQuoteData} />
     </>
