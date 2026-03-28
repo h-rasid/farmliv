@@ -567,6 +567,12 @@ app.get('/api/debug/schema', async (req, res) => {
 app.get('/robots.txt', (req, res) => {
   const robots = `User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin-portal
+Disallow: /salesman
+Disallow: /salesman-portal
+Disallow: /api/debug
+
 Sitemap: https://farmliv.com/sitemap.xml`;
   res.header('Content-Type', 'text/plain');
   res.status(200).send(robots);
@@ -577,7 +583,7 @@ app.get('/sitemap.xml', async (req, res) => {
   try {
     // Get Categories & Products
     const [categories] = await pool.query('SELECT name FROM categories');
-    const [products] = await pool.query('SELECT id FROM products');
+    const [products] = await pool.query('SELECT id, name FROM products');
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -624,9 +630,14 @@ app.get('/sitemap.xml', async (req, res) => {
 
     // Add Dynamic Products
     products.forEach(prod => {
+      // Special logic for Weed Mat (ID 2) as requested by user
+      const productUrl = String(prod.id) === '2' 
+        ? `${DOMAIN}/heavy-duty-weed-control-mat-manufacturer`
+        : `${DOMAIN}/product/${prod.id}`;
+        
       xml += `
   <url>
-    <loc>${DOMAIN}/product/${prod.id}</loc>
+    <loc>${productUrl}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -1875,74 +1886,7 @@ app.put('/api/tasks/:id/status', async (req, res) => {
     await logActivity(`Task Intelligence Updated: ID ${req.params.id} -> ${status}`);
     return res.json({ success: true });
   } catch (err) {
-    return res.status(500).json({ error: "Task update refusal" });
-  }
-});
-
-// --- 3. SEO & SITEMAP GENERATION ---
-app.get('/robots.txt', (req, res) => {
-  const robots = `User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /admin-portal
-Disallow: /salesman
-Disallow: /salesman-portal
-Disallow: /api/debug
-
-Sitemap: https://farmliv.com/sitemap.xml`;
-  res.header('Content-Type', 'text/plain');
-  res.send(robots);
-});
-
-app.get('/sitemap.xml', async (req, res) => {
-  try {
-    const baseUrl = 'https://farmliv.com';
-    const staticPages = ['', '/about', '/products', '/certification', '/contact', '/request-quote'];
-    
-    const [categories] = await pool.query('SELECT id FROM categories');
-    const [products] = await pool.query('SELECT id FROM products');
-
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
-
-    // Static Pages
-    staticPages.forEach(page => {
-      xml += `
-  <url>
-    <loc>${baseUrl}${page}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>${page === '' ? '1.0' : '0.8'}</priority>
-  </url>`;
-    });
-
-    // Categories
-    categories.forEach(cat => {
-      xml += `
-  <url>
-    <loc>${baseUrl}/products/${cat.id}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-    });
-
-    // Products
-    products.forEach(prod => {
-      const slug = prod.name ? prod.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
-      xml += `
-  <url>
-    <loc>${baseUrl}/product/${prod.id}-${slug}</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>`;
-    });
-
-    xml += `
-</urlset>`;
-
-    res.header('Content-Type', 'application/xml');
-    res.send(xml);
-  } catch (err) {
-    console.error("Sitemap Generation Error:", err);
+    return res.status(500).jror:", err);
     res.status(500).end();
   }
 });

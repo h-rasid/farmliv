@@ -43,7 +43,10 @@ const ProductCard = ({ product }) => {
       whileHover={{ y: -5 }}
       className="group bg-white rounded-xl shadow-md hover:shadow-2xl overflow-hidden border border-gray-100 transition-all duration-300 h-full"
     >
-      <Link to={`/product/${product?.id}`} className="block h-full flex flex-col">
+      <Link 
+        to={String(product?.id) === '2' ? '/heavy-duty-weed-control-mat-manufacturer' : `/product/${product?.id}`} 
+        className="block h-full flex flex-col"
+      >
         {/* IMAGE SECTION */}
         <div className="relative aspect-video overflow-hidden bg-gray-100">
           <div className="w-full h-full transform group-hover:scale-105 transition-transform duration-500 ease-in-out">

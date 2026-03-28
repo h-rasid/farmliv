@@ -105,6 +105,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:categoryId" element={<ProductsPage />} />
+            <Route path="/heavy-duty-weed-control-mat-manufacturer" element={<ProductDetailPage productIdOverride="2" />} />
             <Route path="/product/:productId" element={<ProductDetailPage />} />
             <Route path="/certification" element={<CertificationPage />} />
             <Route path="/contact" element={<ContactPage />} />

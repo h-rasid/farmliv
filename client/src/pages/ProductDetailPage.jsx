@@ -22,8 +22,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
-const ProductDetailPage = () => {
-  const { productId } = useParams();
+const ProductDetailPage = ({ productIdOverride }) => {
+  const { productId: paramId } = useParams();
+  const productId = productIdOverride || paramId;
+
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -109,8 +111,14 @@ const ProductDetailPage = () => {
     };
 
     fetchProductData();
+    
+    // Redirect /product/2 to SEO slug
+    if (productId === '2' && !productIdOverride) {
+      navigate('/heavy-duty-weed-control-mat-manufacturer', { replace: true });
+    }
+
     window.scrollTo(0, 0);
-  }, [productId]);
+  }, [productId, productIdOverride, navigate]);
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
@@ -139,7 +147,9 @@ const ProductDetailPage = () => {
       <Helmet>
         <title>{product.name} | Farmliv Industries</title>
         <meta name="description" content={product.description} />
-        <link rel="canonical" href={`https://farmliv.com/product/${productId}`} />
+        <link rel="canonical" href={String(productId) === '2' 
+          ? "https://farmliv.com/heavy-duty-weed-control-mat-manufacturer" 
+          : `https://farmliv.com/product/${productId}`} />
       </Helmet>
 
       <Header />

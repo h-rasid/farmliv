@@ -187,7 +187,10 @@ const ProductsPage = () => {
                           </span>
                         </div>
                         
-                        <Link to={`/product/${p.id}`} className="block w-full h-full">
+                        <Link 
+                          to={String(p.id) === '2' ? '/heavy-duty-weed-control-mat-manufacturer' : `/product/${p.id}`} 
+                          className="block w-full h-full"
+                        >
                           <LazyImage 
                             src={imageUrl} 
                             alt={p.name}
@@ -222,7 +225,7 @@ const ProductsPage = () => {
                         </div>
 
                         <Link 
-                          to={`/product/${p.id}`}
+                          to={String(p.id) === '2' ? '/heavy-duty-weed-control-mat-manufacturer' : `/product/${p.id}`}
                           className="flex items-center justify-between pt-4 border-t border-gray-100 group/btn"
                         >
                           <span className="text-[#2E7D32] font-black text-[10px] uppercase tracking-widest">Explore Details</span>
