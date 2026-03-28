@@ -29,7 +29,8 @@ app.use((req, res, next) => {
     "/product/10": "https://farmliv.com/fibc-jumbo-bag-manufacturer",
     "/product/11": "https://farmliv.com/pp-leno-mesh-bag-manufacturer",
     "/product/12": "https://farmliv.com/ldpe-agricultural-poly-film-manufacturer",
-    "/product/13": "https://farmliv.com/ldpe-mulching-film-manufacturer"
+    "/product/13": "https://farmliv.com/ldpe-mulching-film-manufacturer",
+    "/product/14": "https://farmliv.com/hdpe-plastic-crate-manufacturer"
   };
 
   if (seoRedirects[path]) {
@@ -684,6 +685,8 @@ app.get('/sitemap.xml', async (req, res) => {
         productUrl = `${DOMAIN}/ldpe-agricultural-poly-film-manufacturer`;
       } else if (String(prod.id) === '13') {
         productUrl = `${DOMAIN}/ldpe-mulching-film-manufacturer`;
+      } else if (String(prod.id) === '14') {
+        productUrl = `${DOMAIN}/hdpe-plastic-crate-manufacturer`;
       }
         
       xml += `

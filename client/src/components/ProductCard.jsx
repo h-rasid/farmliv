@@ -62,6 +62,8 @@ const ProductCard = ({ product }) => {
                   ? '/ldpe-agricultural-poly-film-manufacturer'
                 : String(product?.id) === '13'
                   ? '/ldpe-mulching-film-manufacturer'
+                : String(product?.id) === '14'
+                  ? '/hdpe-plastic-crate-manufacturer'
                   : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >
