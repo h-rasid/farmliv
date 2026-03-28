@@ -52,7 +52,9 @@ const ProductCard = ({ product }) => {
               ? '/pp-leno-mesh-bag-manufacturer'
               : String(product?.id) === '5'
                 ? '/ldpe-drip-irrigation-pipe-manufacturer'
-                : `/product/${product?.id}`} 
+                : String(product?.id) === '6'
+                  ? '/hdpe-geomembrane-sheet-manufacturer'
+                  : `/product/${product?.id}`} 
         className="block h-full flex flex-col"
       >
         {/* IMAGE SECTION */}

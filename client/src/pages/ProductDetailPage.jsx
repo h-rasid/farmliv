@@ -150,7 +150,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
               ? "https://farmliv.com/pp-leno-mesh-bag-manufacturer"
               : String(product.id) === '5'
                 ? "https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer"
-                : `https://farmliv.com/product/${product.id}`} />
+                : String(product.id) === '6'
+                  ? "https://farmliv.com/hdpe-geomembrane-sheet-manufacturer"
+                  : `https://farmliv.com/product/${product.id}`} />
       </Helmet>
 
       <Header />

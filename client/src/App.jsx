@@ -111,6 +111,7 @@ const AnimatedRoutes = ({ onOpenModal }) => {
             <Route path="/uv-stabilized-agriculture-shade-net-manufacturer" element={<ProductDetailPage productIdOverride="3" />} />
             <Route path="/pp-leno-mesh-bag-manufacturer" element={<ProductDetailPage productIdOverride="4" />} />
             <Route path="/ldpe-drip-irrigation-pipe-manufacturer" element={<ProductDetailPage productIdOverride="5" />} />
+            <Route path="/hdpe-geomembrane-sheet-manufacturer" element={<ProductDetailPage productIdOverride="6" />} />
             <Route path="/product/:productId" element={<ProductDetailPage />} />
             <Route path="/certification" element={<CertificationPage />} />
             <Route path="/contact" element={<ContactPage />} />
