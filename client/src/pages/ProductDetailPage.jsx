@@ -407,6 +407,41 @@ const ProductDetailPage = ({ productIdOverride }) => {
           {isWeedMat && (
             <section aria-label="Weed Mat Manufacturer Information" className="mt-20 space-y-12">
 
+              {/* H2: PRODUCT SPECIFICATIONS */}
+              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden">
+                <div className="px-10 md:px-14 pt-12 pb-4">
+                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">
+                    Product <span className="text-[#2E7D32]">Specifications</span>
+                  </h2>
+                  <p className="text-gray-500 text-sm mb-8">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[500px]">
+                    <thead className="bg-green-50 border-b border-green-100">
+                      <tr className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2E7D32]">
+                        <th className="py-4 px-10">Parameter</th>
+                        <th className="py-4 px-10">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {[
+                        ['Material', 'HDPE / Polypropylene (PP)'],
+                        ['GSM', '90, 100, 110, 120 GSM'],
+                        ['Width', '1 meter to 5 meters'],
+                        ['Length', '25m, 50m, 100m per roll'],
+                        ['UV Stabilized', 'Yes — 5+ Year Life Guarantee'],
+                        ['Color', 'Black / Green'],
+                      ].map(([param, value], i) => (
+                        <tr key={i} className="hover:bg-green-50/20 transition-all">
+                          <td className="py-4 px-10 font-black text-gray-900 text-[11px] uppercase tracking-wider">{param}</td>
+                          <td className="py-4 px-10 text-gray-600 text-sm font-medium">{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               {/* H2: LEADING WEED MAT MANUFACTURER */}
               <div className="bg-gradient-to-br from-green-50 to-white rounded-[3rem] border border-green-100 p-10 md:p-14">
                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-6">
@@ -446,41 +481,6 @@ const ProductDetailPage = ({ productIdOverride }) => {
                       <p className="text-gray-500 text-sm leading-relaxed">{item.body}</p>
                     </div>
                   ))}
-                </div>
-              </div>
-
-              {/* H2: PRODUCT SPECIFICATIONS */}
-              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden">
-                <div className="px-10 md:px-14 pt-12 pb-4">
-                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">
-                    Product <span className="text-[#2E7D32]">Specifications</span>
-                  </h2>
-                  <p className="text-gray-500 text-sm mb-8">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse min-w-[500px]">
-                    <thead className="bg-green-50 border-b border-green-100">
-                      <tr className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2E7D32]">
-                        <th className="py-4 px-10">Parameter</th>
-                        <th className="py-4 px-10">Details</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                      {[
-                        ['Material', 'HDPE / Polypropylene (PP)'],
-                        ['GSM', '90, 100, 110, 120 GSM'],
-                        ['Width', '1 meter to 5 meters'],
-                        ['Length', '25m, 50m, 100m per roll'],
-                        ['UV Stabilized', 'Yes — 5+ Year Life Guarantee'],
-                        ['Color', 'Black / Green'],
-                      ].map(([param, value], i) => (
-                        <tr key={i} className="hover:bg-green-50/20 transition-all">
-                          <td className="py-4 px-10 font-black text-gray-900 text-[11px] uppercase tracking-wider">{param}</td>
-                          <td className="py-4 px-10 text-gray-600 text-sm font-medium">{value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
                 </div>
               </div>
 
