@@ -181,7 +181,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
     ? 'Weed Mat Manufacturer in India | Heavy Duty PP Ground Cover | Farmliv'
     : `${product.name} | Farmliv Industries`;
   const seoDescription = isWeedMat
-    ? 'Farmliv Industries is a leading weed mat manufacturer in India. Buy heavy duty weed control mat, PP weed barrier fabric & garden ground cover at wholesale prices. ISO certified weed mat manufacturer.'
+    ? 'We are a leading weed mat manufacturer in India offering heavy duty weed control mats, weed barrier fabric and ground cover for farming, nursery and gardening. Bulk supply available.'
     : (product.description || `Buy ${product.name} from Farmliv Industries — trusted agricultural product manufacturer in India.`);
   const seoOgImage = (product.images && product.images[0]) || 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg';
   const canonicalUrl = getCanonical(product.id);
