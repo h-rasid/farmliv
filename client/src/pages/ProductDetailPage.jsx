@@ -409,18 +409,18 @@ const ProductDetailPage = ({ productIdOverride }) => {
 
               {/* H2: PRODUCT SPECIFICATIONS */}
               <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden">
-                <div className="px-10 md:px-14 pt-12 pb-4">
+                <div className="px-10 md:px-14 pt-12 pb-6">
                   <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">
                     Product <span className="text-[#2E7D32]">Specifications</span>
                   </h2>
-                  <p className="text-gray-500 text-sm mb-8">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
+                  <p className="text-gray-500 text-sm">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[500px]">
-                    <thead className="bg-green-50 border-b border-green-100">
+                    <thead className="bg-green-50/50 border-y border-green-100">
                       <tr className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2E7D32]">
-                        <th className="py-4 px-10">Parameter</th>
-                        <th className="py-4 px-10">Details</th>
+                        <th className="py-6 pl-10 md:pl-14 pr-4 w-1/3">Parameter</th>
+                        <th className="py-6 pl-4 pr-10 md:pr-14">Details</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -433,8 +433,8 @@ const ProductDetailPage = ({ productIdOverride }) => {
                         ['Color', 'Black / Green'],
                       ].map(([param, value], i) => (
                         <tr key={i} className="hover:bg-green-50/20 transition-all">
-                          <td className="py-4 px-10 font-black text-gray-900 text-[11px] uppercase tracking-wider">{param}</td>
-                          <td className="py-4 px-10 text-gray-600 text-sm font-medium">{value}</td>
+                          <td className="py-6 pl-10 md:pl-14 pr-4 font-black text-gray-900 text-[11px] uppercase tracking-wider">{param}</td>
+                          <td className="py-6 pl-4 pr-10 md:pr-14 text-gray-600 text-sm font-medium">{value}</td>
                         </tr>
                       ))}
                     </tbody>
