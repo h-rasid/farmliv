@@ -191,7 +191,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: isWeedMat ? 'Heavy Duty Weed Control Mat — Weed Mat Manufacturer India' : product.name,
+    name: isWeedMat ? 'Heavy Duty Weed Control Mat Weed Mat Manufacturer India' : product.name,
     description: seoDescription,
     image: product.images || [],
     brand: { '@type': 'Brand', name: 'Farmliv Industries' },
@@ -354,7 +354,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-8 uppercase tracking-tighter leading-[0.9] italic">
-                {isWeedMat ? 'Weed Mat Manufacturer in India – Heavy Duty Weed Control Mats' : product.name}
+                {isWeedMat ? 'Weed Mat Manufacturer in India Heavy Duty Weed Control Mats' : product.name}
               </h1>
 
               <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 mb-6 relative overflow-hidden group">
@@ -414,7 +414,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
                   <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">
                     Product <span className="text-[#2E7D32]">Specifications</span>
                   </h2>
-                  <p className="text-gray-500 text-sm">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
+                  <p className="text-gray-500 text-sm">Standard specifications from Farmliv India's trusted <strong>weed mat manufacturer</strong>.</p>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse min-w-[500px]">
@@ -430,7 +430,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
                         ['GSM', '75, 90, 100, 110, 120 GSM'],
                         ['Width', '1 meter to 5 meters'],
                         ['Length', '25m, 50m, 100m per roll'],
-                        ['UV Stabilized', 'Yes — 5+ Year Life Guarantee'],
+                        ['UV Stabilized', 'Yes 5+ Year Life Guarantee'],
                         ['Color', 'Black / Green'],
                       ].map(([param, value], i) => (
                         <tr key={i} className="hover:bg-green-50/20 transition-all">
