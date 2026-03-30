@@ -633,7 +633,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
                   </h2>
                   
                   <p className="text-slate-400 text-lg md:text-xl font-medium leading-relaxed mb-12 opacity-80">
-                    Proprietary logistical pipelines and custom manufacturing configurations for high-volume commercial infrastructure.
+                    {isWeedMat
+                      ? "Farmliv offers proprietary logistical pipelines and custom weed mat manufacturing configurations for high-volume commercial infrastructure."
+                      : "Proprietary logistical pipelines and custom manufacturing configurations for high-volume commercial infrastructure."}
                   </p>
                   
                   <div className="grid grid-cols-2 gap-10">
