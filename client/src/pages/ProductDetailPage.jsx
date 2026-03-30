@@ -178,7 +178,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
   // ── SEO Meta per product ──
   const isWeedMat = String(product.id) === '2';
   const seoTitle = isWeedMat
-    ? 'Weed Mat Manufacturer in India | Heavy Duty PP Ground Cover | Farmliv'
+    ? 'Weed Mat Manufacturer in India | Heavy Duty Weed Control Mat | Farmliv'
     : `${product.name} | Farmliv Industries`;
   const seoDescription = isWeedMat
     ? 'We are a leading weed mat manufacturer in India offering heavy duty weed control mats, weed barrier fabric and ground cover for farming, nursery and gardening. Bulk supply available.'
