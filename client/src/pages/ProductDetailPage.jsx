@@ -426,7 +426,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
                     <tbody className="divide-y divide-gray-50">
                       {[
                         ['Material', 'HDPE / Polypropylene (PP)'],
-                        ['GSM', '90, 100, 110, 120 GSM'],
+                        ['GSM', '75, 90, 100, 110, 120 GSM'],
                         ['Width', '1 meter to 5 meters'],
                         ['Length', '25m, 50m, 100m per roll'],
                         ['UV Stabilized', 'Yes — 5+ Year Life Guarantee'],
