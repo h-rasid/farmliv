@@ -95,7 +95,7 @@ const SEO_ROUTES = {
     description: 'Farmliv Industries manufactures UV stabilized agricultural shade nets for greenhouses, nurseries & farms. Buy shade net online at wholesale prices from a trusted manufacturer.',
     canonical: 'https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer',
     ogTitle: 'Agriculture Shade Net Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy UV stabilized agriculture shade net from Farmliv Industries — trusted manufacturer & supplier across India.',
+    ogDescription: 'Buy UV stabilized agriculture shade net from Farmliv Industries trusted manufacturer and supplier across India.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp',
     keywords: 'shade net manufacturer, agriculture shade net, UV stabilized shade net, greenhouse net manufacturer India'
   },
@@ -104,7 +104,7 @@ const SEO_ROUTES = {
     description: 'Farmliv Industries is a trusted PP leno mesh bag manufacturer in India. Bulk supply of leno bags for fruits, vegetables & agricultural packaging.',
     canonical: 'https://farmliv.com/pp-leno-mesh-bag-manufacturer',
     ogTitle: 'PP Leno Mesh Bag Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy PP leno mesh bags in bulk from Farmliv — trusted leno bag manufacturer & exporter in India.',
+    ogDescription: 'Buy PP leno mesh bags in bulk from Farmliv trusted leno bag manufacturer and exporter in India.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/lenobags_pzm8z1.jpg',
     keywords: 'leno mesh bag manufacturer, PP leno bag, agricultural packaging manufacturer India'
   },
@@ -119,34 +119,34 @@ const SEO_ROUTES = {
   },
   '/hdpe-geomembrane-sheet-manufacturer': {
     title: 'HDPE Geomembrane Sheet Manufacturer in India | Pond Liner | Farmliv',
-    description: 'Farmliv Industries manufactures HDPE geomembrane sheets & pond liners for water storage & irrigation. Factory-direct supply at wholesale rates.',
+    description: 'Farmliv Industries manufactures HDPE geomembrane sheets and pond liners for water storage and irrigation. Factory direct supply at wholesale rates.',
     canonical: 'https://farmliv.com/hdpe-geomembrane-sheet-manufacturer',
     ogTitle: 'HDPE Geomembrane Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy HDPE geomembrane sheets & pond liners from Farmliv — trusted geomembrane manufacturer India.',
+    ogDescription: 'Buy HDPE geomembrane sheets and pond liners from Farmliv trusted geomembrane manufacturer India.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/pondliner_vscz7q.jpg',
     keywords: 'geomembrane sheet manufacturer, HDPE pond liner, geomembrane manufacturer India'
   },
   '/geotextile-geo-bag-manufacturer': {
     title: 'Geotextile Geo Bag Manufacturer in India | Farmliv Industries',
-    description: 'Farmliv Industries manufactures high-strength geotextile geo bags for erosion control, flood protection & civil engineering applications.',
+    description: 'Farmliv Industries manufactures high strength geotextile geo bags for erosion control, flood protection and civil engineering applications.',
     canonical: 'https://farmliv.com/geotextile-geo-bag-manufacturer',
     ogTitle: 'Geotextile Geo Bag Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy geotextile geo bags from Farmliv — India\'s trusted geo bag manufacturer & supplier.',
+    ogDescription: 'Buy geotextile geo bags from Farmliv India\'s trusted geo bag manufacturer and supplier.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg',
     keywords: 'geo bag manufacturer, geotextile bag manufacturer, nonwoven geo bag India'
   },
   '/fibc-jumbo-bag-manufacturer': {
     title: 'FIBC Jumbo Bag Manufacturer in India | Bulk Bag | Farmliv',
-    description: 'Farmliv Industries manufactures FIBC jumbo bags for bulk packaging of agricultural commodities, chemicals & industrial goods at factory prices.',
+    description: 'Farmliv Industries manufactures FIBC jumbo bags for bulk packaging of agricultural commodities, chemicals and industrial goods at factory prices.',
     canonical: 'https://farmliv.com/fibc-jumbo-bag-manufacturer',
     ogTitle: 'FIBC Jumbo Bag Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy FIBC jumbo bags from Farmliv — trusted bulk bag manufacturer & exporter in India.',
+    ogDescription: 'Buy FIBC jumbo bags from Farmliv trusted bulk bag manufacturer and exporter in India.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/lenobags_pzm8z1.jpg',
     keywords: 'FIBC jumbo bag manufacturer, bulk bag manufacturer India, ton bag manufacturer'
   },
   '/ldpe-mulching-film-manufacturer': {
     title: 'LDPE Mulching Film Manufacturer in India | Agricultural Film | Farmliv',
-    description: 'Farmliv Industries manufactures LDPE mulching films for moisture retention & weed control in agriculture. Black, silver & colored mulch available.',
+    description: 'Farmliv Industries manufactures LDPE mulching films for moisture retention and weed control in agriculture. Black, silver and colored mulch available.',
     canonical: 'https://farmliv.com/ldpe-mulching-film-manufacturer',
     ogTitle: 'Mulching Film Manufacturer | Farmliv Industries',
     ogDescription: 'Buy LDPE mulching film from Farmliv — trusted agricultural film manufacturer in India.',
@@ -155,10 +155,10 @@ const SEO_ROUTES = {
   },
   '/hdpe-plastic-crate-manufacturer': {
     title: 'HDPE Plastic Crate Manufacturer in India | Harvesting Crate | Farmliv',
-    description: 'Farmliv Industries manufactures heavy-duty HDPE plastic crates for agricultural harvesting, storage & transport. Factory-direct wholesale supply.',
+    description: 'Farmliv Industries manufactures heavy duty HDPE plastic crates for agricultural harvesting, storage and transport. Factory direct wholesale supply.',
     canonical: 'https://farmliv.com/hdpe-plastic-crate-manufacturer',
     ogTitle: 'Plastic Crate Manufacturer | Farmliv Industries',
-    ogDescription: 'Buy HDPE plastic crates from Farmliv — trusted crate manufacturer & supplier across India.',
+    ogDescription: 'Buy HDPE plastic crates from Farmliv trusted crate manufacturer and supplier across India.',
     ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/crates_f8q9ze.jpg',
     keywords: 'plastic crate manufacturer, HDPE crate manufacturer, harvesting crate India'
   }

@@ -11,7 +11,7 @@ const ProductReviews = ({ isWeedMat = false }) => {
       date: '2 months ago',
       rating: 5,
       title: 'Exceptional Quality & Durability',
-      content: 'We shifted to Farmliv for our large-scale operations. The product quality is unmatched and has drastically improved our crop yield. Their dispatch team was incredibly professional.'
+      content: 'We shifted to Farmliv for our large scale operations. The product quality is unmatched and has drastically improved our crop yield. Their dispatch team was incredibly professional.'
     },
     {
       name: 'Amit Patel',
@@ -19,14 +19,14 @@ const ProductReviews = ({ isWeedMat = false }) => {
       date: '5 months ago',
       rating: 5,
       title: 'Highly Recommended for B2B',
-      content: 'Our farms require heavy-duty performance. Farmliv’s materials easily withstand harsh UV sunlight and remain completely tear-resistant even after aggressive usage. Truly premium grade.'
+      content: 'Our farms require heavy duty performance. Farmliv’s materials easily withstand harsh UV sunlight and remain completely tear resistant even after aggressive usage. Truly premium grade.'
     },
     {
       name: 'Priya Sharma',
-      role: 'Agri-Business Supplier',
+      role: 'Agri Business Supplier',
       date: '1 week ago',
       rating: 4,
-      title: 'Reliable and Cost-Effective',
+      title: 'Reliable and Cost Effective',
       content: 'Affordable without compromising on quality. I appreciate the swift delivery and transparent pricing structure.'
     }
   ];
@@ -40,7 +40,7 @@ const ProductReviews = ({ isWeedMat = false }) => {
         date: '1 month ago',
         rating: 5,
         title: 'Best Weed Mat Manufacturer!',
-        content: 'I was struggling with weed overgrowth until I found Farmliv. As a leading weed mat manufacturer in India, their 110 GSM heavy-duty weed control mat completely blocked sunlight and suppressed 100% of the weeds. Highly water-permeable too!'
+        content: 'I was struggling with weed overgrowth until I found Farmliv. As a leading weed mat manufacturer in India, their 110 GSM heavy duty weed control mat completely blocked sunlight and suppressed 100% of the weeds. Highly water permeable too!'
       },
       {
         name: 'Amit Kumar',
@@ -48,7 +48,7 @@ const ProductReviews = ({ isWeedMat = false }) => {
         date: '3 months ago',
         rating: 5,
         title: 'Excellent 100 GSM Weed Mat Roll',
-        content: 'Bought the 50m length weed control fabric roll. It is extremely UV stabilized. Farmliv’s weed mats save us thousands in labor costs since we no longer need manual weeding. Very happy with the factory-direct pricing.'
+        content: 'Bought the 50m length weed control fabric roll. It is extremely UV stabilized. Farmliv’s weed mats save us thousands in labor costs since we no longer need manual weeding. Very happy with the factory direct pricing.'
       },
       {
         name: 'Raju Reddy',

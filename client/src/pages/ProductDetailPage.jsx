@@ -183,7 +183,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
     : `${product.name} | Farmliv Industries`;
   const seoDescription = isWeedMat
     ? 'We are a leading weed mat manufacturer in India offering heavy duty weed control mats, weed barrier fabric and ground cover for farming, nursery and gardening. Bulk supply available.'
-    : (product.description || `Buy ${product.name} from Farmliv Industries — trusted agricultural product manufacturer in India.`);
+    : (product.description || `Buy ${product.name} from Farmliv Industries trusted agricultural product manufacturer in India.`);
   const seoOgImage = (product.images && product.images[0]) || 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg';
   const canonicalUrl = getCanonical(product.id);
 
@@ -459,7 +459,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
                   What is a <span className="text-[#2E7D32]">Weed Mat</span>?
                 </h2>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  A <strong>weed mat</strong> is a ground cover fabric designed to prevent weed growth by blocking sunlight while allowing water and nutrients to pass through the soil. As a leading <strong>weed mat manufacturer</strong>, Farmliv produces weed control mats that are UV stabilized, tear-resistant, and built for long-term outdoor use.
+                  A <strong>weed mat</strong> is a ground cover fabric designed to prevent weed growth by blocking sunlight while allowing water and nutrients to pass through the soil. As a leading <strong>weed mat manufacturer</strong>, Farmliv produces weed control mats that are UV stabilized, tear resistant, and built for long term outdoor use.
                 </p>
               </div>
 
