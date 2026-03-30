@@ -400,8 +400,8 @@ const ProductDetailPage = ({ productIdOverride }) => {
             </div>
           </div>
 
-          {/* 1. TECHNICAL SPECIFICATIONS */}
-          <ProductDescriptionSection product={product} />
+          {/* 1. TECHNICAL SPECIFICATIONS (Hidden on Weed Mat page to avoid duplication) */}
+          {!isWeedMat && <ProductDescriptionSection product={product} />}
 
           {/* ⭐ SEO CONTENT BLOCK: Only renders for Weed Mat (Product ID 2) */}
           {isWeedMat && (
