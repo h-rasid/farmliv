@@ -74,6 +74,154 @@ app.use(express.json());
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
+// ============================================================
+// ⭐ SEO: Per-Route HTML Meta Tag Injection Middleware
+// Injects page-specific <title>, <meta>, <og:*>, <twitter:*>
+// into index.html BEFORE serving it, so Google crawlers see
+// correct SEO tags even without executing JavaScript.
+// ============================================================
+const SEO_ROUTES = {
+  '/heavy-duty-weed-control-mat-manufacturer': {
+    title: 'Weed Mat Manufacturer in India | Heavy Duty PP Ground Cover | Farmliv',
+    description: 'Farmliv Industries is a leading weed mat manufacturer in India. Buy heavy duty weed control mat, PP weed barrier fabric & garden ground cover at wholesale prices. ISO certified weed mat manufacturer.',
+    canonical: 'https://farmliv.com/heavy-duty-weed-control-mat-manufacturer',
+    ogTitle: 'Weed Mat Manufacturer in India | Farmliv Industries',
+    ogDescription: 'Buy heavy duty weed mat from Farmliv — India\'s trusted weed mat manufacturer. PP ground cover, weed barrier fabric, garden weed mat available in bulk.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg',
+    keywords: 'weed mat manufacturer, weed control mat, PP ground cover, weed barrier fabric, garden mat manufacturer India, heavy duty weed mat, farmliv weed mat'
+  },
+  '/uv-stabilized-agriculture-shade-net-manufacturer': {
+    title: 'Agriculture Shade Net Manufacturer in India | UV Stabilized | Farmliv',
+    description: 'Farmliv Industries manufactures UV stabilized agricultural shade nets for greenhouses, nurseries & farms. Buy shade net online at wholesale prices from a trusted manufacturer.',
+    canonical: 'https://farmliv.com/uv-stabilized-agriculture-shade-net-manufacturer',
+    ogTitle: 'Agriculture Shade Net Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy UV stabilized agriculture shade net from Farmliv Industries — trusted manufacturer & supplier across India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Shadenet_ew7jv2.webp',
+    keywords: 'shade net manufacturer, agriculture shade net, UV stabilized shade net, greenhouse net manufacturer India'
+  },
+  '/pp-leno-mesh-bag-manufacturer': {
+    title: 'PP Leno Mesh Bag Manufacturer in India | Farmliv Industries',
+    description: 'Farmliv Industries is a trusted PP leno mesh bag manufacturer in India. Bulk supply of leno bags for fruits, vegetables & agricultural packaging.',
+    canonical: 'https://farmliv.com/pp-leno-mesh-bag-manufacturer',
+    ogTitle: 'PP Leno Mesh Bag Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy PP leno mesh bags in bulk from Farmliv — trusted leno bag manufacturer & exporter in India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/lenobags_pzm8z1.jpg',
+    keywords: 'leno mesh bag manufacturer, PP leno bag, agricultural packaging manufacturer India'
+  },
+  '/ldpe-drip-irrigation-pipe-manufacturer': {
+    title: 'LDPE Drip Irrigation Pipe Manufacturer in India | Farmliv',
+    description: 'Farmliv Industries manufactures high-quality LDPE drip irrigation pipes for efficient water management in agriculture. Bulk supply at factory prices.',
+    canonical: 'https://farmliv.com/ldpe-drip-irrigation-pipe-manufacturer',
+    ogTitle: 'Drip Irrigation Pipe Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy LDPE drip irrigation pipes from Farmliv — India\'s trusted drip pipe manufacturer.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/drip_irrigation_yq9m1z.jpg',
+    keywords: 'drip irrigation pipe manufacturer, LDPE pipe manufacturer, drip pipe India'
+  },
+  '/hdpe-geomembrane-sheet-manufacturer': {
+    title: 'HDPE Geomembrane Sheet Manufacturer in India | Pond Liner | Farmliv',
+    description: 'Farmliv Industries manufactures HDPE geomembrane sheets & pond liners for water storage & irrigation. Factory-direct supply at wholesale rates.',
+    canonical: 'https://farmliv.com/hdpe-geomembrane-sheet-manufacturer',
+    ogTitle: 'HDPE Geomembrane Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy HDPE geomembrane sheets & pond liners from Farmliv — trusted geomembrane manufacturer India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/pondliner_vscz7q.jpg',
+    keywords: 'geomembrane sheet manufacturer, HDPE pond liner, geomembrane manufacturer India'
+  },
+  '/geotextile-geo-bag-manufacturer': {
+    title: 'Geotextile Geo Bag Manufacturer in India | Farmliv Industries',
+    description: 'Farmliv Industries manufactures high-strength geotextile geo bags for erosion control, flood protection & civil engineering applications.',
+    canonical: 'https://farmliv.com/geotextile-geo-bag-manufacturer',
+    ogTitle: 'Geotextile Geo Bag Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy geotextile geo bags from Farmliv — India\'s trusted geo bag manufacturer & supplier.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/weedmat1_rln1ds.jpg',
+    keywords: 'geo bag manufacturer, geotextile bag manufacturer, nonwoven geo bag India'
+  },
+  '/fibc-jumbo-bag-manufacturer': {
+    title: 'FIBC Jumbo Bag Manufacturer in India | Bulk Bag | Farmliv',
+    description: 'Farmliv Industries manufactures FIBC jumbo bags for bulk packaging of agricultural commodities, chemicals & industrial goods at factory prices.',
+    canonical: 'https://farmliv.com/fibc-jumbo-bag-manufacturer',
+    ogTitle: 'FIBC Jumbo Bag Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy FIBC jumbo bags from Farmliv — trusted bulk bag manufacturer & exporter in India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/lenobags_pzm8z1.jpg',
+    keywords: 'FIBC jumbo bag manufacturer, bulk bag manufacturer India, ton bag manufacturer'
+  },
+  '/ldpe-mulching-film-manufacturer': {
+    title: 'LDPE Mulching Film Manufacturer in India | Agricultural Film | Farmliv',
+    description: 'Farmliv Industries manufactures LDPE mulching films for moisture retention & weed control in agriculture. Black, silver & colored mulch available.',
+    canonical: 'https://farmliv.com/ldpe-mulching-film-manufacturer',
+    ogTitle: 'Mulching Film Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy LDPE mulching film from Farmliv — trusted agricultural film manufacturer in India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817061/Polyfilm_an9qiy.webp',
+    keywords: 'mulching film manufacturer, LDPE mulch film, agricultural film manufacturer India'
+  },
+  '/hdpe-plastic-crate-manufacturer': {
+    title: 'HDPE Plastic Crate Manufacturer in India | Harvesting Crate | Farmliv',
+    description: 'Farmliv Industries manufactures heavy-duty HDPE plastic crates for agricultural harvesting, storage & transport. Factory-direct wholesale supply.',
+    canonical: 'https://farmliv.com/hdpe-plastic-crate-manufacturer',
+    ogTitle: 'Plastic Crate Manufacturer | Farmliv Industries',
+    ogDescription: 'Buy HDPE plastic crates from Farmliv — trusted crate manufacturer & supplier across India.',
+    ogImage: 'https://res.cloudinary.com/dik8mlsie/image/upload/v1773817725/crates_f8q9ze.jpg',
+    keywords: 'plastic crate manufacturer, HDPE crate manufacturer, harvesting crate India'
+  }
+};
+
+// Helper: inject SEO meta tags into served HTML
+const injectSeoMeta = (html, seoData) => {
+  const { title, description, canonical, ogTitle, ogDescription, ogImage, keywords } = seoData;
+
+  // Replace title
+  html = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+
+  // Replace or insert meta description
+  if (html.includes('name="description"')) {
+    html = html.replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${description}" />`);
+  } else {
+    html = html.replace('</head>', `<meta name="description" content="${description}" />\n</head>`);
+  }
+
+  // Inject all SEO tags before </head>
+  const seoTags = `
+  <!-- SEO: Per-Page Injected Tags -->
+  <meta name="keywords" content="${keywords}" />
+  <link rel="canonical" href="${canonical}" />
+  <meta property="og:title" content="${ogTitle}" />
+  <meta property="og:description" content="${ogDescription}" />
+  <meta property="og:image" content="${ogImage}" />
+  <meta property="og:url" content="${canonical}" />
+  <meta property="og:type" content="product" />
+  <meta property="og:site_name" content="Farmliv Industries" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${ogTitle}" />
+  <meta name="twitter:description" content="${ogDescription}" />
+  <meta name="twitter:image" content="${ogImage}" />
+  <!-- End SEO Tags -->`;
+
+  html = html.replace('</head>', seoTags + '\n</head>');
+  return html;
+};
+
+// Middleware: serve SEO-injected HTML for known product routes
+app.get(Object.keys(SEO_ROUTES), (req, res) => {
+  const routePath = req.path.toLowerCase().replace(/\/$/, '');
+  const seoData = SEO_ROUTES[routePath];
+
+  const distIndexPath = path.join(__dirname, '../client/dist/index.html');
+
+  if (!seoData || !fs.existsSync(distIndexPath)) {
+    return res.sendFile(distIndexPath, { root: '/' });
+  }
+
+  try {
+    let html = fs.readFileSync(distIndexPath, 'utf8');
+    html = injectSeoMeta(html, seoData);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); // Fresh meta every time
+    res.send(html);
+  } catch (err) {
+    console.error('[SEO Middleware] Error injecting meta:', err.message);
+    res.sendFile(distIndexPath, { root: '/' });
+  }
+});
+
 // Serve static files from 'dist' (Farmliv Production)
 app.use(express.static(path.join(__dirname, '../client/dist'), {
   maxAge: '1d', // Default for index.html
