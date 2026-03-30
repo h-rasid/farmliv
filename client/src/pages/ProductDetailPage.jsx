@@ -308,7 +308,13 @@ const ProductDetailPage = ({ productIdOverride }) => {
                         >
                           <img 
                             src={img} 
-                            alt={`${product.name} view ${index + 1}`} 
+                            alt={isWeedMat
+                              ? (index === 0 ? 'weed mat manufacturer'
+                                : index === 1 ? 'hdpe weed mat roll'
+                                : index === 2 ? 'weed control mat for farming'
+                                : `${product.name} view ${index + 1}`)
+                              : `${product.name} view ${index + 1}`
+                            }
                             draggable="false"
                             className="w-full h-full object-cover select-none transition-transform duration-700 md:group-hover:scale-110"
                           />
@@ -347,7 +353,7 @@ const ProductDetailPage = ({ productIdOverride }) => {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-black text-gray-900 mb-8 uppercase tracking-tighter leading-[0.9] italic">
-                {isWeedMat ? 'Weed Mat Manufacturer in India — Heavy Duty PP Ground Cover' : product.name}
+                {isWeedMat ? 'Weed Mat Manufacturer in India – Heavy Duty Weed Control Mats' : product.name}
               </h1>
 
               <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 mb-6 relative overflow-hidden group">
@@ -399,82 +405,99 @@ const ProductDetailPage = ({ productIdOverride }) => {
 
           {/* ⭐ SEO CONTENT BLOCK: Only renders for Weed Mat (Product ID 2) */}
           {isWeedMat && (
-            <section aria-label="Weed Mat Manufacturer Information" className="mt-20 space-y-14">
+            <section aria-label="Weed Mat Manufacturer Information" className="mt-20 space-y-12">
 
-              {/* WHY CHOOSE FARMLIV */}
+              {/* H2: LEADING WEED MAT MANUFACTURER */}
               <div className="bg-gradient-to-br from-green-50 to-white rounded-[3rem] border border-green-100 p-10 md:p-14">
                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-6">
-                  Why Choose Farmliv as Your <span className="text-[#2E7D32]">Weed Mat Manufacturer</span>?
+                  Leading <span className="text-[#2E7D32]">Weed Mat Manufacturer</span>
                 </h2>
-                <p className="text-gray-700 text-base leading-relaxed mb-4">
-                  Farmliv Industries Private Limited is one of India's most trusted <strong>weed mat manufacturers</strong>, supplying premium quality weed control mats to farmers, nurseries, landscapers, and exporters across the country. As a dedicated <strong>weed mat manufacturer</strong>, we ensure every roll meets strict quality standards — from raw material selection to final packaging.
-                </p>
-                <p className="text-gray-700 text-base leading-relaxed mb-4">
-                  Our <strong>heavy duty weed control mat</strong> is manufactured using 100% virgin polypropylene (PP) fabric, woven to a density of 110 GSM. This makes our <strong>weed mat</strong> resistant to UV degradation, extreme weather, and physical wear — offering a guaranteed service life of 5+ years even in harsh outdoor conditions.
-                </p>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  As a factory-direct <strong>weed mat manufacturer in India</strong>, Farmliv offers the most competitive wholesale pricing with no middlemen. Whether you need 10 rolls or 10,000 rolls, our manufacturing facility is equipped to fulfil bulk orders with fast dispatch.
+                  We are a trusted <strong>weed mat manufacturer</strong> in India, offering premium quality weed control mats for agriculture, gardening, and landscaping. Our weed mats are made from high-quality HDPE material, ensuring durability and long-lasting performance.
                 </p>
               </div>
 
-              {/* BENEFITS GRID */}
+              {/* H2: WHAT IS A WEED MAT */}
+              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-md p-10 md:p-14">
+                <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-6">
+                  What is a <span className="text-[#2E7D32]">Weed Mat</span>?
+                </h2>
+                <p className="text-gray-700 text-base leading-relaxed">
+                  A <strong>weed mat</strong> is a ground cover fabric designed to prevent weed growth by blocking sunlight while allowing water and nutrients to pass through the soil. As a leading <strong>weed mat manufacturer</strong>, Farmliv produces weed control mats that are UV stabilized, tear-resistant, and built for long-term outdoor use.
+                </p>
+              </div>
+
+              {/* H2: BENEFITS */}
               <div>
                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-8">
-                  Benefits of Farmliv <span className="text-[#2E7D32]">Weed Control Mat</span>
+                  Benefits of <span className="text-[#2E7D32]">Weed Control Mat</span>
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                   {[
-                    {
-                      title: 'Blocks 99% of Weed Growth',
-                      body: 'Our weed mat creates an impenetrable barrier that blocks sunlight from reaching soil, preventing weed seeds from germinating. This eliminates the need for herbicides and manual weeding.'
-                    },
-                    {
-                      title: 'Retains Soil Moisture',
-                      body: 'The breathable PP weed barrier fabric reduces evaporation by up to 60%, allowing water and nutrients to pass through while locking moisture in — ideal for arid and semi-arid farming regions.'
-                    },
-                    {
-                      title: 'UV Stabilized & Long Lasting',
-                      body: 'As a responsible weed mat manufacturer, Farmliv uses UV-stabilized polypropylene in all weed mats. This ensures the ground cover withstands 5+ years of direct sun exposure without degrading.'
-                    },
-                    {
-                      title: 'Reduces Chemical Dependency',
-                      body: 'By mechanically blocking weed growth, our weed control mat reduces the need for herbicides and pesticides — making your farm more eco-friendly and cost-efficient over time.'
-                    },
-                    {
-                      title: 'Improves Crop Yield',
-                      body: 'When weeds are controlled, your crops receive full access to nutrients, water, and sunlight. Farms using Farmliv\'s weed mat report visible improvement in crop health and yield.'
-                    },
-                    {
-                      title: 'Available in Custom Sizes',
-                      body: 'As a full-scale weed mat manufacturer, Farmliv offers weed mats in widths from 1 meter to 5.2 meters and lengths up to 100 meters per roll — customizable to your farm layout.'
-                    }
+                    { icon: '🚫', title: 'Prevents weed growth effectively', body: 'Blocks sunlight to soil surface, stopping weed seeds from germinating without the need for chemical herbicides.' },
+                    { icon: '💧', title: 'Saves water by reducing evaporation', body: 'Our weed mat retains soil moisture by up to 60%, reducing irrigation frequency and water costs.' },
+                    { icon: '🌾', title: 'Improves crop yield', body: 'Crops grow stronger when weeds are eliminated — full access to nutrients, sunlight, and water.' },
+                    { icon: '👨‍🌾', title: 'Reduces labor cost', body: 'Eliminates manual weeding, reducing field labor requirements significantly across the growing season.' },
+                    { icon: '♻️', title: 'Eco-friendly and reusable', body: 'Made from recyclable PP/HDPE material. Our weed control mat can be reused for multiple seasons.' },
                   ].map((item, i) => (
-                    <div key={i} className="bg-white rounded-[2rem] border border-gray-100 shadow-md p-8">
-                      <h3 className="text-base font-black text-gray-900 uppercase tracking-tight mb-3">{item.title}</h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">{item.body}</p>
+                    <div key={i} className="bg-white rounded-[2rem] border border-gray-100 shadow-md p-8 flex flex-col gap-3">
+                      <span className="text-3xl">{item.icon}</span>
+                      <h3 className="text-sm font-black text-gray-900 uppercase tracking-tight">{item.title}</h3>
+                      <p className="text-gray-500 text-sm leading-relaxed">{item.body}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* APPLICATIONS */}
+              {/* H2: PRODUCT SPECIFICATIONS */}
+              <div className="bg-white rounded-[3rem] border border-gray-100 shadow-xl overflow-hidden">
+                <div className="px-10 md:px-14 pt-12 pb-4">
+                  <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">
+                    Product <span className="text-[#2E7D32]">Specifications</span>
+                  </h2>
+                  <p className="text-gray-500 text-sm mb-8">Standard specifications from Farmliv — India's trusted <strong>weed mat manufacturer</strong>.</p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse min-w-[500px]">
+                    <thead className="bg-green-50 border-b border-green-100">
+                      <tr className="text-[10px] font-black uppercase tracking-[0.3em] text-[#2E7D32]">
+                        <th className="py-4 px-10">Parameter</th>
+                        <th className="py-4 px-10">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {[
+                        ['Material', 'HDPE / Polypropylene (PP)'],
+                        ['GSM', '90, 100, 110, 120 GSM'],
+                        ['Width', '1 meter to 5 meters'],
+                        ['Length', '25m, 50m, 100m per roll'],
+                        ['UV Stabilized', 'Yes — 5+ Year Life Guarantee'],
+                        ['Color', 'Black / Green'],
+                      ].map(([param, value], i) => (
+                        <tr key={i} className="hover:bg-green-50/20 transition-all">
+                          <td className="py-4 px-10 font-black text-gray-900 text-[11px] uppercase tracking-wider">{param}</td>
+                          <td className="py-4 px-10 text-gray-600 text-sm font-medium">{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* H2: APPLICATIONS */}
               <div className="bg-[#020617] text-white rounded-[3rem] p-10 md:p-14">
                 <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic mb-6">
                   Applications of Our <span className="text-emerald-400">Weed Mat</span>
                 </h2>
                 <p className="text-slate-400 text-base leading-relaxed mb-8">
-                  Farmliv's <strong className="text-white">weed control mat</strong> is used across a wide range of agricultural and horticultural applications. As a leading <strong className="text-white">weed mat manufacturer</strong>, we supply to:
+                  As a leading <strong className="text-white">weed mat manufacturer</strong>, Farmliv supplies heavy duty weed control mats for:
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   {[
-                    'Vegetable & fruit farming (strawberry, banana, grapes)',
-                    'Floriculture & flower cultivation',
-                    'Nursery & greenhouse ground covering',
-                    'Landscaping & garden weed control',
-                    'Vineyard & orchard floor management',
-                    'Road & pathway weed suppression',
-                    'Government & municipal projects',
-                    'Hydroponics & vertical farming'
+                    'Agriculture farming',
+                    'Nursery & landscaping',
+                    'Greenhouse',
+                    'Garden weed control',
                   ].map((use, i) => (
                     <li key={i} className="flex items-start gap-3 bg-white/5 rounded-2xl px-6 py-4">
                       <span className="text-emerald-400 font-black mt-0.5">✓</span>
@@ -484,74 +507,43 @@ const ProductDetailPage = ({ productIdOverride }) => {
                 </ul>
               </div>
 
-              {/* MANUFACTURING QUALITY */}
-              <div>
+              {/* H2: WHY CHOOSE US */}
+              <div className="bg-gradient-to-br from-green-50 to-white rounded-[3rem] border border-green-100 p-10 md:p-14">
                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-6">
-                  Our <span className="text-[#2E7D32]">Weed Mat Manufacturing</span> Process
+                  Why Choose <span className="text-[#2E7D32]">Us?</span>
                 </h2>
-                <p className="text-gray-700 text-base leading-relaxed mb-4">
-                  As a vertically integrated <strong>weed mat manufacturer</strong>, Farmliv controls every stage of the production process. We use high-grade virgin polypropylene granules sourced from certified suppliers. The PP is extruded into flat tapes, precision-woven on high-speed looms to achieve uniform 110 GSM density, UV-treated for weatherproof durability, and slit into market-standard widths.
+                <p className="text-gray-700 text-base leading-relaxed mb-8">
+                  As a leading <strong>weed mat manufacturer</strong>, Farmliv ensures:
                 </p>
-                <p className="text-gray-700 text-base leading-relaxed mb-4">
-                  Each batch of <strong>weed control mat</strong> undergoes in-house quality testing for GSM consistency, tensile strength, UV resistance, and water permeability. Our <strong>weed mat</strong> production is ISO certified and complies with BIS standards, ensuring you receive a product that performs as guaranteed.
-                </p>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  As a factory-direct <strong>weed mat manufacturer in India</strong>, we bypass all intermediaries — which means lower prices for you and faster delivery across Maharashtra, Gujarat, Rajasthan, Karnataka, Tamil Nadu, and all other Indian states.
-                </p>
-              </div>
-
-              {/* FAQ SECTION */}
-              <div>
-                <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic mb-8">
-                  Frequently Asked Questions — <span className="text-[#2E7D32]">Weed Mat</span>
-                </h2>
-                <div className="space-y-4">
+                <ul className="space-y-4">
                   {[
-                    {
-                      q: 'Who is the best weed mat manufacturer in India?',
-                      a: 'Farmliv Industries Private Limited is one of India\'s leading weed mat manufacturers, supplying heavy duty PP weed control mats across agriculture, horticulture, and landscaping sectors. We are a BIS-certified, factory-direct weed mat manufacturer with nationwide delivery.'
-                    },
-                    {
-                      q: 'What is a weed mat and how does it work?',
-                      a: 'A weed mat (also called weed control mat, ground cover, or weed barrier fabric) is a heavy duty polypropylene fabric placed on soil to block sunlight and prevent weed growth. Farmliv\'s weed mats are made from 110 GSM UV-stabilized PP material with a 5-year durability guarantee.'
-                    },
-                    {
-                      q: 'What GSM weed mat does Farmliv manufacture?',
-                      a: 'Farmliv manufactures 110 GSM weed control mats made from heavy-duty polypropylene. These weed mats are UV stabilized and BIS certified, designed for 5+ years of outdoor use.'
-                    },
-                    {
-                      q: 'Can I buy weed mat in bulk from Farmliv?',
-                      a: 'Yes. Farmliv Industries offers bulk weed mat supply at factory-direct wholesale prices. We supply weed mats to farmers, nurseries, distributors, and exporters across India.'
-                    },
-                    {
-                      q: 'What widths and lengths are available for weed mats?',
-                      a: 'Farmliv offers weed mats in widths of 1 meter (2 feet), 1.5 meter (5 feet), 2 meter (6.5 feet), 4.2 meter, and 5.2 meter — with lengths up to 100 meters per roll. Custom sizes are also available for large-scale projects.'
-                    }
-                  ].map((item, i) => (
-                    <details key={i} className="bg-white border border-gray-200 rounded-[2rem] overflow-hidden group">
-                      <summary className="flex items-center justify-between gap-4 px-8 py-6 cursor-pointer font-black text-gray-900 text-sm uppercase tracking-tight list-none hover:bg-green-50 transition-colors">
-                        {item.q}
-                        <span className="text-[#2E7D32] text-xl flex-shrink-0 group-open:rotate-45 transition-transform">+</span>
-                      </summary>
-                      <div className="px-8 pb-8 pt-2 text-gray-600 text-sm leading-relaxed border-t border-gray-100">{item.a}</div>
-                    </details>
+                    'High-quality raw materials (HDPE / UV-stabilized PP)',
+                    'Competitive pricing — factory direct, no middlemen',
+                    'Bulk supply available across India',
+                    'Fast delivery across India — Maharashtra, Gujarat, Karnataka, Tamil Nadu & more',
+                    'Trusted by farmers, nurseries and distributors nationwide',
+                  ].map((point, i) => (
+                    <li key={i} className="flex items-start gap-4">
+                      <span className="w-6 h-6 rounded-full bg-[#2E7D32] text-white flex items-center justify-center text-xs font-black flex-shrink-0 mt-0.5">{i + 1}</span>
+                      <span className="text-gray-700 text-base">{point}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
-              {/* CTA */}
+              {/* H2: BUY WEED MAT ONLINE / CTA */}
               <div className="bg-[#2E7D32] text-white rounded-[3rem] p-10 md:p-14 text-center">
                 <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic mb-4">
-                  Get a Bulk Quote from India's Trusted Weed Mat Manufacturer
+                  Buy Weed Mat Online
                 </h2>
                 <p className="text-green-100 text-base mb-8 max-w-2xl mx-auto leading-relaxed">
-                  Contact Farmliv Industries — your reliable <strong>weed mat manufacturer</strong> — for bulk pricing, custom sizes, and fast nationwide delivery of weed control mats, PP ground cover, and weed barrier fabric.
+                  Contact us today to get the best price from a reliable <strong>weed mat manufacturer</strong> in India. Bulk supply, custom sizes, and fast nationwide delivery available.
                 </p>
                 <Link
                   to="/request-quote?productId=2"
                   className="inline-flex items-center gap-3 bg-white text-[#2E7D32] font-black text-xs uppercase tracking-widest px-10 py-5 rounded-full hover:bg-green-50 transition-all shadow-xl"
                 >
-                  Request Bulk Quote <ArrowRight size={16} />
+                  Get Best Price Now <ArrowRight size={16} />
                 </Link>
               </div>
 
