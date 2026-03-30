@@ -5,6 +5,7 @@ import { API_BASE } from '@/utils/config';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductDescriptionSection from '../components/ProductDescriptionSection';
+import ProductReviews from '../components/ProductReviews';
 import LazyImage from '@/components/ui/LazyImage'; 
 import { 
   ChevronRight, Maximize2, X, Award, 
@@ -606,6 +607,9 @@ const ProductDetailPage = ({ productIdOverride }) => {
               </div>
             </div>
           )}
+
+          {/* CUSTOMER REVIEWS */}
+          <ProductReviews isWeedMat={isWeedMat} />
 
           {/* 3. BULK ORDER PRIVILEGES */}
           <div className="mt-24 relative rounded-[4.5rem] bg-[#020617] p-1 shadow-2xl overflow-hidden group">
